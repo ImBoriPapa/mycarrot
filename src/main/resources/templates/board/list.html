@@ -6,7 +6,7 @@
   </head>
   <body>
     <h1>Hello list</h1>
-    <div>총 건수 :<span th:text="${#lists.size(boards)}"></span></div>
+    <div>총 건수 :<span th:text="${boards.totalElements}"></span></div>
     <table>
       <thead>
         <tr>
@@ -17,16 +17,24 @@
       </thead>
       <tbody>
         <tr th:each="board : ${boards}">
-          <td th:text="${board.Id}">번호</td>
+          <td th:text="${board.getBoard_id}">번호</td>
           <td>
-            <a th:href="@{/board/form(id=${board.id})}" th:text="${board.title}"
+            <a
+              th:href="@{/board/form(id=${board.getBoard_title})}"
+              th:text="${board.getBoard_title}"
               >제목</a
             >
           </td>
-          <td th:text="${board.content}">내용</td>
+          <td th:text="${board.getBoard_content}">내용</td>
         </tr>
       </tbody>
     </table>
+    <li
+      th:classappend="${i== boards.pageable.pageNumber+1}?'disabled'"
+      th:each="i :${#numbers.sequence(startPage,endPage)}"
+    >
+      <a href="#" th:text="${i}">1</a>
+    </li>
     <div>
       <a type="button" th:href="@{/board/form}">작성</a>
     </div>
