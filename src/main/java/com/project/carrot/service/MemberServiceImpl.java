@@ -6,6 +6,8 @@ import com.project.carrot.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
@@ -25,7 +27,11 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberDTO login(MemberDTO dto) {
-        return null;
+    public void login(MemberDTO dto) {
+        String memberId = dto.getMember_id();
+        String memberPw = dto.getMember_password();
+
+        List<Member> result = memberRepository.findByMemberIdAndMemberPassword(memberId,memberPw);
+
     }
 }

@@ -6,20 +6,22 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name="member")
+@Table(name="MEMBER")
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String member_id;
-    private String member_password;
+    @Column(name="MEMBER_ID")
+    private String memberId;
+    @Column(name="MEMBER_PASSWORD")
+    private String memberPassword;
     private String member_nickname;
 
     public Member(){}
-    public Member(Long id, String member_id, String member_password, String member_nickname) {
+    public Member(Long id, String memberId, String memberPassword, String member_nickname) {
         this.id = id;
-        this.member_id = member_id;
-        this.member_password = member_password;
+        this.memberId = memberId;
+        this.memberPassword = memberPassword;
         this.member_nickname = member_nickname;
     }
 }
