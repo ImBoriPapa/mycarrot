@@ -4,10 +4,9 @@ import com.project.carrot.entity.Board;
 import com.project.carrot.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService{
@@ -18,9 +17,8 @@ public class BoardServiceImpl implements BoardService{
     public BoardDTO findId(Long id) {
             Board board =  boardRepository.findById(id).orElse(null);
             BoardDTO dto = new BoardDTO();
-            dto.setId(board.getBoard_id());
-        return dto;
-
+             dto.setId(board.getBoard_id());
+        return dto ;
     }
 
     @Override
