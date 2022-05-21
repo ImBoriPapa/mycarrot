@@ -1,12 +1,11 @@
 package com.project.carrot.service;
 
-import com.project.carrot.dto.MemberDTO;
 import com.project.carrot.entity.Member;
 import com.project.carrot.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,23 +14,27 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
 
     @Override
-    public void join(MemberDTO dto) {
-       Long id = dto.getId();
-       String member_id = dto.getMember_id();
-       String member_password =   dto.getMember_password();
-       String member_nickname =  dto.getMember_nickname();
+    public boolean checkExitsId(String memberId) {//회원아이디가 존재하지 않으면 null
+       Optional<Member> exitsId = memberRepository.findByMemberId(memberId);
+        if(!exitsId.isPresent()){
+            return false;
+        }else
+            return true;
 
-        Member member = new Member(id,member_id,member_password,member_nickname);
 
-        memberRepository.save(member);
     }
 
     @Override
-    public void login(MemberDTO dto) {
-        String memberId = dto.getMember_id();
-        String memberPw = dto.getMember_password();
+    public boolean checkIdAndPw(String id,String pw) { //아이디와 비밀번호로 존재하는 회원이면 true 아니면 false
+        Optional<Member> checkByMemberId = memberRepository.findByMemberId(id);
 
-        List<Member> result = memberRepository.findByMemberIdAndMemberPassword(memberId,memberPw);
+        Optional<String> checkId = Optional.ofNullable(checkByMemberId.orElse(new Member()).getMemberId());
+        Optional<String> checkPw = Optional.ofNullable(checkByMemberId.orElse(new Member()).getMemberPassword());
+
+        if (checkId.equals(id) && checkPw.equals(pw)) {
+            return true;
+        }
+        return false;
 
     }
 }

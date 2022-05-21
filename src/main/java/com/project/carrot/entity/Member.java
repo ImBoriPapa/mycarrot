@@ -18,6 +18,12 @@ public class Member {
     private String member_nickname;
 
     public Member(){}
+
+    public Member(String memberId, String memberPassword) {
+        this.memberId = memberId;
+        this.memberPassword = memberPassword;
+    }
+
     public Member(Long id, String memberId, String memberPassword, String member_nickname) {
         this.id = id;
         this.memberId = memberId;
