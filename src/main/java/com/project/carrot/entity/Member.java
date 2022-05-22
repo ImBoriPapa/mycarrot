@@ -15,6 +15,7 @@ public class Member {
     private String memberId;
     @Column(name="MEMBER_PASSWORD")
     private String memberPassword;
+    @Column(name = "MEMBER_NICKNAME")
     private String member_nickname;
 
     public Member(){}

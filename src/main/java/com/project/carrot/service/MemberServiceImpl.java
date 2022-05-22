@@ -1,9 +1,11 @@
 package com.project.carrot.service;
 
+import com.project.carrot.dto.MemberDTO;
 import com.project.carrot.entity.Member;
 import com.project.carrot.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 
@@ -36,5 +38,17 @@ public class MemberServiceImpl implements MemberService{
         }
         return false;
 
+    }
+
+    @Override
+    public void saveMember(MemberDTO memberDTO) {
+       Long id = memberDTO.getId();
+        String memberId =  memberDTO.getMember_id();
+        String memberPw =memberDTO.getMember_password();
+        String memberNick =memberDTO.getMember_nickname();
+
+        Member saveMember = new Member(id,memberId,memberPw,memberNick);
+
+        memberRepository.save(saveMember);
     }
 }

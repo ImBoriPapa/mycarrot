@@ -14,4 +14,10 @@ public class HomeController {
         return "/member/loginPage";
     }
 
+    @GetMapping("/form")
+    public String goToFormPage(){
+
+        return "/member/form";
+    }
+
 }
