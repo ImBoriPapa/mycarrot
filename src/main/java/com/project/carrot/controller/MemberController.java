@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequiredArgsConstructor
-public class LoginController {
+public class MemberController {
 
     private final MemberService memberService;
 
@@ -38,16 +38,13 @@ public class LoginController {
     }
 
     @PostMapping("/singUp")
-    public String signUp(String memberId,String memberPw,String memberNickname){
+    public String signUp(MemberDTO memberDTO){
         //1.저장기능
-        MemberDTO signUpDto = new MemberDTO();
-        signUpDto.setMember_id(memberId);
-        signUpDto.setMember_password(memberPw);
-        signUpDto.setMember_nickname(memberNickname);
-        memberService.saveMember(signUpDto);
+        memberService.saveMember(memberDTO);
         //2.중복회원검증
 
         //3.null값 체크
+
         return "/member/loginPage";
     }
 

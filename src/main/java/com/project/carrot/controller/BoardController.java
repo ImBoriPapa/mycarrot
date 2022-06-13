@@ -50,7 +50,4 @@ public class BoardController {
             return session.getAttribute("id")!=null;
 
     }
-
-
-
 }

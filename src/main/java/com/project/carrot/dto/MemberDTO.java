@@ -3,21 +3,27 @@ package com.project.carrot.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class MemberDTO {
 
     private Long id;
-    private String member_id;
-    private String member_password;
-    private String member_nickname;
+    private String memberId;
+    private String memberPassword;
+    private String memberNickname;
+    private String memberEmail;
+    private LocalDateTime signUpDate;
 
     public MemberDTO(){};
 
-    public MemberDTO(Long id, String member_id, String member_password, String member_nickname) {
+    public MemberDTO(Long id, String memberId, String memberPassword, String memberNickname, String memberEmail, LocalDateTime signUpDate) {
         this.id = id;
-        this.member_id = member_id;
-        this.member_password = member_password;
-        this.member_nickname = member_nickname;
+        this.memberId = memberId;
+        this.memberPassword = memberPassword;
+        this.memberNickname = memberNickname;
+        this.memberEmail = memberEmail;
+        this.signUpDate = signUpDate;
     }
 }

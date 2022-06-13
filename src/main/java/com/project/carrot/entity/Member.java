@@ -1,11 +1,12 @@
 package com.project.carrot.entity;
 
 import lombok.Getter;
-
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
+
 @Table(name="MEMBER")
 public class Member {
     @Id
@@ -16,19 +17,31 @@ public class Member {
     @Column(name="MEMBER_PASSWORD")
     private String memberPassword;
     @Column(name = "MEMBER_NICKNAME")
-    private String member_nickname;
+    private String memberNickname;
+    @Column(name = "MEMBER_EMAIL")
+    private String memberEmail;
+    @Column(name="SIGN_UP_DATE")
+    private LocalDateTime signUpDate;
+
 
     public Member(){}
 
-    public Member(String memberId, String memberPassword) {
-        this.memberId = memberId;
-        this.memberPassword = memberPassword;
-    }
-
-    public Member(Long id, String memberId, String memberPassword, String member_nickname) {
+    public Member(Long id, String memberId, String memberPassword, String memberNickname, String memberEmail, LocalDateTime signUpDate) {
         this.id = id;
         this.memberId = memberId;
         this.memberPassword = memberPassword;
-        this.member_nickname = member_nickname;
+        this.memberNickname = memberNickname;
+        this.memberEmail = memberEmail;
+        this.signUpDate = signUpDate;
+    }
+
+    public Member(String memberId, String memberPassword, String memberNickname, String memberEmail, LocalDateTime signUpDate) {
+        this.memberId = memberId;
+        this.memberPassword = memberPassword;
+        this.memberNickname = memberNickname;
+        this.memberEmail = memberEmail;
+        this.signUpDate = signUpDate;
     }
 }
+
+

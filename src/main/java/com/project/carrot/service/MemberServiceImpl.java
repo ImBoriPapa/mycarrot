@@ -6,7 +6,12 @@ import com.project.carrot.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -22,14 +27,11 @@ public class MemberServiceImpl implements MemberService{
             return false;
         }else
             return true;
-
-
-    }
+        }
 
     @Override
     public boolean checkIdAndPw(String id,String pw) { //아이디와 비밀번호로 존재하는 회원이면 true 아니면 false
         Optional<Member> checkByMemberId = memberRepository.findByMemberId(id);
-
         Optional<String> checkId = Optional.ofNullable(checkByMemberId.orElse(new Member()).getMemberId());
         Optional<String> checkPw = Optional.ofNullable(checkByMemberId.orElse(new Member()).getMemberPassword());
 
@@ -37,18 +39,18 @@ public class MemberServiceImpl implements MemberService{
             return true;
         }
         return false;
-
-    }
+        }
 
     @Override
     public void saveMember(MemberDTO memberDTO) {
-       Long id = memberDTO.getId();
-        String memberId =  memberDTO.getMember_id();
-        String memberPw =memberDTO.getMember_password();
-        String memberNick =memberDTO.getMember_nickname();
-
-        Member saveMember = new Member(id,memberId,memberPw,memberNick);
-
-        memberRepository.save(saveMember);
+        memberRepository.save(new Member(memberDTO.getMemberId(), memberDTO.getMemberPassword(), memberDTO.getMemberNickname(), memberDTO.getMemberEmail(), memberDTO.getSignUpDate().now()));
     }
+
+    @Override
+    public ArrayList<MemberDTO> memberList(ArrayList<Member> member) {
+        List<Member> members = memberRepository.findMember().stream().collect(Collectors.toList());  // 리스트를 스트림으로 dto로 변환
+        return null;
+    }
+
+
 }
