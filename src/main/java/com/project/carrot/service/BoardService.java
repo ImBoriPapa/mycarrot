@@ -10,7 +10,7 @@ public interface BoardService {
 
     BoardDTO findId(Long id);
 
-    void listSave(BoardDTO boardDTO);
+    void save(BoardDTO boardDTO);
 
     Page<Board> findAll(Pageable pageable);
 

@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -48,7 +45,8 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public ArrayList<MemberDTO> memberList(ArrayList<Member> member) {
-        List<Member> members = memberRepository.findMember().stream().collect(Collectors.toList());  // 리스트를 스트림으로 dto로 변환
+
+
         return null;
     }
 

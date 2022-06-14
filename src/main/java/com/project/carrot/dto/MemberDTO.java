@@ -26,4 +26,6 @@ public class MemberDTO {
         this.memberEmail = memberEmail;
         this.signUpDate = signUpDate;
     }
+
+
 }

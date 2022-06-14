@@ -1,5 +1,6 @@
 package com.project.carrot.controller;
 
+import com.project.carrot.dto.BoardDTO;
 import com.project.carrot.entity.Board;
 import com.project.carrot.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,21 @@ import javax.servlet.http.HttpSession;
 
 
 @Controller
-@RequestMapping("board")
 @RequiredArgsConstructor
 public class BoardController {
 
     private final BoardService boardService;
 
+    @GetMapping("/boardForm")
+    public String boardForm(){
+        return "/board/boardForm";
+    }
+
+    @PostMapping("/boardSave")
+    public String save(BoardDTO boardDTO){
+        boardService.save(boardDTO);
+        return "/";
+    }
 
     @GetMapping("/list")
     public String list(Model model,@PageableDefault(size=3) Pageable pageable
@@ -35,7 +45,7 @@ public class BoardController {
         model.addAttribute("startPage",startPage);
         model.addAttribute("endPage",endPage);
         model.addAttribute("boards",boards);
-        return "board/list";
+        return "board/boardList";
     }
 
     private boolean loginCheck(HttpServletRequest request){

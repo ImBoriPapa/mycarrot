@@ -26,7 +26,7 @@ public class MemberController {
             //1-2 존재하는 회원명이 있을때 비밀번호를 체크한다.
 
             if(checkIdAndPw){
-                return "/board/mainPage";
+                return "board";
             }else{
                 return "/member/loginPage";
             }
