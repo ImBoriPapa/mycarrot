@@ -13,25 +13,15 @@ public class BoardServiceImpl implements BoardService{
 
     private final BoardRepository boardRepository;
 
-    @Override
-    public BoardDTO findId(Long id) {
-            Board board =  boardRepository.findById(id).orElse(null);
-            BoardDTO dto = new BoardDTO();
-             dto.setId(board.getId());
-        return dto ;
-    }
 
     @Override
     public void save(BoardDTO boardDTO) {
-
-        Board board = new Board(boardDTO.getId(), boardDTO.getTitle(), boardDTO.getContent(),boardDTO.getWriter(),null,null);
-
+        Board board = new Board.BoardBuilder(boardDTO).build();
         boardRepository.save(board);
     }
 
     @Override
     public Page<Board> findAll(Pageable pageable) {
-
         return boardRepository.findAll(pageable);
     }
 

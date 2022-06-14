@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface BoardService {
 
-    BoardDTO findId(Long id);
+
 
     void save(BoardDTO boardDTO);
 

@@ -1,11 +1,11 @@
 package com.project.carrot.entity;
 
+import com.project.carrot.dto.BoardDTO;
 import lombok.Getter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
 public class Board {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID")
@@ -17,19 +17,19 @@ public class Board {
     @Column(name = "WRITER")
     private String writer;
     @Column(name = "CREATE_DATE")
-    private LocalDateTime createDate = LocalDateTime.now();
+    private LocalDateTime createDate;
     @Column(name = "MODIFiED_DATE")
     private LocalDateTime modifiedDate;
 
     public Board() {}
 
-    public Board(Long id, String title, String content, String writer, LocalDateTime createDate, LocalDateTime modifiedDate) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.writer = writer;
-        this.createDate = createDate;
-        this.modifiedDate = modifiedDate;
+    public Board(BoardBuilder boardBuilder) {
+        this.id = boardBuilder.id;
+        this.title = boardBuilder.title;
+        this.content = boardBuilder.content;
+        this.writer = boardBuilder.writer;
+        this.createDate = boardBuilder.createDate;
+        this.modifiedDate = boardBuilder.modifiedDate;
     }
 
 
@@ -56,4 +56,27 @@ public class Board {
     public LocalDateTime getModifiedDate() {
         return modifiedDate;
     }
+
+    public static class BoardBuilder{
+        private final Long id;
+        private final String title;
+        private final String content;
+        private final String writer;
+        private final LocalDateTime createDate;
+        private final LocalDateTime modifiedDate;
+
+        public BoardBuilder(BoardDTO boardDTO){
+            this.id = boardDTO.getId();
+            this.title = boardDTO.getTitle();
+            this.content = boardDTO.getWriter();
+            this.writer = boardDTO.getWriter();
+            this.createDate = boardDTO.getCreateDate();
+            this.modifiedDate = boardDTO.getModifiedDate();
+        }
+
+        public Board build(){
+            return new Board(this);
+        }
+    }
 }
+

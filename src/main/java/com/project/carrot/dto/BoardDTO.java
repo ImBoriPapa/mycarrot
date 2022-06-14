@@ -3,22 +3,19 @@ package com.project.carrot.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class BoardDTO {
-
+    //필수 매개변수
     private Long id;
     private String title;
     private String content;
     private String writer;
     private LocalDateTime createDate;
+    //선택 매개변수
     private LocalDateTime modifiedDate;
-
-    public BoardDTO() {
-    }
 
     public BoardDTO(Long id, String title, String content, String writer, LocalDateTime createDate, LocalDateTime modifiedDate) {
         this.id = id;
@@ -29,27 +26,6 @@ public class BoardDTO {
         this.modifiedDate = modifiedDate;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public LocalDateTime getModifiedDate() {
-        return modifiedDate;
+    public BoardDTO() {
     }
 }
