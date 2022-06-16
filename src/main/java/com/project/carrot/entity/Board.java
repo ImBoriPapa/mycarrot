@@ -1,7 +1,6 @@
 package com.project.carrot.entity;
 
 import com.project.carrot.dto.BoardDTO;
-import lombok.Getter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -70,7 +69,7 @@ public class Board {
             this.title = boardDTO.getTitle();
             this.content = boardDTO.getWriter();
             this.writer = boardDTO.getWriter();
-            this.createDate = boardDTO.getCreateDate();
+            this.createDate = LocalDateTime.now();
             this.modifiedDate = boardDTO.getModifiedDate();
         }
 

@@ -12,8 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
 
 
 
@@ -31,33 +30,22 @@ public class BoardController {
     @PostMapping("/boardSave")
     public String save(BoardDTO boardDTO){
         boardService.save(boardDTO);
-        return "/";
+        return "redirect:/boardForm";
     }
 
-    @GetMapping("/list")
-    public String list(Model model,@PageableDefault(size=3) Pageable pageable
-                       ) {
+    @GetMapping("/boardList")
+    public String list(Model model,@PageableDefault(size=3) Pageable pageable) {
 
         Page<Board> boards = boardService.findAll(pageable);
 
-       int startPage = Math.max(1,boards.getPageable().getPageNumber()-4);
-       int endPage = Math.max(boards.getTotalPages(),boards.getPageable().getPageNumber()+4);
+        int startPage = Math.max(1,boards.getPageable().getPageNumber()-4);
+        int endPage = Math.max(boards.getTotalPages(),boards.getPageable().getPageNumber()+1);
+
         model.addAttribute("startPage",startPage);
         model.addAttribute("endPage",endPage);
         model.addAttribute("boards",boards);
         return "board/boardList";
     }
 
-    private boolean loginCheck(HttpServletRequest request){
-        //세션을 얻어서
-        HttpSession session = request.getSession();
-        //세션에 id가 있으면 true, 없으면 false 반환
 
-//        if(session.getAttribute("id")!=null){
-//            return true;
-//        }else
-
-            return session.getAttribute("id")!=null;
-
-    }
 }
