@@ -1,8 +1,13 @@
-package com.project.carrot.entity.locationItem;
+package com.project.carrot.entity.locationItem.town;
 
-public enum Town {
 
-    DAECHI,//("대치동")
+
+import javax.persistence.Embeddable;
+
+@Embeddable
+public enum GangNamTown implements Town{
+
+    DAECHI,//"대치동"
     CHEONGDAM,//청담동,
     GAEPO,//개포동,
     APGUJEONG,//압구정동,

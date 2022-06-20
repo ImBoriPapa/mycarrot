@@ -1,11 +1,12 @@
 package com.project.carrot.entity;
 
+import com.project.carrot.entity.locationItem.district.District;
+import com.project.carrot.entity.locationItem.district.SeoulDistrict;
 import com.project.carrot.entity.locationItem.City;
-import com.project.carrot.entity.locationItem.District;
-import com.project.carrot.entity.locationItem.Town;
+import com.project.carrot.entity.locationItem.town.GangNamTown;
+import com.project.carrot.entity.locationItem.town.Town;
 
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 

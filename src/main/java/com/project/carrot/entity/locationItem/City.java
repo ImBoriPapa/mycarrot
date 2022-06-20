@@ -1,5 +1,8 @@
 package com.project.carrot.entity.locationItem;
 
+
+
+
 public enum City {
 
     SEOUL("서울"),
@@ -20,9 +23,13 @@ public enum City {
     GYEONGSANGBUK_DO("경상북도"),
     JEJU_DO("제주도");
 
+
     private final String explain;
+
 
     City(String explain) {
         this.explain = explain;
     }
+
+
 }

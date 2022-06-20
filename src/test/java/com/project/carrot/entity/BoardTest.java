@@ -2,10 +2,10 @@ package com.project.carrot.entity;
 
 import com.project.carrot.dto.BoardDTO;
 import com.project.carrot.entity.locationItem.City;
-import com.project.carrot.entity.locationItem.District;
-import com.project.carrot.entity.locationItem.Town;
+import com.project.carrot.entity.locationItem.district.District;
+import com.project.carrot.entity.locationItem.district.SeoulDistrict;
+import com.project.carrot.entity.locationItem.town.GangNamTown;
 import com.project.carrot.repository.BoardRepository;
-import com.project.carrot.service.BoardService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ class BoardTest {
         boardDTO.setWriter("글쓴이");
         boardDTO.setCreateDate(createDate);
 //        boardDTO.setModifiedDate(modifiedDate);
-        boardDTO.setLocation(new Location(City.SEOUL, District.DONGJAK, Town.CHEONGDAM));
+        boardDTO.setLocation(new Location(City.SEOUL, SeoulDistrict.GANGNAM, GangNamTown.CHEONGDAM));
 
         Board board = new Board.BoardBuilder(boardDTO).build();
 

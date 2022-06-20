@@ -1,9 +1,6 @@
 package com.project.carrot.entity;
 
 import com.project.carrot.dto.BoardDTO;
-import com.project.carrot.entity.locationItem.City;
-import com.project.carrot.entity.locationItem.District;
-import com.project.carrot.entity.locationItem.Town;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

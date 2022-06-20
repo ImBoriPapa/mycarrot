@@ -1,6 +1,10 @@
-package com.project.carrot.entity.locationItem;
+package com.project.carrot.entity.locationItem.district;
 
-public enum District {
+
+import javax.persistence.Embeddable;
+
+@Embeddable
+public enum SeoulDistrict implements District{
 
     JONGNO,
     JUNG,
