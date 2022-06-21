@@ -1,10 +1,9 @@
 package com.project.carrot.entity;
 
+import com.project.carrot.entity.locationItem.city.CityList;
 import com.project.carrot.entity.locationItem.district.District;
-import com.project.carrot.entity.locationItem.district.SeoulDistrict;
-import com.project.carrot.entity.locationItem.City;
-import com.project.carrot.entity.locationItem.town.GangNamTown;
 import com.project.carrot.entity.locationItem.town.Town;
+
 
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
@@ -14,25 +13,27 @@ import javax.persistence.Enumerated;
 public class Location {
 
     @Enumerated(EnumType.STRING)
-    private City city;
+    private CityList city;
     @Enumerated(EnumType.STRING)
     private District district;
     @Enumerated(EnumType.STRING)
     private Town town;
 
+
+
     public Location() {}
 
-    public Location(City city, District district, Town town) {
+    public Location(CityList city, District district, Town town) {
         this.city = city;
         this.district = district;
         this.town = town;
     }
 
-    public City getCity() {
+    public CityList getCity() {
         return city;
     }
 
-    public void setCity(City city) {
+    public void setCity(CityList city) {
         this.city = city;
     }
 
@@ -51,4 +52,7 @@ public class Location {
     public void setTown(Town town) {
         this.town = town;
     }
+
+
+
 }

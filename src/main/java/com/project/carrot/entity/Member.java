@@ -41,6 +41,8 @@ public class Member {
         this.memberEmail = memberEmail;
         this.signUpDate = signUpDate;
     }
+
+
 }
 
 
