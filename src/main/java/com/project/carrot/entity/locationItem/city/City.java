@@ -1,6 +1,6 @@
 package com.project.carrot.entity.locationItem.city;
 
-public enum CityList {
+public enum City {
 
     SEOUL("서울"),
     BUSAN("부산"),
@@ -22,7 +22,7 @@ public enum CityList {
 
     private String cityName;
 
-    CityList(String cityName) {
+    City(String cityName) {
         this.cityName = cityName;
     }
 }

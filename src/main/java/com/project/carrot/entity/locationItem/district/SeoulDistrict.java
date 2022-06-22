@@ -4,7 +4,7 @@ package com.project.carrot.entity.locationItem.district;
 
 
 
-public enum District {
+public enum SeoulDistrict implements Districts {
 
     JONGNO("종로"),
     JUNG("종로"),
@@ -35,7 +35,7 @@ public enum District {
     private String title;
 
 
-     District(String title) {
+     SeoulDistrict(String title) {
         this.title = title;
     }
 

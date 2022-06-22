@@ -1,7 +1,5 @@
 package com.project.carrot.entity;
-
 import com.project.carrot.dto.BoardDTO;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -26,9 +24,9 @@ public class Board {
     @Column(name = "MODIFiED_DATE")
     private LocalDateTime modifiedDate;
 
-    @Column(name = "LOCATION")
-    @Embedded
-    private Location location;
+
+
+
 
 
 
@@ -42,7 +40,7 @@ public class Board {
         this.writer = boardBuilder.writer;
         this.createDate = boardBuilder.createDate;
         this.modifiedDate = boardBuilder.modifiedDate;
-        this.location = boardBuilder.location;
+
     }
 
 
@@ -77,7 +75,7 @@ public class Board {
         private final String writer;
         private final LocalDateTime createDate;
         private final LocalDateTime modifiedDate;
-        private final Location location;
+
 
         public BoardBuilder(BoardDTO boardDTO){
             this.id = boardDTO.getId();
@@ -86,7 +84,7 @@ public class Board {
             this.writer = boardDTO.getWriter();
             this.createDate = LocalDateTime.now();
             this.modifiedDate = boardDTO.getModifiedDate();
-            this.location = boardDTO.getLocation();
+
         }
 
         public Board build(){
