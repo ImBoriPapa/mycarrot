@@ -3,6 +3,7 @@ package com.project.carrot.entity;
 import com.project.carrot.entity.locationItem.city.CityList;
 import com.project.carrot.entity.locationItem.district.District;
 import com.project.carrot.entity.locationItem.town.Town;
+import com.project.carrot.entity.testEnum.BasicOperation;
 
 
 import javax.persistence.Embeddable;
@@ -18,6 +19,7 @@ public class Location {
     private District district;
     @Enumerated(EnumType.STRING)
     private Town town;
+
 
 
 

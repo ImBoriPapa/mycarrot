@@ -1,10 +1,5 @@
 package com.project.carrot.entity.locationItem.town;
 
-
-
-import javax.persistence.Embeddable;
-
-@Embeddable
 public enum Town  {
 
     DAECHI("대치동"),//""
@@ -28,5 +23,5 @@ public enum Town  {
         this.name=name;
     }
 
-    \
+
 }
