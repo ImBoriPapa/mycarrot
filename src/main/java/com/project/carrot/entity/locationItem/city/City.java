@@ -1,5 +1,9 @@
 package com.project.carrot.entity.locationItem.city;
 
+import com.project.carrot.entity.locationItem.district.SeoulDistrict;
+
+import java.util.Arrays;
+
 public enum City {
 
     SEOUL("서울"),
@@ -22,7 +26,14 @@ public enum City {
 
     private String cityName;
 
+
+
     City(String cityName) {
         this.cityName = cityName;
     }
+
+    public String getCityName() {
+        return cityName;
+    }
+
 }

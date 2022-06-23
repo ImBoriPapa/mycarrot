@@ -2,6 +2,8 @@ package com.project.carrot.controller;
 
 import com.project.carrot.dto.BoardDTO;
 import com.project.carrot.entity.Board;
+import com.project.carrot.entity.locationItem.city.City;
+import com.project.carrot.entity.locationItem.locationMethod.LocationMethod;
 import com.project.carrot.service.BoardService;
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +23,12 @@ import org.springframework.web.bind.annotation.*;
 public class BoardController {
 
     private final BoardService boardService;
+    private final LocationMethod locationMethod;
+
+    @ModelAttribute("cities")
+    public City[] city(){
+        return City.values();
+    }
 
     @GetMapping("/boardForm")
     public String boardForm(){
@@ -44,6 +52,7 @@ public class BoardController {
         model.addAttribute("startPage",startPage);
         model.addAttribute("endPage",endPage);
         model.addAttribute("boards",boards);
+
         return "board/boardList";
     }
 

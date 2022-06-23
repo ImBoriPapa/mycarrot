@@ -2,18 +2,24 @@ package com.project.carrot.entity.locationItem.locationMethod;
 
 import com.project.carrot.entity.locationItem.city.City;
 import com.project.carrot.entity.locationItem.district.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
+@Component
+@RequiredArgsConstructor
 public class LocationMethod {
+
+
 
     public void districtName(List<Districts> districtsList, String choose){
         Stream<Districts> stream = districtsList.stream();
-        stream.anyMatch(town->town.equals(choose));
+        Stream<Districts> towns = stream.filter(town -> town.equals(choose));
+        System.out.println("towns = " + towns);
     }
 
 
