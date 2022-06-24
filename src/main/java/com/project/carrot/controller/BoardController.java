@@ -3,6 +3,8 @@ package com.project.carrot.controller;
 import com.project.carrot.dto.BoardDTO;
 import com.project.carrot.entity.Board;
 import com.project.carrot.entity.locationItem.city.City;
+import com.project.carrot.entity.locationItem.district.Districts;
+import com.project.carrot.entity.locationItem.district.SeoulDistrict;
 import com.project.carrot.entity.locationItem.locationMethod.LocationMethod;
 import com.project.carrot.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
 
-
+import java.util.List;
 
 
 @Controller
@@ -30,6 +32,7 @@ public class BoardController {
         return City.values();
     }
 
+
     @GetMapping("/boardForm")
     public String boardForm(){
         return "/board/boardForm";
@@ -42,7 +45,31 @@ public class BoardController {
     }
 
     @GetMapping("/boardList")
-    public String list(Model model,@PageableDefault(size=3) Pageable pageable) {
+    public String list( Model model,@PageableDefault(size=3) Pageable pageable) {
+
+
+
+        Page<Board> boards = boardService.findAll(pageable);
+
+        int startPage = Math.max(1,boards.getPageable().getPageNumber()-4);
+        int endPage = Math.max(boards.getTotalPages(),boards.getPageable().getPageNumber()+1);
+
+        model.addAttribute("startPage",startPage);
+        model.addAttribute("endPage",endPage);
+        model.addAttribute("boards",boards);
+
+        return "board/boardList";
+    }
+
+    @GetMapping("/boardList/{city}")
+    public String list2(@PathVariable City city, Model model,@PageableDefault(size=3) Pageable pageable) {
+
+        System.out.println("city = " + city.name());
+        LocationMethod locationMethod = new LocationMethod();
+        Districts[] districts = locationMethod.districts(city);
+
+        model.addAttribute("cityName",city.name());
+        model.addAttribute("districts",districts);
 
         Page<Board> boards = boardService.findAll(pageable);
 

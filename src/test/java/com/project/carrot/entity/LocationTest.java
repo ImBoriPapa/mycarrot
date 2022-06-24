@@ -9,6 +9,40 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 class LocationTest {
+    @Test
+    public void method() throws Exception
+    {
+        //given
+
+
+        //when
+
+        //then
+
+    };
+
+    @Test
+    public void district() throws Exception
+    {
+        //given
+        LocationMethod locationMethod = new LocationMethod();
+
+
+        Districts[] districts = locationMethod.districts(City.CHUNGCHEONGBUK_DO);
+        for (Districts district : districts) {
+            System.out.println("district = " + district);
+        }
+
+
+
+
+        //when
+
+        //then
+
+    }
+
+
 
     @Test
     public void search() throws Exception
@@ -20,18 +54,6 @@ class LocationTest {
         for (City city : cities) {
             System.out.println("city = " + city);
         }
-
-
-
-
-        List<Districts> districts = locationMethod.districtList(City.SEOUL);
-        for (Districts district : districts) {
-            System.out.println("district = " + district);
-        }
-        
-        
-
-
         //when
 
         //then

@@ -10,7 +10,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="/css/boardList.css">
-    <script src="/script/boardList.js"> </script>
+    <script src="/script/boardList.js?version=1" defer> </script>
   </head>
   <body>
     <form action="" th:object="${cities}"></form>
@@ -19,16 +19,25 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">
-
-            <select class="form-select selectLocation" aria-label="Default select example" >
-              <option value="" >지역을 선택하세요</option>
+            <span id="cityName" th:value="${cityName}" th:text="${cityName}"></span>
+            <select id="selectCity" class="form-select selectLocation" aria-label="Default select example" >
+              <option selected>도시를 선택하세요</option>
               <option  th:each="city : ${cities}" th:value="${city.name()}">
-                <p th:text="${city.cityName}"></p>
+                <p  th:text="${city.cityName}"></p>
               </option>
             </select>
 
           </th>
-          <th scope="col">1234</th>
+          <th scope="col">
+
+            <select id="selectDistrict" class="form-select selectLocation" aria-label="Default select example" >
+              <option selected="selected">지역을 선택하세요</option>
+              <option  th:each="districts : ${districts}" th:value="${districts.name()}">
+                <p  th:text="${districts.title}"></p>
+              </option>
+            </select>
+
+          </th>
           <th scope="col">Handle</th>
         </tr>
       </thead>
