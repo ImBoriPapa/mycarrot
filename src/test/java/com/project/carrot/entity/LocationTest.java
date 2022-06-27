@@ -2,7 +2,6 @@ package com.project.carrot.entity;
 
 import com.project.carrot.entity.locationItem.city.City;
 import com.project.carrot.entity.locationItem.district.Districts;
-import com.project.carrot.entity.locationItem.district.SeoulDistrict;
 import com.project.carrot.entity.locationItem.locationMethod.LocationMethod;
 import org.junit.jupiter.api.Test;
 

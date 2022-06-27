@@ -40,7 +40,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public void saveMember(MemberDTO memberDTO) {
-        memberRepository.save(new Member(memberDTO.getMemberId(), memberDTO.getMemberPassword(), memberDTO.getMemberNickname(), memberDTO.getMemberEmail(), memberDTO.getSignUpDate().now()));
+
     }
 
     @Override

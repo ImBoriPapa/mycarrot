@@ -24,13 +24,6 @@ public class Board {
     @Column(name = "MODIFiED_DATE")
     private LocalDateTime modifiedDate;
 
-
-
-
-
-
-
-
     public Board() {}
 
     public Board(BoardBuilder boardBuilder) {

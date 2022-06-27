@@ -1,5 +1,6 @@
 package com.project.carrot.entity;
 
+import com.project.carrot.dto.MemberDTO;
 import lombok.Getter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,26 +22,45 @@ public class Member {
     private String memberEmail;
     @Column(name="SIGN_UP_DATE")
     private LocalDateTime signUpDate;
+    @Column(name="MODIFY_DATE")
+    private LocalDateTime modifyDate;
 
 
-    public Member(){}
+    public Member() {}
 
-    public Member(Long id, String memberId, String memberPassword, String memberNickname, String memberEmail, LocalDateTime signUpDate) {
-        this.id = id;
-        this.memberId = memberId;
-        this.memberPassword = memberPassword;
-        this.memberNickname = memberNickname;
+    public Member(MemberBuilder memberBuilder) {
+        this.id = memberBuilder.id;
+        this.memberId = memberBuilder.memberId;
+        this.memberPassword = memberBuilder.memberPassword;
+        this.memberNickname = memberBuilder.memberNickname;
         this.memberEmail = memberEmail;
         this.signUpDate = signUpDate;
+        this.modifyDate = modifyDate;
     }
 
-    public Member(String memberId, String memberPassword, String memberNickname, String memberEmail, LocalDateTime signUpDate) {
-        this.memberId = memberId;
-        this.memberPassword = memberPassword;
-        this.memberNickname = memberNickname;
-        this.memberEmail = memberEmail;
-        this.signUpDate = signUpDate;
-    }
+   public static class MemberBuilder{
+       private Long id;
+       private String memberId;
+       private String memberPassword;
+       private String memberNickname;
+       private String memberEmail;
+       private LocalDateTime signUpDate;
+       private LocalDateTime modifyDate;
+
+       public MemberBuilder(MemberDTO memberDTO) {
+           this.id = memberDTO.getId();
+           this.memberId = memberDTO.getMemberEmail();
+           this.memberPassword = memberDTO.getMemberPassword();
+           this.memberNickname = memberDTO.getMemberNickname();
+           this.memberEmail = memberDTO.getMemberEmail();
+           this.signUpDate = modifyDate;
+           this.modifyDate = modifyDate;
+       }
+
+       public MemberBuilder builder(){
+           return new MemberBuilder(this);
+       }
+   }
 
 
 }

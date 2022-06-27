@@ -4,6 +4,7 @@ import com.project.carrot.dto.MemberDTO;
 import com.project.carrot.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +15,19 @@ import javax.servlet.http.HttpServletRequest;
 public class MemberController {
 
     private final MemberService memberService;
+
+    @GetMapping("/loginForm") //로그인폼 접속
+    public String login(){
+
+        return "member/loginForm";
+    }
+
+
+    @GetMapping("/signUpForm") //회원가입페이지 접속
+    public String signUpForm(){
+
+        return "member/signUpForm";
+    }
 
 
     @PostMapping("/login")
@@ -28,7 +42,7 @@ public class MemberController {
             if(checkIdAndPw){
                 return "board";
             }else{
-                return "/member/loginPage";
+                return "member/loginForm";
             }
         }else {
             //1-2 존재하는 회원명이 없으면 회원가입페이지로 보낸다.
@@ -45,7 +59,7 @@ public class MemberController {
 
         //3.null값 체크
 
-        return "/member/loginPage";
+        return "loginForm";
     }
 
 

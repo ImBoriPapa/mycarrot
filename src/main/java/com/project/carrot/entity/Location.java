@@ -20,5 +20,9 @@ public class Location {
 
     public Location() {}
 
-
+    public Location(City city, Enum district, Town town) {
+        this.city = city;
+        this.district = district;
+        this.town = town;
+    }
 }
