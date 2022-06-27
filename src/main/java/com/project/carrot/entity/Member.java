@@ -39,13 +39,13 @@ public class Member {
     }
 
    public static class MemberBuilder{
-       private Long id;
-       private String memberId;
-       private String memberPassword;
-       private String memberNickname;
-       private String memberEmail;
-       private LocalDateTime signUpDate;
-       private LocalDateTime modifyDate;
+       private final Long id;
+       private final String memberId;
+       private final  String memberPassword;
+       private final String memberNickname;
+       private final String memberEmail;
+       private final LocalDateTime signUpDate;
+       private final LocalDateTime modifyDate;
 
        public MemberBuilder(MemberDTO memberDTO) {
            this.id = memberDTO.getId();
@@ -53,13 +53,15 @@ public class Member {
            this.memberPassword = memberDTO.getMemberPassword();
            this.memberNickname = memberDTO.getMemberNickname();
            this.memberEmail = memberDTO.getMemberEmail();
-           this.signUpDate = modifyDate;
-           this.modifyDate = modifyDate;
+           this.signUpDate = LocalDateTime.now();
+           this.modifyDate = LocalDateTime.now();
        }
 
-       public MemberBuilder builder(){
-           return new MemberBuilder(this);
+       public Member builder(){
+           return new Member(this);
        }
+
+
    }
 
 
