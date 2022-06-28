@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/boardList.css" />
+    <script src="/script/hotList.js?version=1" defer></script>
+  </head>
+  <body>
+    <table class="table" th:object="${locationDTO}">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">
+            <input id="cityName" th:value="${cityName}" type="text" /> <br />
+            <input id="district" th:value="${district}" type="text" />
+
+            <select
+              id="selectCity"
+              class="form-select selectLocation"
+              aria-label="Default select example"
+            >
+              <option selected>도시를 선택하세요</option>
+              <option th:each="city : ${cities}" th:value="${city.name()}">
+                <p th:text="${city.cityName}"></p>
+              </option>
+            </select>
+          </th>
+          <th scope="col">
+            <select
+              id="selectDistrict"
+              class="form-select selectLocation"
+              aria-label="Default select example"
+            >
+              <option selected="selected">지역을 선택하세요</option>
+              <option
+                th:each="districts : ${districts}"
+                th:value="${districts.name()}"
+              >
+                <p th:text="${districts.title}"></p>
+              </option>
+            </select>
+          </th>
+          <th scope="col">
+            <select
+              id="selectTown"
+              class="form-select selectLocation"
+              aria-label="Default select example"
+            >
+              <option selected="selected">마을을 선택하세요</option>
+              <option th:each="towns : ${towns}" th:value="${towns.name()}">
+                <p th:text="${towns.name}"></p>
+              </option>
+            </select>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="boards : ${boards}">
+          <th scope="row" th:text="${boards.id}">1</th>
+          <td th:text="${boards.title}">Mark</td>
+          <td th:text="${boards.writer}">Otto</td>
+          <td th:text="${boards.createDate}">@mdo</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

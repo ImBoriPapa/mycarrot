@@ -1,7 +1,8 @@
 package com.project.carrot.entity;
 
+import com.project.carrot.domain.entity.Board;
 import com.project.carrot.dto.BoardDTO;
-import com.project.carrot.repository.BoardRepository;
+import com.project.carrot.domain.repository.BoardRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
