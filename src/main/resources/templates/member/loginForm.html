@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.thymeleaf.org">
+  <head>
   <head>
     <meta charset="UTF-8" />
     <title>loginPage</title>
@@ -11,34 +12,42 @@
     />
 
     <script src="/script/loginForm.js?version=1" defer></script>
+    <link rel="stylesheet" type="text/css" href="/css/loginForm.css" />
   </head>
   <body>
-    로그인페이지다
-    <form action="/login" method="post">
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">@</span>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Username"
-          aria-label="Username"
-          aria-describedby="basic-addon1"
-        />
+    <header>헤더자리</header>
+    <contanier>
+      <div class="inputBox">
+        <form action="/member/login" method="post">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">@</span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="userId"
+              aria-label="userId"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">@</span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="password"
+              aria-label="passwor"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">로그인하기</button>
+          <br />
+          <button id="toSignUpForm" type="button" class="btn btn-primary">
+            회원가입하기
+          </button>
+        </form>
       </div>
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">@</span>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="password"
-          aria-label="passwor"
-          aria-describedby="basic-addon1"
-        />
-      </div>
-      <button type="submit" class="btn btn-primary">로그인하기</button> <br />
-      <button id="toSignUpForm" type="button" class="btn btn-primary">
-        회원가입하기
-      </button>
-    </form>
+    </contanier>
+
+    <footer>풋터자리</footer>
   </body>
 </html>

@@ -11,13 +11,9 @@ public class HomeController {
     @GetMapping("/")
     public String goToLoginPage(){
 
-        return "loginForm";
+        return "member/loginForm";
     }
 
-    @GetMapping("/form")
-    public String goToFormPage(){
 
-        return "/member/form";
-    }
 
 }

@@ -3,16 +3,20 @@ package com.project.carrot.web.controller;
 import com.project.carrot.dto.MemberDTO;
 import com.project.carrot.domain.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.servlet.http.HttpServletRequest;
-
-
-
+@Slf4j
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
@@ -30,16 +34,14 @@ public class MemberController {
         return "member/signUpForm";
     }
 
-    @PostMapping("/singUp")
-    public String signUp(MemberDTO memberDTO, Model model){
+    @PostMapping("/signUp")
+    public String signUp(MemberDTO memberDTO, BindingResult bindingResult, Model model){
 
-        //1.중복아이디검증
-        boolean checkExitsId = memberService.checkExitsId(memberDTO.getMemberId());
-        if(checkExitsId){
+        //1.중복아이디검증 : 결과가 false 이면 존재하는 회원 true 이면 존재하지 않는 회원
+        boolean checkExitsId = memberService.checkUserId(memberDTO.getUserId());
+        log.info("checkExitId is = {}",checkExitsId);
 
-            String memberId = memberDTO.getMemberId();
-            model.addAttribute("memberId",memberId);
-
+        if(checkExitsId){ //
             return "redirect:/signUpForm";
         }else{
 
@@ -53,7 +55,7 @@ public class MemberController {
     @PostMapping("/login")
     public String login(HttpServletRequest request, String id, String pw ) throws Exception {
 
-        boolean checkExitsId = memberService.checkExitsId(id);     //1.로그인시 존재하는 회원인지 확인
+        boolean checkExitsId = memberService.checkUserId(id);     //1.로그인시 존재하는 회원인지 확인
         boolean checkIdAndPw = memberService.checkIdAndPw(id, pw); //2.로그인시 id와비밀번호 일치하는지 확인
 
         if(checkExitsId){

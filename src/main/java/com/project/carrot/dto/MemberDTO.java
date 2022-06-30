@@ -8,64 +8,64 @@ import java.time.LocalDateTime;
 
 public class MemberDTO {
 
-    private Long id;
-    private String memberId;
-    private String memberPassword;
-    private String memberNickname;
-    private String memberEmail;
+    private Long memberId;
+    private String userId;
+    private String password;
+    private String nickname;
+    private String email;
     private LocalDateTime signUpDate;
     private LocalDateTime modifyDate;
 
     public MemberDTO() {}
 
-    public MemberDTO(Long id, String memberId, String memberPassword, String memberNickname, String memberEmail, LocalDateTime signUpDate, LocalDateTime modifyDate) {
-        this.id = id;
+    public MemberDTO(Long memberId, String userId, String password, String nickname, String email, LocalDateTime signUpDate, LocalDateTime modifyDate) {
         this.memberId = memberId;
-        this.memberPassword = memberPassword;
-        this.memberNickname = memberNickname;
-        this.memberEmail = memberEmail;
+        this.userId = userId;
+        this.password = password;
+        this.nickname = nickname;
+        this.email = email;
         this.signUpDate = signUpDate;
         this.modifyDate = modifyDate;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getMemberId() {
+    public Long getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(String memberId) {
+    public void setMemberId(Long memberId) {
         this.memberId = memberId;
     }
 
-    public String getMemberPassword() {
-        return memberPassword;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setMemberPassword(String memberPassword) {
-        this.memberPassword = memberPassword;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getMemberNickname() {
-        return memberNickname;
+    public String getPassword() {
+        return password;
     }
 
-    public void setMemberNickname(String memberNickname) {
-        this.memberNickname = memberNickname;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getMemberEmail() {
-        return memberEmail;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setMemberEmail(String memberEmail) {
-        this.memberEmail = memberEmail;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public LocalDateTime getSignUpDate() {

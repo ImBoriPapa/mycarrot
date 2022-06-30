@@ -7,7 +7,9 @@ import com.project.carrot.domain.entity.Member;
 import java.util.ArrayList;
 
 public interface MemberService {
-    boolean checkExitsId(String memberId);//아이디가 존재하는지 확인한다.
+    boolean checkUserId(String userId);//아이디가 존재하는지 확인한다.
+
+    boolean checkEmail(String email);//비밀번호가 존재하는지 확인한다.
 
     boolean checkIdAndPw(String id , String pw);  // 아이디와 비밀번호로 존재하는 회원인지 확인
 

@@ -11,9 +11,11 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member,Long> {
 
 
-    Optional<Member> findByMemberId(String memberId); //회원 아이디로 검색하기
+    Optional<Member> findByUserId(String userId); //회원 아이디로 검색하기
 
     Member save(Member member);
+
+
 
 
 

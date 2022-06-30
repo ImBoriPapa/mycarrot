@@ -11,19 +11,20 @@ import java.time.LocalDateTime;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    @Column(name = "MEMBER_ID")
+    private  Long memberId;
 
-    @Column(name="MEMBER_ID")
-    private String memberId;
+    @Column(name="USER_ID")
+    private String userId;
 
-    @Column(name="MEMBER_PASSWORD")
-    private String memberPassword;
+    @Column(name="password")
+    private String password;
 
-    @Column(name = "MEMBER_NICKNAME")
-    private String memberNickname;
+    @Column(name = "NICKNAME")
+    private String nickname;
 
-    @Column(name = "MEMBER_EMAIL")
-    private String memberEmail;
+    @Column(name = "EMAIL")
+    private String email;
 
     @Column(name="SIGN_UP_DATE")
     private LocalDateTime signUpDate;
@@ -34,31 +35,31 @@ public class Member {
     public Member() {}
 
     private Member(MemberBuilder memberBuilder) {
-        this.id = memberBuilder.id;
         this.memberId = memberBuilder.memberId;
-        this.memberPassword =memberBuilder.memberPassword;
-        this.memberNickname = memberBuilder.memberNickname;
-        this.memberEmail = memberBuilder.memberEmail;
+        this.userId = memberBuilder.userId;
+        this.password =memberBuilder.password;
+        this.nickname = memberBuilder.nickname;
+        this.email = memberBuilder.email;
         this.signUpDate = memberBuilder.signUpDate;
         this.modifyDate = memberBuilder.modifyDate;
     }
 
     //MemberDTO - > Member
    public static class MemberBuilder{
-       private  Long id;
-       private  String memberId;
-       private  String memberPassword;
-       private  String memberNickname;
-       private  String memberEmail;
+       private  Long memberId;
+       private  String userId;
+       private  String password;
+       private  String nickname;
+       private  String email;
        private  LocalDateTime signUpDate;
        private  LocalDateTime modifyDate;
 
        public MemberBuilder(MemberDTO memberDTO) {
-           this.id = memberDTO.getId();
            this.memberId = memberDTO.getMemberId();
-           this.memberPassword = memberDTO.getMemberPassword();
-           this.memberNickname = memberDTO.getMemberNickname();
-           this.memberEmail = memberDTO.getMemberEmail();
+           this.userId = memberDTO.getUserId();
+           this.password = memberDTO.getPassword();
+           this.nickname = memberDTO.getNickname();
+           this.email = memberDTO.getEmail();
        }
 
        public MemberBuilder signUpdate(LocalDateTime date){

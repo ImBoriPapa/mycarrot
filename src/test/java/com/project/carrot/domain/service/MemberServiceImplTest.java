@@ -29,7 +29,7 @@ class MemberServiceImplTest {
 
         //when
         memberRepository.save(member);
-        Optional<Member> findMember = memberRepository.findByMemberId("member2");
+        Optional<Member> findMember = memberRepository.findByUserId("member2");
         //then
         Assertions.assertThat(memberDTO.getMemberId()).isEqualTo(findMember.get().getMemberId());
         Assertions.assertThat(member.getSignUpDate()).isEqualTo(findMember.get().getSignUpDate());
@@ -47,7 +47,7 @@ class MemberServiceImplTest {
         //when
 
         memberRepository.save(member);
-        Optional<Member> findMemberId = memberRepository.findByMemberId("member2");
+        Optional<Member> findMemberId = memberRepository.findByUserId("member2");
 
         //then
         Assertions.assertThat(findMemberId.get().getMemberId()).isEqualTo("member2");
