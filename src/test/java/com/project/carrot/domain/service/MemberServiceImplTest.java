@@ -54,4 +54,20 @@ class MemberServiceImplTest {
         Assertions.assertThat(findMemberId.isPresent()).isEqualTo(true);
 
     }
+
+    @Test
+    public void checkId() throws Exception
+    {
+        //given
+        MemberDTO memberDTO = new MemberDTO(0L,"member2","#1234","member2","member@member.com",LocalDateTime.now(),null);
+
+        Member member = new Member.MemberBuilder(memberDTO).signUpdate(LocalDateTime.now()).builder();
+
+        //when
+        memberService.saveMember(memberDTO);
+        boolean member2 = memberService.checkUserId("member2");
+        //then
+        Assertions.assertThat(member2).isTrue();
+
+    }
 }

@@ -19,17 +19,14 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public boolean checkUserId(String userId) {//회원아이디가 존재하면 true 없으면 false 반환
-       Optional<Member> exitsId = memberRepository.findByUserId(userId);
-        if(exitsId.isPresent()){
-            return true;
-        }else
-            return false;
-        }
+        Optional<Member> exitsId = memberRepository.findByUserId(userId);
+        return exitsId.isPresent();
+    }
 
     @Override
-    public boolean checkEmail(String email){
-
-        return true;
+    public boolean checkEmail(String email){ //이메일이 존재하면 true 없으면 false
+        Optional<Member> exitsEmail = memberRepository.findByEmail(email);
+        return exitsEmail.isPresent();
     }
 
     @Override

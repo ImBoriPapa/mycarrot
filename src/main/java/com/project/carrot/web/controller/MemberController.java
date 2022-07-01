@@ -9,10 +9,13 @@ import org.springframework.ui.Model;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -29,26 +32,32 @@ public class MemberController {
 
 
     @GetMapping("/signUpForm") //회원가입페이지 접속
-    public String signUpForm(){
+    public String signUpForm(@ModelAttribute("memberDTO") MemberDTO memberDTO){
 
         return "member/signUpForm";
     }
 
     @PostMapping("/signUp")
-    public String signUp(MemberDTO memberDTO, BindingResult bindingResult, Model model){
+    public String signUp(@Valid @ModelAttribute MemberDTO memberDTO, BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+            return "member/signUpForm";
+        }
 
         //1.중복아이디검증 : 결과가 false 이면 존재하는 회원 true 이면 존재하지 않는 회원
         boolean checkExitsId = memberService.checkUserId(memberDTO.getUserId());
-        log.info("checkExitId is = {}",checkExitsId);
 
-        if(checkExitsId){ //
-            return "redirect:/signUpForm";
-        }else{
+        boolean checkExitsEmail = memberService.checkEmail(memberDTO.getEmail());
+        log.info("checkExitId , checkExitsEmail = [{}][{}]",checkExitsId,checkExitsEmail);
 
-            //회원정보 저장
-            memberService.saveMember(memberDTO);
-            return "redirect:/boardList";
+        if(checkExitsId){
+            return "member/signUpForm";
+        }else if(checkExitsEmail){
+            return "member/signUpForm";
         }
+        //회원정보 저장
+        memberService.saveMember(memberDTO);
+        return "redirect:/boardList";
     }
 
 
