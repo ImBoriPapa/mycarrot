@@ -3,12 +3,14 @@ package com.project.carrot.domain.service;
 import com.project.carrot.dto.MemberDTO;
 import com.project.carrot.domain.entity.Member;
 import com.project.carrot.domain.repository.MemberRepository;
+import com.project.carrot.dto.MemberList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Stream;
 
 
 @Service
@@ -30,15 +32,19 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public boolean checkIdAndPw(String id,String pw) { //아이디와 비밀번호로 존재하는 회원이면 true 아니면 false
-        Optional<Member> checkByMemberId = memberRepository.findByUserId(id);
-        Optional<String> checkId = Optional.ofNullable(checkByMemberId.orElse(new Member()).getUserId());
-        Optional<String> checkPw = Optional.ofNullable(checkByMemberId.orElse(new Member()).getPassword());
-
-        if (checkId.equals(id) && checkPw.equals(pw)) {
-            return true;
-        }
-        return false;
+    public MemberDTO checkIdAndPw(String userid,String password) { //아이디와 비밀번호로 존재하는 회원이면 true 아니면 false
+//        Optional<Member> checkByMemberId = memberRepository.findByUserId(id);
+//        Optional<String> checkId = Optional.ofNullable(checkByMemberId.orElse(new Member()).getUserId());
+//        Optional<String> checkPw = Optional.ofNullable(checkByMemberId.orElse(new Member()).getPassword());
+//
+//        if (checkId.equals(id) && checkPw.equals(pw)) {
+//            return true;
+//        }
+//        return false;
+        return memberRepository.findByUserId(userid)
+                .filter(m -> m.getPassword().equals(password))
+                 .map(m->new MemberDTO(m))
+                        .orElse(null);
         }
 
     @Override
@@ -51,9 +57,15 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public ArrayList<MemberDTO> memberList(ArrayList<Member> member) {
+    public ArrayList<MemberList> members() { //회원 목록 조회 (memberId,userId,nickName,signUpDate)
+        List<Member> members = memberRepository.findAll();
+        ArrayList<MemberList> memberList = new ArrayList<>();
 
-        return null;
+        for (Member memberData : members) {
+            MemberList list = new MemberList(memberData.getMemberId(), memberData.getUserId(), memberData.getNickname(), memberData.getSignUpDate());
+            memberList.add(list);
+        }
+        return memberList;
     }
 
 }
