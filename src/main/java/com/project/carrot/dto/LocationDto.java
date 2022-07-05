@@ -1,14 +1,14 @@
 package com.project.carrot.dto;
 
-public class LocationDTO {
+public class LocationDto {
 
     private String cityName;
     private String districtName;
     private String TownName;
 
-    public LocationDTO() {}
+    public LocationDto() {}
 
-    public LocationDTO(String cityName, String districtName, String townName) {
+    public LocationDto(String cityName, String districtName, String townName) {
         this.cityName = cityName;
         this.districtName = districtName;
         TownName = townName;

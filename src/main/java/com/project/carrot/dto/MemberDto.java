@@ -1,15 +1,13 @@
 package com.project.carrot.dto;
 
 import com.project.carrot.domain.entity.Member;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 
-public class MemberDTO {
+public class MemberDto {
 
     private Long memberId;
     @NotNull
@@ -22,9 +20,9 @@ public class MemberDTO {
     private LocalDateTime signUpDate;
     private LocalDateTime modifyDate;
 
-    public MemberDTO() {}
+    public MemberDto() {}
 
-    public MemberDTO(Member member){
+    public MemberDto(Member member){
         this.memberId = member.getMemberId();
         this.userId = member.getUserId();
         this.password = member.getPassword();
@@ -35,7 +33,7 @@ public class MemberDTO {
 
     }
 
-    public MemberDTO(Long memberId, String userId, String password, String nickname, String email, LocalDateTime signUpDate, LocalDateTime modifyDate) {
+    public MemberDto(Long memberId, String userId, String password, String nickname, String email, LocalDateTime signUpDate, LocalDateTime modifyDate) {
         this.memberId = memberId;
         this.userId = userId;
         this.password = password;

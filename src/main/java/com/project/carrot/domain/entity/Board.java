@@ -1,5 +1,5 @@
 package com.project.carrot.domain.entity;
-import com.project.carrot.dto.BoardDTO;
+import com.project.carrot.dto.BoardDto;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -70,7 +70,7 @@ public class Board {
         private final LocalDateTime modifiedDate;
 
 
-        public BoardBuilder(BoardDTO boardDTO){
+        public BoardBuilder(BoardDto boardDTO){
             this.id = boardDTO.getId();
             this.title = boardDTO.getTitle();
             this.content = boardDTO.getWriter();

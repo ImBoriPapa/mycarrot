@@ -1,8 +1,8 @@
 package com.project.carrot.web.controller;
 
 
-import com.project.carrot.dto.BoardDTO;
-import com.project.carrot.dto.LocationDTO;
+import com.project.carrot.dto.BoardDto;
+import com.project.carrot.dto.LocationDto;
 import com.project.carrot.domain.entity.Board;
 import com.project.carrot.domain.entity.locationItem.city.City;
 import com.project.carrot.domain.entity.locationItem.locationMethod.LocationMethod;
@@ -39,7 +39,7 @@ public class BoardController {
     }
 
     @PostMapping("/boardSave")
-    public String save(BoardDTO boardDTO){
+    public String save(BoardDto boardDTO){
         boardService.save(boardDTO);
         return "redirect:/boardForm";
     }
@@ -48,7 +48,7 @@ public class BoardController {
     public String list( Model model,@PageableDefault(size=3) Pageable pageable) {
 
         Page<Board> boards = boardService.findAll(pageable);
-        LocationDTO locationDTO = new LocationDTO();
+        LocationDto locationDTO = new LocationDto();
 
         int startPage = Math.max(1,boards.getPageable().getPageNumber()-4);
         int endPage = Math.max(boards.getTotalPages(),boards.getPageable().getPageNumber()+1);

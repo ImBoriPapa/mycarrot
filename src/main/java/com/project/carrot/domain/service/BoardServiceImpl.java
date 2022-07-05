@@ -1,5 +1,5 @@
 package com.project.carrot.domain.service;
-import com.project.carrot.dto.BoardDTO;
+import com.project.carrot.dto.BoardDto;
 import com.project.carrot.domain.entity.Board;
 import com.project.carrot.domain.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class BoardServiceImpl implements BoardService{
 
 
     @Override
-    public void save(BoardDTO boardDTO) {
+    public void save(BoardDto boardDTO) {
         Board board = new Board.BoardBuilder(boardDTO).build();
         boardRepository.save(board);
     }

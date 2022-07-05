@@ -1,10 +1,8 @@
 package com.project.carrot.domain.entity;
 
-import com.project.carrot.dto.MemberDTO;
+import com.project.carrot.dto.MemberDto;
 import lombok.Getter;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -56,7 +54,7 @@ public class Member {
        private  LocalDateTime signUpDate;
        private  LocalDateTime modifyDate;
 
-       public MemberBuilder(MemberDTO memberDTO) {
+       public MemberBuilder(MemberDto memberDTO) {
            this.memberId = memberDTO.getMemberId();
            this.userId = memberDTO.getUserId();
            this.password = memberDTO.getPassword();

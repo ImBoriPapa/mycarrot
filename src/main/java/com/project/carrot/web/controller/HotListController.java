@@ -1,6 +1,6 @@
 package com.project.carrot.web.controller;
 
-import com.project.carrot.dto.LocationDTO;
+import com.project.carrot.dto.LocationDto;
 
 import com.project.carrot.domain.entity.locationItem.city.City;
 import com.project.carrot.domain.entity.locationItem.district.Districts;
@@ -27,7 +27,7 @@ public class HotListController {
     @GetMapping("/hotList")
     public String hotList(Model model) {
 
-        LocationDTO locationDTO = new LocationDTO();
+        LocationDto locationDTO = new LocationDto();
 
         model.addAttribute("locationDTO",locationDTO );
 

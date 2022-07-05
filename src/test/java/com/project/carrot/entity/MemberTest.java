@@ -3,15 +3,13 @@ package com.project.carrot.entity;
 
 import com.project.carrot.domain.entity.Member;
 import com.project.carrot.domain.repository.MemberRepository;
-import com.project.carrot.dto.MemberDTO;
+import com.project.carrot.dto.MemberDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MemberTest {
@@ -23,7 +21,7 @@ class MemberTest {
     public void find() throws Exception
     {
         //given
-        MemberDTO memberDTO = new MemberDTO();
+        MemberDto memberDTO = new MemberDto();
         memberDTO.setUserId("member1");
         memberDTO.setPassword("1234");
         memberDTO.setNickname("memberNick");

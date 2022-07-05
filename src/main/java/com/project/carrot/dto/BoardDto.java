@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class BoardDTO {
+public class BoardDto {
     //필수 매개변수
     private Long id;
     private String title;
@@ -19,7 +19,7 @@ public class BoardDTO {
     //선택 매개변수
     private LocalDateTime modifiedDate;
 
-    public BoardDTO(Long id, String title, String content, String writer, LocalDateTime createDate, LocalDateTime modifiedDate,Location location) {
+    public BoardDto(Long id, String title, String content, String writer, LocalDateTime createDate, LocalDateTime modifiedDate, Location location) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -29,6 +29,6 @@ public class BoardDTO {
         this.location = location;
     }
 
-    public BoardDTO() {
+    public BoardDto() {
     }
 }

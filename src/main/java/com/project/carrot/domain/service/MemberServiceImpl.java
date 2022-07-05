@@ -1,16 +1,14 @@
 package com.project.carrot.domain.service;
 
-import com.project.carrot.dto.MemberDTO;
+import com.project.carrot.dto.MemberDto;
 import com.project.carrot.domain.entity.Member;
 import com.project.carrot.domain.repository.MemberRepository;
 import com.project.carrot.dto.MemberList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Stream;
 
 
 @Service
@@ -32,23 +30,16 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberDTO checkIdAndPw(String userid,String password) { //아이디와 비밀번호로 존재하는 회원이면 true 아니면 false
-//        Optional<Member> checkByMemberId = memberRepository.findByUserId(id);
-//        Optional<String> checkId = Optional.ofNullable(checkByMemberId.orElse(new Member()).getUserId());
-//        Optional<String> checkPw = Optional.ofNullable(checkByMemberId.orElse(new Member()).getPassword());
-//
-//        if (checkId.equals(id) && checkPw.equals(pw)) {
-//            return true;
-//        }
-//        return false;
-        return memberRepository.findByUserId(userid)
+    public MemberDto checkIdAndPw(String userId, String password) { //아이디와 비밀번호로 존재하는 회원이면 MemberDto 아니면 null  반환
+
+        return memberRepository.findByUserId(userId)
                 .filter(m -> m.getPassword().equals(password))
-                 .map(m->new MemberDTO(m))
-                        .orElse(null);
+                .map(m->new MemberDto(m))
+                .orElse(null);
         }
 
     @Override
-    public void saveMember(MemberDTO memberDTO) { //회원정보 저장
+    public void saveMember(MemberDto memberDTO) { //회원정보 저장
         Member member = new Member
                 .MemberBuilder(memberDTO)
                 .signUpdate(LocalDateTime.now())

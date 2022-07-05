@@ -1,6 +1,6 @@
 package com.project.carrot.web.controller;
 
-import com.project.carrot.dto.MemberDTO;
+import com.project.carrot.dto.MemberDto;
 import com.project.carrot.domain.service.MemberService;
 import com.project.carrot.dto.MemberList;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import javax.servlet.http.HttpServletRequest;
+
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -32,26 +32,60 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(String id, String pw ) throws Exception {
+    public String login(@Valid @ModelAttribute LoginDto loginDto,BindingResult bindingResult) throws Exception {
 
-
-        MemberDTO checkIdAndPw = memberService.checkIdAndPw(id, pw); //2.로그인시 id와비밀번호 일치하는지 확인
-
-        if(checkIdAndPw == null) {//checkIdAndPw이 null 이라면 로그인 실패
-            return "/";
+        if(bindingResult.hasErrors()){ // 에러 발생시 로그인 폼으로 이동
+           log.info("hasErrors() {}",bindingResult);
+            return "/member/loginForm";
         }
-        return "/";
+
+        MemberDto checkIdAndPw = memberService.checkIdAndPw(loginDto.userId, loginDto.password); //아이디와 비밀번호를 검사해서 존재하면 dto반환 없으면 null
+
+        if(checkIdAndPw == null){//checkIdAndPw이 null 이라면 로그인 실패 로그인페이지로 이동
+        log.info("checkIdAndPw = {}",checkIdAndPw);
+            return "/member/loginForm";
+        }
+        log.info("checkIdAndPw = {}",checkIdAndPw.getUserId());
+        return  "redirect:/board"; //성공시 보드 페이지로 이동
+    }
+
+    private static class LoginDto{ // 로그인시 필요한 정보만을 가지는 dto
+        @NotBlank(message = "아이디를 확인해주세요")
+        private String userId;
+        @NotBlank(message = "비밀번호를 확인해주세요")
+        private String password;
+
+        public LoginDto(String userId, String password) {
+            this.userId = userId;
+            this.password = password;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
 
 
     @GetMapping("/signUp") //회원가입페이지 접속
-    public String signUpForm(@ModelAttribute("memberDTO") MemberDTO memberDTO){
+    public String signUpForm(@ModelAttribute("memberDTO") MemberDto memberDTO){
 
         return "/member/signUpForm";
     }
 
     @PostMapping("/signUp")
-    public String signUp(@Valid @ModelAttribute MemberDTO memberDTO, BindingResult bindingResult){
+    public String signUp(@Valid @ModelAttribute MemberDto memberDTO, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
             return "member/signUpForm";

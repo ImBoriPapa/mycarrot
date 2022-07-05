@@ -1,7 +1,7 @@
 package com.project.carrot.entity;
 
 import com.project.carrot.domain.entity.Board;
-import com.project.carrot.dto.BoardDTO;
+import com.project.carrot.dto.BoardDto;
 import com.project.carrot.domain.repository.BoardRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class BoardTest {
         LocalDateTime createDate = LocalDateTime.now();
         LocalDateTime modifiedDate = LocalDateTime.now();
         //given
-        BoardDTO boardDTO = new BoardDTO();
+        BoardDto boardDTO = new BoardDto();
         boardDTO.setTitle("제목");
         boardDTO.setContent("내용");
         boardDTO.setWriter("글쓴이");
