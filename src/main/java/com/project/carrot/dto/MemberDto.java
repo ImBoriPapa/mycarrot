@@ -6,6 +6,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+/**
+ * 회원 가입시 회원정보 DTO
+ * 가입정보 validate
+ */
 
 public class MemberDto {
 

@@ -1,5 +1,6 @@
 package com.project.carrot.web.controller;
 
+import com.project.carrot.domain.entity.Member;
 import com.project.carrot.dto.MemberDto;
 import com.project.carrot.domain.service.MemberService;
 import com.project.carrot.dto.MemberList;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -39,7 +42,7 @@ public class MemberController {
             return "/member/loginForm";
         }
 
-        MemberDto checkIdAndPw = memberService.checkIdAndPw(loginDto.userId, loginDto.password); //아이디와 비밀번호를 검사해서 존재하면 dto반환 없으면 null
+        Member checkIdAndPw = memberService.checkIdAndPw(loginDto.userId, loginDto.password); //아이디와 비밀번호를 검사해서 존재하면 dto반환 없으면 null
 
         if(checkIdAndPw == null){//checkIdAndPw이 null 이라면 로그인 실패 로그인페이지로 이동
         log.info("checkIdAndPw = {}",checkIdAndPw);
@@ -92,24 +95,38 @@ public class MemberController {
         }
 
         //1.중복아이디검증 : 결과가 false 이면 존재하는 회원 true 이면 존재하지 않는 회원
-        boolean checkExitsId = memberService.checkUserId(memberDTO.getUserId());
-
-        boolean checkExitsEmail = memberService.checkEmail(memberDTO.getEmail());
-        log.info("checkExitId , checkExitsEmail = [{}][{}]",checkExitsId,checkExitsEmail);
-
+        boolean checkExitsId = memberService.validationDuplicateUserId(memberDTO.getUserId());
         if(checkExitsId){
-            return "member/signUpForm";
-        }else if(checkExitsEmail){
+            log.info("이미 존재하는 회원 아이디입니다.");
             return "member/signUpForm";
         }
+
+        boolean checkExitsEmail = memberService.validationDuplicateEmail(memberDTO.getEmail());
+        if (checkExitsEmail) {
+            log.info("이미 사용중인 이메일 주소입니다.");
+            return "member/signUpForm";
+        }
+
         //회원정보 저장
-        memberService.saveMember(memberDTO);
+        Member saveMember = new Member.MemberBuilder()
+                .userId(memberDTO.getUserId())
+                .password(memberDTO.getPassword())
+                .nickname(memberDTO.getNickname())
+                .email(memberDTO.getEmail())
+                .signUpdate(LocalDateTime.now()).builder();
+        memberService.saveMember(saveMember);
         return "redirect:/member/login";
     }
 
     @GetMapping("/members")
     public String members(Model model){
-        ArrayList<MemberList> memberList = memberService.members();
+        List<Member> members = memberService.members();
+        ArrayList<MemberList> memberList = new ArrayList<>();
+
+        for (Member member : members) {
+           memberList.add(new MemberList.MemberListBuilder(member).builder());
+        }
+
 
         model.addAttribute("memberList",memberList);
 

@@ -14,12 +14,15 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
 
     Optional<Member> findByUserId(String userId); //회원 아이디로 검색하기
 
-    Optional<Member> findByEmail(String email); //회원 아이디로 검색하기
+    Optional<Member> findByEmail(String email); //회원 이메일로 검색하기
 
 
     Member save(Member member);//회원 정보 저장
 
     List<Member> findAll();//전체 회원 조회
+
+    Member findByMemberId(Long memberId);// 단건 조회
+
 
 
 

@@ -1,7 +1,13 @@
 package com.project.carrot.dto;
 
+import com.project.carrot.domain.entity.Member;
+
 import java.time.LocalDateTime;
 
+/**
+ *  회원목록을 화면에 뿌려주는 DTO
+ *
+ */
 public class MemberList {
 
     private Long memberId;
@@ -11,42 +17,28 @@ public class MemberList {
 
     public MemberList() {}
 
-    public MemberList(Long memberId, String userId, String nickname, LocalDateTime signUpDate) {
-        this.memberId = memberId;
-        this.userId = userId;
-        this.nickname = nickname;
-        this.signUpDate = signUpDate;
+    public MemberList(MemberListBuilder memberListBuilder) {
+        this.memberId = memberListBuilder.memberId;
+        this.userId = memberListBuilder.userId;
+        this.nickname = memberListBuilder.nickname;
+        this.signUpDate = memberListBuilder.signUpDate;
     }
 
-    public Long getMemberId() {
-        return memberId;
-    }
+    public  static class MemberListBuilder{
+        private Long memberId;
+        private String userId;
+        private String nickname;
+        private LocalDateTime signUpDate;
 
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
-    }
+        public MemberListBuilder(Member member) {
+            this.memberId = member.getMemberId();
+            this.userId = member.getUserId();
+            this.nickname = member.getNickname();
+            this.signUpDate = member.getSignUpDate();
+        }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public LocalDateTime getSignUpDate() {
-        return signUpDate;
-    }
-
-    public void setSignUpDate(LocalDateTime signUpDate) {
-        this.signUpDate = signUpDate;
+        public MemberList builder(){
+            return new MemberList(this);
+        }
     }
 }
