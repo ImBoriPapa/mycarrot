@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html th:fragment="layout (title,section)" xmlns:th="http://www.thymleaf.org">
+
+    <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="/script/home.js?version=1" defer></script>
+    <link rel="stylesheet" type="text/css" href="/css/base.css" />
+    <title th:replace="${title}">common header</title>
+
+</head>
+<body>
+<header>
+    <h1>랜딩페이지</h1>
+    <h1>공통부분</h1>
+</header>
+<!------------------------------------------->
+<section th:replace="${section}">
+    <h1>레이아웃 섹션</h1>
+    <a href="/memeber/login">로그인</a>
+    <a href="/member/signUp">회원가입</a>
+</section>
+<!------------------------------------------->
+<footer>
+    <h1>공통부분</h1>
+    <div class="footerItem1 footerBox">footerItem1</div>
+    <div class="footerItem2 footerBox">footerItem2</div>
+    <div class="footerItem3 footerBox">footerItem3</div>
+</footer>
+</body>
+</html>
