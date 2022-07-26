@@ -1,33 +1,79 @@
 <!DOCTYPE html>
 <html th:fragment="layout (title,section)" xmlns:th="http://www.thymleaf.org">
-
-    <head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!----------- 부트스트랩 -------------->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
 
-    <script src="/script/home.js?version=1" defer></script>
-    <link rel="stylesheet" type="text/css" href="/css/base.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+      integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"
+      integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
+      crossorigin="anonymous"
+    ></script>
+    <!-------------- 스크립트 ----------------->
+    <script src="/script/layout.js?version=1" defer></script>
+    <!-------------- CSS ----------------->
+    <link rel="stylesheet" type="text/css" href="/css/layout.css" />
+    <!-- 폰트어썸 킷코드 -->
+    <script
+      src="https://kit.fontawesome.com/2ad92617e5.js"
+      crossorigin="anonymous"
+    ></script>
+
     <title th:replace="${title}">common header</title>
-
-</head>
-<body>
-<header>
-    <h1>랜딩페이지</h1>
-    <h1>공통부분</h1>
-</header>
-<!------------------------------------------->
-<section th:replace="${section}">
-    <h1>레이아웃 섹션</h1>
-    <a href="/memeber/login">로그인</a>
-    <a href="/member/signUp">회원가입</a>
-</section>
-<!------------------------------------------->
-<footer>
-    <h1>공통부분</h1>
-    <div class="footerItem1 footerBox">footerItem1</div>
-    <div class="footerItem2 footerBox">footerItem2</div>
-    <div class="footerItem3 footerBox">footerItem3</div>
-</footer>
-</body>
+  </head>
+  <body>
+    <header>
+      <!-- 아이콘 -->
+      <div class="logo">
+        <i class="fa-solid fa-carrot"></i>
+        <span>보리마켓</span>
+      </div>
+      <!-- 카테고리 셀렉트 박스 -->
+      <select class="itemCategory">
+        <option selected>카테고리</option>
+        <option
+          value="1"
+          th:each="category : ${itemCategory}"
+          th:value="${category.name()}"
+          th:text="${category.displayName}"
+        >
+          One
+        </option>
+      </select>
+      <!-- 검색창 -->
+      <div class="seaech">
+        <input type="search" placeholder="Search" />
+        <button type="button">Search</button>
+      </div>
+    </header>
+    <!------------------------------------------->
+    <section th:replace="${section}">
+      <h1>레이아웃 섹션</h1>
+      <a href="/memeber/login">로그인</a>
+      <a href="/member/signUp">회원가입</a>
+    </section>
+    <!------------------------------------------->
+    <footer>
+      <div class="footerItem1 footerBox">
+        <div>정보</div>
+        <div>문의링크</div>
+        <div>약관링크</div>
+      </div>
+      <div class="footerItem2 footerBox">아이콘링크</div>
+      <div class="footerItem3 footerBox">footerItem3</div>
+    </footer>
+  </body>
 </html>

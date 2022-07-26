@@ -2,10 +2,10 @@ package com.project.carrot.web.controller;
 
 import com.project.carrot.dto.LocationDto;
 
-import com.project.carrot.domain.entity.locationItem.city.City;
-import com.project.carrot.domain.entity.locationItem.district.Districts;
-import com.project.carrot.domain.entity.locationItem.locationMethod.LocationMethod;
-import com.project.carrot.domain.entity.locationItem.town.Town;
+import com.project.carrot.domain.category.locationItem.city.City;
+import com.project.carrot.domain.category.locationItem.district.Districts;
+import com.project.carrot.domain.category.locationItem.locationMethod.LocationMethod;
+import com.project.carrot.domain.category.locationItem.town.Town;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,6 +1,6 @@
 package com.project.carrot.dto;
 
-import com.project.carrot.domain.entity.Member;
+import com.project.carrot.domain.member.entity.Member;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class MemberList {
 
     private Long memberId;
-    private String userId;
+    private String loginId;
     private String nickname;
     private LocalDateTime signUpDate;
 
@@ -19,20 +19,20 @@ public class MemberList {
 
     public MemberList(MemberListBuilder memberListBuilder) {
         this.memberId = memberListBuilder.memberId;
-        this.userId = memberListBuilder.userId;
+        this.loginId = memberListBuilder.loginId;
         this.nickname = memberListBuilder.nickname;
         this.signUpDate = memberListBuilder.signUpDate;
     }
 
     public  static class MemberListBuilder{
         private Long memberId;
-        private String userId;
+        private String loginId;
         private String nickname;
         private LocalDateTime signUpDate;
 
         public MemberListBuilder(Member member) {
             this.memberId = member.getMemberId();
-            this.userId = member.getUserId();
+            this.loginId = member.getLoginId();
             this.nickname = member.getNickname();
             this.signUpDate = member.getSignUpDate();
         }

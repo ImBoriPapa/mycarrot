@@ -1,8 +1,8 @@
 package com.project.carrot.web.controller;
 
-import com.project.carrot.domain.entity.Member;
+import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.dto.MemberDto;
-import com.project.carrot.domain.service.MemberService;
+import com.project.carrot.domain.member.service.MemberService;
 import com.project.carrot.dto.MemberList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +48,7 @@ public class MemberController {
         log.info("checkIdAndPw = {}",checkIdAndPw);
             return "/member/loginForm";
         }
-        log.info("checkIdAndPw = {}",checkIdAndPw.getUserId());
+        log.info("checkIdAndPw = {}",checkIdAndPw.getLoginId());
         return  "redirect:/board"; //성공시 보드 페이지로 이동
     }
 
@@ -83,7 +83,6 @@ public class MemberController {
 
     @GetMapping("/signUp") //회원가입페이지 접속
     public String signUpForm(@ModelAttribute("memberDTO") MemberDto memberDTO){
-
         return "/member/signUpForm";
     }
 
@@ -95,13 +94,13 @@ public class MemberController {
         }
 
         //1.중복아이디검증 : 결과가 false 이면 존재하는 회원 true 이면 존재하지 않는 회원
-        boolean checkExitsId = memberService.validationDuplicateUserId(memberDTO.getUserId());
+        boolean checkExitsId = memberService.validateDuplicateUserId(memberDTO.getUserId());
         if(checkExitsId){
             log.info("이미 존재하는 회원 아이디입니다.");
             return "member/signUpForm";
         }
 
-        boolean checkExitsEmail = memberService.validationDuplicateEmail(memberDTO.getEmail());
+        boolean checkExitsEmail = memberService.validateDuplicateEmail(memberDTO.getEmail());
         if (checkExitsEmail) {
             log.info("이미 사용중인 이메일 주소입니다.");
             return "member/signUpForm";
@@ -109,7 +108,7 @@ public class MemberController {
 
         //회원정보 저장
         Member saveMember = new Member.MemberBuilder()
-                .userId(memberDTO.getUserId())
+                .loginId(memberDTO.getUserId())
                 .password(memberDTO.getPassword())
                 .nickname(memberDTO.getNickname())
                 .email(memberDTO.getEmail())

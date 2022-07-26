@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymleaf.org">
-<head th:fragment="common_header(title,links)">
-<!-- 공통   -->
+  <head th:fragment="common_header(title,links)">
+    <!-- 공통   -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,7 +10,6 @@
     <link rel="stylesheet" type="text/css" href="/css/base.css" />
     <title th:replace="${title}">common header</title>
     <!-- 추가   -->
-<!--    <th:block th:replace="${links}"/>-->
-</head>
-
+    <!--    <th:block th:replace="${links}"/>-->
+  </head>
 </html>

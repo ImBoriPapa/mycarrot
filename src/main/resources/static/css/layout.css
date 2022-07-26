@@ -1,0 +1,52 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ==============header==============- */
+header {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+  height: 10%;
+  width: 100%;
+}
+.logo {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+.logo i {
+  color: red;
+}
+
+.logo span {
+  color: blueviolet;
+}
+
+/* ==============section==============- */
+section {
+  display: flex;
+  border: 1px solid black;
+
+  height: 70%;
+  width: 100%;
+}
+
+/* ==============footer==============- */
+footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 1px solid black;
+
+  height: 20%;
+  width: 100%;
+}

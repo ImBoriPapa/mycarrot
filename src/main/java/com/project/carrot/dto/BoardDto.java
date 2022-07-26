@@ -1,6 +1,6 @@
 package com.project.carrot.dto;
 
-import com.project.carrot.domain.entity.Location;
+import com.project.carrot.domain.location.Location;
 import lombok.Getter;
 import lombok.Setter;
 

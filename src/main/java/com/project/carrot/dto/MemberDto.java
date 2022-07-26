@@ -1,6 +1,6 @@
 package com.project.carrot.dto;
 
-import com.project.carrot.domain.entity.Member;
+import com.project.carrot.domain.member.entity.Member;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,7 +16,7 @@ public class MemberDto {
     private Long memberId;
     @NotNull
     @NotBlank
-    private String userId;
+    private String loginId;
     @NotNull
     private String password;
     private String nickname;
@@ -28,7 +28,7 @@ public class MemberDto {
 
     public MemberDto(Member member){
         this.memberId = member.getMemberId();
-        this.userId = member.getUserId();
+        this.loginId = member.getLoginId();
         this.password = member.getPassword();
         this.nickname = member.getNickname();
         this.email = member.getEmail();
@@ -37,9 +37,9 @@ public class MemberDto {
 
     }
 
-    public MemberDto(Long memberId, String userId, String password, String nickname, String email, LocalDateTime signUpDate, LocalDateTime modifyDate) {
+    public MemberDto(Long memberId, String loginId, String password, String nickname, String email, LocalDateTime signUpDate, LocalDateTime modifyDate) {
         this.memberId = memberId;
-        this.userId = userId;
+        this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
@@ -56,11 +56,11 @@ public class MemberDto {
     }
 
     public String getUserId() {
-        return userId;
+        return loginId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserId(String loginId) {
+        this.loginId = loginId;
     }
 
     public String getPassword() {
