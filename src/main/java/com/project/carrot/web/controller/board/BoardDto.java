@@ -1,4 +1,4 @@
-package com.project.carrot.dto;
+package com.project.carrot.web.controller.board;
 
 import com.project.carrot.domain.location.Location;
 import lombok.Getter;

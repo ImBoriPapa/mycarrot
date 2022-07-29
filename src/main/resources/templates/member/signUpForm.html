@@ -8,18 +8,26 @@
   </head>
   <body>
     <section>
-      <form action="/member/signUp" method="post">
+      <form
+        action="/member/signUp"
+        th:object="${createMemberForm}"
+        method="post"
+      >
         <div class="input-group flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">@</span>
           <input
-            name="userId"
+            name="loginId"
             type="text"
             class="form-control"
             placeholder="아이디를 입력하세요"
             aria-label="Username"
             aria-describedby="addon-wrapping"
+            th:field="*{loginId}"
+            th:errorclass="field-error"
           />
+          <div class="field-error" th:errors="*{loginId}">아이디 오류</div>
         </div>
+
         <div class="input-group flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">@</span>
           <input
@@ -29,8 +37,12 @@
             placeholder="비밀번호를 입력하세여"
             aria-label="Username"
             aria-describedby="addon-wrapping"
+            th:field="*{password}"
+            th:errorclass="field-error"
           />
         </div>
+        <div class="field-error" th:errors="*{password}">password 오류</div>
+
         <div class="input-group flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">@</span>
           <input
@@ -40,8 +52,12 @@
             placeholder="닉네임을 입력하세요"
             aria-label="Username"
             aria-describedby="addon-wrapping"
+            th:field="*{nickname}"
+            th:errorclass="field-error"
           />
         </div>
+        <div class="field-error" th:errors="*{nickname}">nickname 오류</div>
+
         <div class="input-group flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">@</span>
           <input
@@ -51,8 +67,11 @@
             placeholder="이메일을 입력하세요"
             aria-label="Username"
             aria-describedby="addon-wrapping"
+            th:field="*{email}"
+            th:errorclass="field-error"
           />
         </div>
+        <div class="field-error" th:errors="*{email}">email 오류</div>
 
         <button type="submit">가입</button>
       </form>

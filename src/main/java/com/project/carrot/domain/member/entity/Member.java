@@ -47,6 +47,15 @@ public class Member {
         this.signUpDate = memberBuilder.signUpDate;
         this.modifyDate = memberBuilder.modifyDate;
     }
+    
+    public void CreateMember(MemberBuilder memberBuilder,MemberRoll memberRoll,LocalDateTime localDateTime){
+        this.loginId = memberBuilder.loginId;
+        this.password =memberBuilder.password;
+        this.nickname = memberBuilder.nickname;
+        this.email = memberBuilder.email;
+        this.memberRoll = memberBuilder.memberRoll;
+        this.signUpDate = memberBuilder.signUpDate;
+    }
 
     /**
      * MemberBuilder: Member 를 생성하고 setter 를 사용하지 않고  값을 세팅하기 위해 설정

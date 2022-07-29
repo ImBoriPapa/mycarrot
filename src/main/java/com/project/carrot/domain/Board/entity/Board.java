@@ -1,5 +1,5 @@
 package com.project.carrot.domain.Board.entity;
-import com.project.carrot.dto.BoardDto;
+import com.project.carrot.web.controller.board.BoardDto;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 

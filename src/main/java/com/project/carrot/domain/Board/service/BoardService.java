@@ -1,5 +1,5 @@
 package com.project.carrot.domain.Board.service;
-import com.project.carrot.dto.BoardDto;
+import com.project.carrot.web.controller.board.BoardDto;
 import com.project.carrot.domain.Board.entity.Board;
 import com.project.carrot.domain.Board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;

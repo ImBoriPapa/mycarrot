@@ -1,8 +1,7 @@
-package com.project.carrot.web.controller;
+package com.project.carrot.web.controller.board;
 
 
-import com.project.carrot.dto.BoardDto;
-import com.project.carrot.dto.LocationDto;
+import com.project.carrot.web.dto.LocationDto;
 import com.project.carrot.domain.Board.entity.Board;
 import com.project.carrot.domain.category.locationItem.city.City;
 import com.project.carrot.domain.Board.service.BoardService;

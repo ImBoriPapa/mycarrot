@@ -1,6 +1,6 @@
-package com.project.carrot.web.controller;
+package com.project.carrot.web.controller.hotlist;
 
-import com.project.carrot.dto.LocationDto;
+import com.project.carrot.web.dto.LocationDto;
 
 import com.project.carrot.domain.category.locationItem.city.City;
 import com.project.carrot.domain.category.locationItem.district.Districts;

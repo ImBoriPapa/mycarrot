@@ -1,4 +1,4 @@
-package com.project.carrot.dto;
+package com.project.carrot.web.dto;
 
 public class LocationDto {
 
