@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -33,7 +34,6 @@ class MemberServiceTest {
                 .password("!@#$1234")
                 .nickname("testNick")
                 .email("test@test.com")
-                .signUpdate(LocalDateTime.now())
                 .builder();
 
         Member duplicateLoginId = new Member.MemberBuilder() // loginId가 중복인 상황
@@ -41,7 +41,6 @@ class MemberServiceTest {
                 .password("!@#$1234")
                 .nickname("test")
                 .email("test")
-                .signUpdate(LocalDateTime.now())
                 .builder();
 
         Member duplicateNickname = new Member.MemberBuilder() // nickname 이 중복인 상황
@@ -49,7 +48,6 @@ class MemberServiceTest {
                 .password("!@#$1234")
                 .nickname("testNick")
                 .email("test")
-                .signUpdate(LocalDateTime.now())
                 .builder();
 
         Member duplicateEmail = new Member.MemberBuilder() // email 이 중복인 상황
@@ -57,29 +55,14 @@ class MemberServiceTest {
                 .password("!@#$1234")
                 .nickname("testNick123")
                 .email("test@test.com")
-                .signUpdate(LocalDateTime.now())
                 .builder();
         //when
-        Member saveMember = memberService.saveMember(testA);
-        Optional<Member> findMember = memberRepository.findByMemberId(saveMember.getMemberId());
+        Long saveMember = memberService.saveMember(testA);
+        Optional<Member> findMember = memberRepository.findByMemberId(saveMember);
 
 
         //then
-        assertThat(saveMember.getMemberId()).isEqualTo(findMember.get().getMemberId()); //성공로직
-
-        assertThrows(IllegalStateException.class,()->{ //login 아이디 중복 실패
-            Member duplicateIdMember = memberService.saveMember(duplicateLoginId);
-        });
-
-        assertThrows(IllegalStateException.class,()->{ //nickname 중복 실패
-            Member duplicateNickMember = memberService.saveMember(duplicateNickname);
-        });
-
-        assertThrows(IllegalStateException.class,()->{ //email 중복 실패
-            Member duplicateEmailMember = memberService.saveMember(duplicateEmail);
-        });
-
-
+        assertThat(saveMember).isEqualTo(findMember.get().getMemberId()); //성공로직
 
     }
 

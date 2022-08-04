@@ -27,6 +27,7 @@ public class Member {
     private String email;
 
     @Column(name = "ROLL")
+    @Enumerated(value = EnumType.STRING)
     private MemberRoll memberRoll;
 
     @Column(name="SIGN_UP_DATE") //회원 등록일
@@ -48,13 +49,13 @@ public class Member {
         this.modifyDate = memberBuilder.modifyDate;
     }
     
-    public void CreateMember(MemberBuilder memberBuilder,MemberRoll memberRoll,LocalDateTime localDateTime){
-        this.loginId = memberBuilder.loginId;
-        this.password =memberBuilder.password;
-        this.nickname = memberBuilder.nickname;
-        this.email = memberBuilder.email;
-        this.memberRoll = memberBuilder.memberRoll;
-        this.signUpDate = memberBuilder.signUpDate;
+    public void createMember(Member member, MemberRoll memberRoll, LocalDateTime localDateTime){
+        this.loginId = member.loginId;
+        this.password =member.password;
+        this.nickname = member.nickname;
+        this.email = member.email;
+        this.memberRoll = memberRoll;
+        this.signUpDate = localDateTime;
     }
 
     /**
@@ -109,8 +110,6 @@ public class Member {
            this.signUpDate = signUpdate;
            return this;
        }
-
-
 
        public MemberBuilder modifyDate(LocalDateTime modifyDate){
            this.modifyDate = modifyDate;

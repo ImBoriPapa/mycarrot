@@ -1,10 +1,14 @@
 package com.project.carrot.domain.member.service;
 
 import com.project.carrot.domain.member.entity.Member;
+import com.project.carrot.domain.member.entity.MemberRoll;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -16,11 +20,46 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
    //회원 정보 저장
-    public Member saveMember(Member member) {
-        return memberRepository.save(member);
-    }
-    //회원아이디가 존재하면 true 없으면 false 반환
+    public Long saveMember(Member member) {
 
+        validateBlank(member);
+
+
+        validateSaveInfoWhenSaveMember(member);
+
+        member.createMember(member, MemberRoll.USER, LocalDateTime.now());
+        return memberRepository.save(member).getMemberId();
+    }
+    //로그인 아이디,이메일,닉네임이 공백,또는 null 이 들어오면  IllegalStateException
+    private void validateBlank(Member member) {
+        if (StringUtils.hasText(member.getLoginId())) {
+            throw new IllegalStateException("유효안 아이디가 이닙니다");
+        }
+
+        if (StringUtils.hasText(member.getEmail())) {
+            throw new IllegalStateException("유효안 이메일이 이닙니다");
+        }
+
+        if (StringUtils.hasText(member.getNickname())) {
+            throw new IllegalStateException("유효안 닉네임이 이닙니다");
+        }
+    }
+    //로그인 아이디, 이메일, 닉네임이 중복일 경우 IllegalStateException
+    private void validateSaveInfoWhenSaveMember(Member member) {
+        if(!validateDuplicateUserId(member.getLoginId())){
+            throw  new IllegalStateException("중복된 아이디 입니다.");
+        }
+
+        if (!validateDuplicateEmail(member.getEmail())) {
+            throw new IllegalStateException("중복된 이메일 입니다,");
+        }
+
+        if (!validateDuplicateNickname(member.getNickname())) {
+            throw new IllegalStateException("중복된 닉네임 입니다.");
+        }
+    }
+
+    //회원아이디가 존재하면 true 없으면 false 반환
     public boolean validateDuplicateUserId(String userId) {
         return memberRepository.findByLoginId(userId).isPresent();
     }

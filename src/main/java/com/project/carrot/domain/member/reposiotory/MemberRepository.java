@@ -11,8 +11,6 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member,Long> {
 
-    Member save(Member member);//회원 정보 저장
-
     Optional<Member> findByLoginId(String loginId); //회원 아이디로 검색하기
 
     Optional<Member> findByEmail(String email); //회원 이메일로 검색하기

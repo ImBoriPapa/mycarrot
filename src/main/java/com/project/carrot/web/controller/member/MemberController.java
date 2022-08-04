@@ -112,7 +112,6 @@ public class MemberController {
                 .password(createMemberForm.getPassword())
                 .nickname(createMemberForm.getNickname())
                 .email(createMemberForm.getEmail())
-                .signUpdate(LocalDateTime.now())
                 .builder();
         memberService.saveMember(saveMember);
         return "redirect:/member/login";
