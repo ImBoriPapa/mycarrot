@@ -1,8 +1,11 @@
 package com.project.carrot.domain.member.entity;
 
+import com.project.carrot.domain.address.entity.Address;
 import lombok.Getter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,6 +32,12 @@ public class Member {
     @Column(name = "ROLL")
     @Enumerated(value = EnumType.STRING)
     private MemberRoll memberRoll;
+
+    @Column(name = "ADDRESS")
+
+    @ElementCollection
+    @CollectionTable(name="ADDRESS" ,joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    private List<Address> address = new ArrayList();
 
     @Column(name="SIGN_UP_DATE") //회원 등록일
     private LocalDateTime signUpDate;

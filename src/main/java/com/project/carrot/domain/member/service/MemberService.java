@@ -47,15 +47,15 @@ public class MemberService {
     //로그인 아이디, 이메일, 닉네임이 중복일 경우 IllegalStateException
     private void validateSaveInfoWhenSaveMember(Member member) {
         if(!validateDuplicateUserId(member.getLoginId())){
-            throw  new IllegalStateException("중복된 아이디 입니다.");
+            throw  new IllegalStateException(MemberError.DUPLICATE_ID.getMessage());
         }
 
         if (!validateDuplicateEmail(member.getEmail())) {
-            throw new IllegalStateException("중복된 이메일 입니다,");
+            throw new IllegalStateException(MemberError.DUPLICATE_EMAIL.getMessage());
         }
 
         if (!validateDuplicateNickname(member.getNickname())) {
-            throw new IllegalStateException("중복된 닉네임 입니다.");
+            throw new IllegalStateException(MemberError.DUPLICATE_NICKNAME.getMessage());
         }
     }
 

@@ -1,4 +1,4 @@
-package com.project.carrot.web.controller.member;
+package com.project.carrot.web.controller.member.dto;
 
 import com.project.carrot.domain.member.entity.Member;
 

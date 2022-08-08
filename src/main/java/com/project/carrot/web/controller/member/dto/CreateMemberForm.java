@@ -1,5 +1,6 @@
-package com.project.carrot.web.controller.member;
+package com.project.carrot.web.controller.member.dto;
 
+import com.project.carrot.exception.ErrorCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,7 @@ import javax.validation.constraints.*;
 @Getter
 @Setter
 public class CreateMemberForm {
-    @NotBlank(message = "반드시 입력해야 합니다.")
+    @NotBlank(message = "공백없이 입력해주세요")
     @Size(min=5,max = 10,message = "5~10사이")
 //    @Pattern(regexp = "^[a-z]+[a-z0-9]{5,19}$", message = "영문자 + 숫자만 가능합니다.")
     private String loginId;
