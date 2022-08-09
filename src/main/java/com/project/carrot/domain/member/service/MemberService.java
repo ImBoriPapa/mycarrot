@@ -1,5 +1,6 @@
 package com.project.carrot.domain.member.service;
 
+
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.entity.MemberRoll;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
@@ -26,37 +27,36 @@ public class MemberService {
 
         validateBlank(member);
 
-
         validateSaveInfoWhenSaveMember(member);
 
-        member.createMember(member, MemberRoll.USER, LocalDateTime.now());
+        member.createMember(member, MemberRoll.USER, LocalDateTime.now(),member.getAddress().get(0));
         return memberRepository.save(member).getMemberId();
     }
     //로그인 아이디,이메일,닉네임이 공백,또는 null
     private void validateBlank(Member member) {
-        if (StringUtils.hasText(member.getLoginId())) {
+        if (!StringUtils.hasText(member.getLoginId())) {
             throw new MemberServiceException(MemberError.BLANK_OR_NULL_ID);
         }
 
-        if (StringUtils.hasText(member.getEmail())) {
+        if (!StringUtils.hasText(member.getEmail())) {
             throw new MemberServiceException(MemberError.BLANK_OR_NULL_EMAIL);
         }
 
-        if (StringUtils.hasText(member.getNickname())) {
+        if (!StringUtils.hasText(member.getNickname())) {
             throw new MemberServiceException(MemberError.BLANK_OR_NULL_NICKNAME);
         }
     }
     //로그인 아이디, 이메일, 닉네임이 중복일 경우
     private void validateSaveInfoWhenSaveMember(Member member) {
-        if(!validateDuplicateUserId(member.getLoginId())){
+        if(validateDuplicateUserId(member.getLoginId())){
             throw new MemberServiceException(MemberError.DUPLICATE_ID);
         }
 
-        if (!validateDuplicateEmail(member.getEmail())) {
+        if (validateDuplicateEmail(member.getEmail())) {
             throw new MemberServiceException(MemberError.DUPLICATE_EMAIL);
         }
 
-        if (!validateDuplicateNickname(member.getNickname())) {
+        if (validateDuplicateNickname(member.getNickname())) {
             throw new MemberServiceException(MemberError.DUPLICATE_NICKNAME);
         }
     }

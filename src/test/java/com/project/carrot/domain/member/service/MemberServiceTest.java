@@ -1,6 +1,8 @@
 package com.project.carrot.domain.member.service;
 
+import com.project.carrot.domain.address.entity.Address;
 import com.project.carrot.domain.member.entity.Member;
+import com.project.carrot.domain.member.entity.MemberRoll;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -63,6 +65,23 @@ class MemberServiceTest {
 
         //then
         assertThat(saveMember).isEqualTo(findMember.get().getMemberId()); //성공로직
+
+    }
+
+    @Test
+    public void saveAddress() throws Exception{
+        //given
+        Member testA = new Member.MemberBuilder()
+                .loginId("dari1234")
+                .password("!@#$1234")
+                .nickname("testNick123")
+                .email("test232@test.com")
+                .memberRoll(MemberRoll.USER)
+                .address(new Address("서울","강서구","우장산동"))
+                .builder();
+        //when
+        memberService.saveMember(testA);
+        //then
 
     }
 

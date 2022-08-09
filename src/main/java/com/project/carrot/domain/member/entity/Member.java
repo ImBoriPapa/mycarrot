@@ -33,10 +33,7 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private MemberRoll memberRoll;
 
-    @Column(name = "ADDRESS")
-
-    @ElementCollection
-    @CollectionTable(name="ADDRESS" ,joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Address> address = new ArrayList();
 
     @Column(name="SIGN_UP_DATE") //회원 등록일
@@ -54,16 +51,18 @@ public class Member {
         this.nickname = memberBuilder.nickname;
         this.email = memberBuilder.email;
         this.memberRoll = memberBuilder.memberRoll;
+        this.address.add(memberBuilder.address);
         this.signUpDate = memberBuilder.signUpDate;
         this.modifyDate = memberBuilder.modifyDate;
     }
     
-    public void createMember(Member member, MemberRoll memberRoll, LocalDateTime localDateTime){
+    public void createMember(Member member, MemberRoll memberRoll, LocalDateTime localDateTime, Address address){
         this.loginId = member.loginId;
         this.password =member.password;
         this.nickname = member.nickname;
         this.email = member.email;
         this.memberRoll = memberRoll;
+        this.address.add(address);
         this.signUpDate = localDateTime;
     }
 
@@ -80,6 +79,7 @@ public class Member {
        private  String nickname;
        private  String email;
        private MemberRoll memberRoll;
+       private Address address;
        private  LocalDateTime signUpDate;
        private  LocalDateTime modifyDate;
 
@@ -112,6 +112,11 @@ public class Member {
 
         public MemberBuilder memberRoll(MemberRoll memberRoll) {
             this.memberRoll = memberRoll;
+            return this;
+        }
+
+        public MemberBuilder address(Address address) {
+            this.address = address;
             return this;
         }
 
