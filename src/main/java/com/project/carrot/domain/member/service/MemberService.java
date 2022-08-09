@@ -3,6 +3,8 @@ package com.project.carrot.domain.member.service;
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.entity.MemberRoll;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
+import com.project.carrot.exception.member_exception.MemberError;
+import com.project.carrot.exception.member_exception.MemberServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -30,32 +32,32 @@ public class MemberService {
         member.createMember(member, MemberRoll.USER, LocalDateTime.now());
         return memberRepository.save(member).getMemberId();
     }
-    //로그인 아이디,이메일,닉네임이 공백,또는 null 이 들어오면  IllegalStateException
+    //로그인 아이디,이메일,닉네임이 공백,또는 null
     private void validateBlank(Member member) {
         if (StringUtils.hasText(member.getLoginId())) {
-            throw new IllegalStateException("유효안 아이디가 이닙니다");
+            throw new MemberServiceException(MemberError.BLANK_OR_NULL_ID);
         }
 
         if (StringUtils.hasText(member.getEmail())) {
-            throw new IllegalStateException("유효안 이메일이 이닙니다");
+            throw new MemberServiceException(MemberError.BLANK_OR_NULL_EMAIL);
         }
 
         if (StringUtils.hasText(member.getNickname())) {
-            throw new IllegalStateException("유효안 닉네임이 이닙니다");
+            throw new MemberServiceException(MemberError.BLANK_OR_NULL_NICKNAME);
         }
     }
-    //로그인 아이디, 이메일, 닉네임이 중복일 경우 IllegalStateException
+    //로그인 아이디, 이메일, 닉네임이 중복일 경우
     private void validateSaveInfoWhenSaveMember(Member member) {
         if(!validateDuplicateUserId(member.getLoginId())){
-            throw  new IllegalStateException(MemberError.DUPLICATE_ID.getMessage());
+            throw new MemberServiceException(MemberError.DUPLICATE_ID);
         }
 
         if (!validateDuplicateEmail(member.getEmail())) {
-            throw new IllegalStateException(MemberError.DUPLICATE_EMAIL.getMessage());
+            throw new MemberServiceException(MemberError.DUPLICATE_EMAIL);
         }
 
         if (!validateDuplicateNickname(member.getNickname())) {
-            throw new IllegalStateException(MemberError.DUPLICATE_NICKNAME.getMessage());
+            throw new MemberServiceException(MemberError.DUPLICATE_NICKNAME);
         }
     }
 
