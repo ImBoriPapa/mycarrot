@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -26,6 +28,9 @@ class MemberServiceTest {
 
     @Autowired
     public MemberRepository memberRepository;
+
+    @PersistenceContext
+    EntityManager em;
 
     @Test
     @DisplayName("회원 저장 테스트")
@@ -79,9 +84,13 @@ class MemberServiceTest {
                 .memberRoll(MemberRoll.USER)
                 .address(new Address("서울","강서구","우장산동"))
                 .builder();
+
         //when
-        memberService.saveMember(testA);
+        Long id = memberService.saveMember(testA);
+        Member member = memberService.findMember(id);
+
         //then
+        assertThat(member.getMemberId()).isEqualTo(id);
 
     }
 
