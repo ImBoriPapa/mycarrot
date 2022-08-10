@@ -2,7 +2,7 @@ package com.project.carrot.web.controller.member;
 
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.service.MemberService;
-import com.project.carrot.exception.ErrorCode;
+import com.project.carrot.validation.MemberServiceValidation;
 import com.project.carrot.web.controller.member.dto.CreateMemberForm;
 import com.project.carrot.web.controller.member.dto.MemberList;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +27,7 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberServiceValidation memberServiceValidation;
 
     @GetMapping("/login") //로그인폼 접속
     public String login(){
@@ -96,13 +97,13 @@ public class MemberController {
         }
 
         //1.중복아이디검증 : 결과가 false 이면 존재하는 회원 true 이면 존재하지 않는 회원
-        boolean checkExitsId = memberService.validateDuplicateUserId(createMemberForm.getLoginId());
+        boolean checkExitsId = memberServiceValidation.validateDuplicateUserId(createMemberForm.getLoginId());
         if(checkExitsId){
             log.info("이미 존재하는 회원 아이디입니다.");
             return "member/signUpForm";
         }
 
-        boolean checkExitsEmail = memberService.validateDuplicateEmail(createMemberForm.getEmail());
+        boolean checkExitsEmail = memberServiceValidation.validateDuplicateEmail(createMemberForm.getEmail());
         if (checkExitsEmail) {
             log.info("이미 사용중인 이메일 주소입니다.");
             return "member/signUpForm";
@@ -121,7 +122,7 @@ public class MemberController {
 
     @GetMapping("/members")
     public String members(Model model){
-        List<Member> members = memberService.members();
+        List<Member> members = memberService.findMemberList();
         ArrayList<MemberList> memberList = new ArrayList<>();
 
         for (Member member : members) {

@@ -33,7 +33,8 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private MemberRoll memberRoll;
 
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany( cascade = CascadeType.ALL,orphanRemoval = true)//일대다 관계 주소를 1개 혹은 2개를 저장하고 수정이 가능
+    @JoinColumn(name = "MEMBER_ID")
     private List<Address> address = new ArrayList();
 
     @Column(name="SIGN_UP_DATE") //회원 등록일

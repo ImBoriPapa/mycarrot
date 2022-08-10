@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class Address {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ADDRESS_ID")
     private Long id;
     private String district;
     private String town;
