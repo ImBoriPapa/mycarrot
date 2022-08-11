@@ -7,8 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -23,7 +22,9 @@ class MemberControllerTest {
         //given
         mockMvc.perform(get("/member/sign-up"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/member/signUpForm"));
+                .andExpect(view().name("/member/signUpForm"))
+                .andExpect(model().attributeExists("createMemberForm"));
+
         //when
 
         //then

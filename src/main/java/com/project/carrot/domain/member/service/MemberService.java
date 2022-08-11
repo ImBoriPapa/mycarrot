@@ -6,10 +6,9 @@ import com.project.carrot.domain.member.entity.MemberRoll;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
 import com.project.carrot.exception.member_exception.MemberError;
 import com.project.carrot.exception.member_exception.MemberServiceException;
-import com.project.carrot.validation.MemberServiceValidation;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -22,16 +21,12 @@ import java.util.*;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final MemberServiceValidation memberServiceValidation;
+
 
     //회원 정보 저장
     public Long saveMember(Member member) {
 
-        memberServiceValidation.validateBlank(member);
-
-        memberServiceValidation.validateSaveInfoWhenSaveMember(member);
-
-        member.createMember(member, MemberRoll.USER, LocalDateTime.now(), member.getAddress().get(0));
+        member.createMember(member);
         return memberRepository.save(member).getMemberId();
     }
 

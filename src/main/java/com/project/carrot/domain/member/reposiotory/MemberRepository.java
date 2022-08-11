@@ -22,10 +22,9 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
     List<Member> findAll();//전체 회원 조회
 
 
+    boolean existsByLoginId(String loginId);
 
+    boolean existsByNickname(String loginId);
 
-
-
-
-
+    boolean existsByEmail(String loginId);
 }

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -36,33 +37,37 @@ class MemberServiceTest {
     @DisplayName("회원 저장 테스트")
     public void saveMemberTest() throws Exception {
         //given
-        Member testA = new Member.MemberBuilder() // 중복값이 없는 상황
+        Member testA =  Member.builder() // 중복값이 없는 상황
                 .loginId("testId")
                 .password("!@#$1234")
                 .nickname("testNick")
                 .email("test@test.com")
-                .builder();
+                .address(new ArrayList<>())
+                .build();
 
-        Member duplicateLoginId = new Member.MemberBuilder() // loginId가 중복인 상황
+        Member duplicateLoginId =  Member.builder() // loginId가 중복인 상황
                 .loginId("testId")
                 .password("!@#$1234")
                 .nickname("test")
                 .email("test")
-                .builder();
+                .address(new ArrayList<>())
+                .build();
 
-        Member duplicateNickname = new Member.MemberBuilder() // nickname 이 중복인 상황
+        Member duplicateNickname =  Member.builder() // nickname 이 중복인 상황
                 .loginId("testId123")
                 .password("!@#$1234")
                 .nickname("testNick")
                 .email("test")
-                .builder();
+                .address(new ArrayList<>())
+                .build();
 
-        Member duplicateEmail = new Member.MemberBuilder() // email 이 중복인 상황
+        Member duplicateEmail =  Member.builder() // email 이 중복인 상황
                 .loginId("testId123")
                 .password("!@#$1234")
                 .nickname("testNick123")
                 .email("test@test.com")
-                .builder();
+                .address(new ArrayList<>())
+                .build();
         //when
         Long saveMember = memberService.saveMember(testA);
         Optional<Member> findMember = memberRepository.findByMemberId(saveMember);
@@ -75,15 +80,19 @@ class MemberServiceTest {
 
     @Test
     public void saveAddress() throws Exception{
+
         //given
-        Member testA = new Member.MemberBuilder()
+        ArrayList address = new ArrayList();
+        address.add(new Address("서울시", "강서구", "우장산동"));
+
+        Member testA =  Member.builder()
                 .loginId("dari1234")
                 .password("!@#$1234")
                 .nickname("testNick123")
                 .email("test232@test.com")
                 .memberRoll(MemberRoll.USER)
-                .address(new Address("서울","강서구","우장산동"))
-                .builder();
+                .address(address)
+                .build();
 
         //when
         Long id = memberService.saveMember(testA);
@@ -91,6 +100,7 @@ class MemberServiceTest {
 
         //then
         assertThat(member.getMemberId()).isEqualTo(id);
+        assertThat(member.getAddress()).isEqualTo(testA.getAddress());
 
     }
 

@@ -25,13 +25,13 @@ class MemberRepositoryTest {
     @DisplayName("회원정보 저장")
     public void save() throws Exception {
         //given
-        Member testA = new Member.MemberBuilder()
+        Member testA =  Member.builder()
                 .loginId("testId")
                 .password("!@#$1234")
                 .nickname("testNick")
                 .email("test@test.com")
-                .signUpdate(LocalDateTime.now())
-                .builder();
+                .signUpDate(LocalDateTime.now())
+                .build();
         //when
         Member saveMember = memberRepository.save(testA);
         Optional<Member> findMember = memberRepository.findByMemberId(saveMember.getMemberId());

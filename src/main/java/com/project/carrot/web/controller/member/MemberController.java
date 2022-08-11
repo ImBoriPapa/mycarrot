@@ -2,7 +2,7 @@ package com.project.carrot.web.controller.member;
 
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.service.MemberService;
-import com.project.carrot.validation.MemberServiceValidation;
+import com.project.carrot.web.controller.member.validation.CreateMemberFormValidator;
 import com.project.carrot.web.controller.member.dto.CreateMemberForm;
 import com.project.carrot.web.controller.member.dto.MemberList;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -27,7 +25,12 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
-    private final MemberServiceValidation memberServiceValidation;
+    private final CreateMemberFormValidator createMemberFormValidator;
+
+    @InitBinder("createMemberForm")
+    public void initBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(createMemberFormValidator);
+    }
 
     @GetMapping("/login") //로그인폼 접속
     public String login(){
@@ -96,27 +99,14 @@ public class MemberController {
             return "member/signUpForm";
         }
 
-        //1.중복아이디검증 : 결과가 false 이면 존재하는 회원 true 이면 존재하지 않는 회원
-        boolean checkExitsId = memberServiceValidation.validateDuplicateUserId(createMemberForm.getLoginId());
-        if(checkExitsId){
-            log.info("이미 존재하는 회원 아이디입니다.");
-            return "member/signUpForm";
-        }
-
-        boolean checkExitsEmail = memberServiceValidation.validateDuplicateEmail(createMemberForm.getEmail());
-        if (checkExitsEmail) {
-            log.info("이미 사용중인 이메일 주소입니다.");
-            return "member/signUpForm";
-        }
-
         //회원정보 저장
-        Member saveMember = new Member.MemberBuilder()
+        Member newMember =  Member.builder()
                 .loginId(createMemberForm.getLoginId())
                 .password(createMemberForm.getPassword())
                 .nickname(createMemberForm.getNickname())
                 .email(createMemberForm.getEmail())
-                .builder();
-        memberService.saveMember(saveMember);
+                .build();
+        memberService.saveMember(newMember);
         return "redirect:/member/login";
     }
 
@@ -128,7 +118,6 @@ public class MemberController {
         for (Member member : members) {
            memberList.add(new MemberList.MemberListBuilder(member).builder());
         }
-
 
         model.addAttribute("memberList",memberList);
 
