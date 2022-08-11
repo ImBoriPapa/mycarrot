@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 class MemberControllerTest {
@@ -22,7 +21,7 @@ class MemberControllerTest {
     @Test
     public void signUpForm() throws Exception{
         //given
-        mockMvc.perform(get("/member/signUp"))
+        mockMvc.perform(get("/member/sign-up"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/member/signUpForm"));
         //when

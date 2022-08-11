@@ -82,13 +82,13 @@ public class MemberController {
     }
 
     //회원가입페이지 이동
-    @GetMapping("/signUp")
+    @GetMapping("/sign-up")
     public String signUpForm(@ModelAttribute("createMemberForm") CreateMemberForm createMemberForm){
         return "/member/signUpForm";
     }
 
     //회원가입 정보 검증 및 저장
-    @PostMapping("/signUp")
+    @PostMapping("/sign-up")
     public String signUp(@Valid @ModelAttribute CreateMemberForm createMemberForm, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){

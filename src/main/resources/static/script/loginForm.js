@@ -1,5 +1,5 @@
 const toSignUpForm = document.querySelector("#toSignUpForm");
 
 toSignUpForm.addEventListener("click", function () {
-  location.href = "/member/signUpForm";
+  location.href = "/member/sign-up";
 });
