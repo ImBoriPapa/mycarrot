@@ -90,5 +90,30 @@ class MemberServiceTest {
         assertThat(passwordEncoder.matches("!@#$134", findMember.get().getPassword())).isFalse();//실패 로직
     }
 
+    @Test
+    @DisplayName("비밀번호 인코더 적용")
+    public void passwordEncoder() {
+        //given
+
+        List<Address> address = new ArrayList<>();
+        address.add(new Address("경기도","김포시","사우동"));
+
+        CreateMemberForm createMemberForm = new CreateMemberForm();
+        createMemberForm.setLoginId("dari");
+        createMemberForm.setPassword("!@#$1234");
+        createMemberForm.setNickname("test2");
+        createMemberForm.setEmail("test2@test.com");
+        createMemberForm.setAddress(address);
+
+        //when
+        Long saveMember = memberService.saveMember(createMemberForm);
+        Optional<Member> findMember = memberRepository.findByMemberId(saveMember);
+
+        //then
+        assertThat(findMember.get().getPassword()).isNotEqualTo("!@#$1234"); //성공로직
+        assertThat(passwordEncoder.matches("!@#$1234", findMember.get().getPassword())).isTrue();
+        assertThat(passwordEncoder.matches("!@#$134", findMember.get().getPassword())).isFalse();//실패 로직
+    }
+
 
 }
