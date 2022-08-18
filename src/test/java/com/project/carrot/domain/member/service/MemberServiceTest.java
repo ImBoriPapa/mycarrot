@@ -89,6 +89,4 @@ class MemberServiceTest {
         assertThat(passwordEncoder.matches("!@#$1234", findMember.get().getPassword())).isTrue();
         assertThat(passwordEncoder.matches("!@#$134", findMember.get().getPassword())).isFalse();//실패 로직
     }
-
-
 }
