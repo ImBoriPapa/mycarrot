@@ -18,7 +18,7 @@ public class SecurityConfig {
                 .mvcMatchers("/", "/member/login", "/member/sign-up")
                 .permitAll()
                 .anyRequest()
-                .authenticated();
+                .authenticated().and().csrf().disable();
         return http.build();
     }
 
@@ -31,5 +31,8 @@ public class SecurityConfig {
                             .atCommonLocations());
         };
     }
+
+
+
 
 }
