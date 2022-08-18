@@ -65,6 +65,8 @@ public class Member {
                 .nickname(nickname)
                 .email(email)
                 .address(address)
+                .memberRoll(MemberRoll.USER)
+                .signUpDate(LocalDateTime.now())
                 .build();
         return member;
     }
