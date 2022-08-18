@@ -9,6 +9,7 @@ import com.project.carrot.exception.member_exception.MemberServiceException;
 
 import com.project.carrot.web.controller.member.dto.CreateMemberForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,6 +23,7 @@ import java.util.*;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     //회원 정보 저장
@@ -30,7 +32,7 @@ public class MemberService {
         //회원정보 저장
         Member member = Member.createMember(
                 createMemberForm.getLoginId(),
-                createMemberForm.getPassword(),
+                passwordEncoder.encode(createMemberForm.getPassword()),
                 createMemberForm.getNickname(),
                 createMemberForm.getEmail(),
                 createMemberForm.getAddress());

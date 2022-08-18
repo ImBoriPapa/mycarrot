@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -31,6 +32,9 @@ class MemberServiceTest {
 
     @Autowired
     public MemberRepository memberRepository;
+
+    @Autowired
+    public PasswordEncoder passwordEncoder;
 
     @PersistenceContext
     EntityManager em;
@@ -57,6 +61,31 @@ class MemberServiceTest {
         //then
         assertThat(saveMember).isEqualTo(findMember.get().getMemberId()); //성공로직
 
+    }
+
+    @Test
+    @DisplayName("비밀번호 인코더 적용")
+    public void passwordEncoder() {
+        //given
+
+        List<Address> address = new ArrayList<>();
+        address.add(new Address("경기도","김포시","사우동"));
+
+        CreateMemberForm createMemberForm = new CreateMemberForm();
+        createMemberForm.setLoginId("dari");
+        createMemberForm.setPassword("!@#$1234");
+        createMemberForm.setNickname("test2");
+        createMemberForm.setEmail("test2@test.com");
+        createMemberForm.setAddress(address);
+
+        //when
+        Long saveMember = memberService.saveMember(createMemberForm);
+        Optional<Member> findMember = memberRepository.findByMemberId(saveMember);
+
+        //then
+        assertThat(findMember.get().getPassword()).isNotEqualTo("!@#$1234"); //성공로직
+        assertThat(passwordEncoder.matches("!@#$1234", findMember.get().getPassword())).isTrue();
+        assertThat(passwordEncoder.matches("!@#$134", findMember.get().getPassword())).isFalse();//실패 로직
     }
 
 
