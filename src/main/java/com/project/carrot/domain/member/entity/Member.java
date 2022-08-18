@@ -58,14 +58,15 @@ public class Member {
      * signUpDate 설정
      * memberRoll - USER
      */
-    public void createMember(Member member) {
-        this.loginId = member.getLoginId();
-        this.password = member.getPassword();
-        this.nickname = member.getNickname();
-        this.email = member.getEmail();
-        this.memberRoll = MemberRoll.USER;
-        this.address = member.getAddress();
-        this.signUpDate = LocalDateTime.now();
+    public static Member createMember(String loginId,String password,String nickname,String email,List address) {
+        Member member = Member.builder()
+                .loginId(loginId)
+                .password(password)
+                .nickname(nickname)
+                .email(email)
+                .address(address)
+                .build();
+        return member;
     }
 
 

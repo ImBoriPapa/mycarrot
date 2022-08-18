@@ -7,6 +7,7 @@ import com.project.carrot.domain.member.reposiotory.MemberRepository;
 import com.project.carrot.exception.member_exception.MemberError;
 import com.project.carrot.exception.member_exception.MemberServiceException;
 
+import com.project.carrot.web.controller.member.dto.CreateMemberForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +25,16 @@ public class MemberService {
 
 
     //회원 정보 저장
-    public Long saveMember(Member member) {
+    public Long saveMember(CreateMemberForm createMemberForm) {
 
-        member.createMember(member);
+        //회원정보 저장
+        Member member = Member.createMember(
+                createMemberForm.getLoginId(),
+                createMemberForm.getPassword(),
+                createMemberForm.getNickname(),
+                createMemberForm.getEmail(),
+                createMemberForm.getAddress());
+
         return memberRepository.save(member).getMemberId();
     }
 

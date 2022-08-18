@@ -99,14 +99,7 @@ public class MemberController {
             return "member/signUpForm";
         }
 
-        //회원정보 저장
-        Member newMember =  Member.builder()
-                .loginId(createMemberForm.getLoginId())
-                .password(createMemberForm.getPassword())
-                .nickname(createMemberForm.getNickname())
-                .email(createMemberForm.getEmail())
-                .build();
-        memberService.saveMember(newMember);
+        memberService.saveMember(createMemberForm);
         return "redirect:/member/login";
     }
 
