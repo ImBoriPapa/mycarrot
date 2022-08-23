@@ -17,7 +17,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,14 +33,24 @@ public class MemberController {
 
     @InitBinder("createMemberForm")
 
+
     public void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(createMemberFormValidator);
     }
 
     @GetMapping("/login") //로그인폼 접속
-    public String login(@ModelAttribute("loginMemberForm")LoginMemberForm loginMemberForm,BindingResult bindingResult) {
+    public String login(@ModelAttribute("loginMemberForm") LoginMemberForm loginMemberForm,
+                        @RequestParam(value = "error",required = false) String error,
+                        @RequestParam(value = "message" ,required = false) String message,
+                        Model model) {
+        log.info("error ={}",error);
+        log.info("message ={}",message);
+        model.addAttribute("error", error);
+        model.addAttribute("message", message);
+
         return "member/loginForm";
     }
+
 
     //회원가입페이지 이동
     @GetMapping("/sign-up")

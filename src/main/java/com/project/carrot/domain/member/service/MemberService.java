@@ -64,9 +64,10 @@ public class MemberService implements UserDetailsService {
         Optional<Member> findMember = memberRepository.findByLoginId(nickname);
         log.info("findMember ={}",findMember);
 
-        if (findMember == null) {
+        if (findMember.isEmpty()) {
             throw new UsernameNotFoundException(nickname);
         }
+
 
         return new MemberAccount(findMember.get());
     }

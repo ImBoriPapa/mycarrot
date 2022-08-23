@@ -130,7 +130,8 @@
                 th:errorclass="field-error"
               />
             </div>
-            <div class="field-error" th:errors="*{loginId}">loginId 오류</div>
+            <div class="field-error" th:if="error" th:errors="*{loginId}">loginId 오류</div>
+          
 
             <div>
               <input
@@ -140,7 +141,7 @@
                 th:errorclass="field-error"
               />
             </div>
-            <div class="field-error" th:errors="*{password}">password 오류</div>
+            <div class="field-error" th:if="error" th:errors="*{password}">password 오류</div>
 
           <!--end of input box  -->
           <div>
