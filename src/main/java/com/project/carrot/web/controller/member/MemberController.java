@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,16 @@ public class MemberController {
 
 
     @InitBinder("createMemberForm")
+    @PostConstruct
+    public void initData() {
+        CreateMemberForm createMemberForm = new CreateMemberForm();
+        createMemberForm.setLoginId("test");
+        createMemberForm.setPassword("cszc7348!@");
+        createMemberForm.setNickname("tester");
+        createMemberForm.setEmail("test@test.com");
+        memberService.saveMember(createMemberForm);
+
+    }
 
 
     public void initBinder(WebDataBinder webDataBinder) {
