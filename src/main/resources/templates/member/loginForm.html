@@ -115,6 +115,7 @@
     <!-- /* *********************************secltion-start************************************* */ -->
     <section class="login-section">
       <div class="login-form-menu">
+
         <form
           class="login-form"
           action="/member/login"
@@ -130,8 +131,8 @@
                 th:errorclass="field-error"
               />
             </div>
-            <div class="field-error" th:if="error" th:errors="*{loginId}">loginId 오류</div>
-          
+
+
 
             <div>
               <input
@@ -141,11 +142,12 @@
                 th:errorclass="field-error"
               />
             </div>
-            <div class="field-error" th:if="error" th:errors="*{password}">password 오류</div>
 
           <!--end of input box  -->
           <div>
-            <button class="submit-btn" type="submit">LOGIN ID</button>
+            <div class="field-error" th:if="error" th:text="${message}">loginId 오류</div>
+            <button class="submit-btn" type="submit">LOGIN</button>
+          </div>
           </div>
         </form>
         <!--end of form  -->

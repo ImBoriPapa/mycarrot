@@ -40,11 +40,11 @@ public class MemberController {
 
     @GetMapping("/login") //로그인폼 접속
     public String login(@ModelAttribute("loginMemberForm") LoginMemberForm loginMemberForm,
-                        @RequestParam(value = "error",required = false) String error,
-                        @RequestParam(value = "message" ,required = false) String message,
+                        @RequestParam(value = "error",required = false)String error,
+                        @RequestParam(value = "message",required = false)String message,
                         Model model) {
-        log.info("error ={}",error);
-        log.info("message ={}",message);
+        log.info("error={}",error);
+        log.info("message={}",message);
         model.addAttribute("error", error);
         model.addAttribute("message", message);
 

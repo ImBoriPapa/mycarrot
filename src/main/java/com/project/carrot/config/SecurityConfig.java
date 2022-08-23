@@ -15,11 +15,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -36,6 +36,7 @@ public class SecurityConfig {
 
         http.formLogin()
                 .loginPage("/member/login").permitAll()
+                .loginProcessingUrl("/member/login")
                 .defaultSuccessUrl("/member/success")
                 .usernameParameter("loginId")
                 .successHandler(
@@ -50,11 +51,17 @@ public class SecurityConfig {
                             @Override
                             public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
+                                String message = "알수 없는 오류입니다.";
+
+
                                 if (exception instanceof UsernameNotFoundException) {
-                                    request.setAttribute("error","error");
-                                    request.setAttribute("message","error발생");
+                                    message = "등록된 회원을 찾을 수 없습니다.";
+                                } else if (exception instanceof BadCredentialsException) {
+                                    message = "비밀번호와 아이디를 확인해주세요";
                                 }
-                                response.sendRedirect("/member/login");
+
+                                message = URLEncoder.encode(message, "UTF-8");
+                                response.sendRedirect("/member/login?error=true&&message=" + message);
 
                             }
                         }
