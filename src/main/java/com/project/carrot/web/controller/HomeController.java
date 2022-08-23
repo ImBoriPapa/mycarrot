@@ -13,12 +13,9 @@ public class HomeController {
     @GetMapping("/")
     public String goToLoginPage(){
 
-        return "/home/home";
+        return "home/home";
     }
 
-    @ModelAttribute("itemCategory")
-    public ItemCategory[] itemCategories() {
-        return ItemCategory.values();
-    }
+
 
 }

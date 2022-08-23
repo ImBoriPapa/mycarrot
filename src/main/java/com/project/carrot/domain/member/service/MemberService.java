@@ -68,7 +68,6 @@ public class MemberService implements UserDetailsService {
             throw new UsernameNotFoundException(nickname);
         }
 
-
         return new MemberAccount(findMember.get());
     }
 }

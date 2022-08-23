@@ -3,6 +3,7 @@ package com.project.carrot.web.controller.member;
 import com.project.carrot.domain.member.entity.Member;
 
 import com.project.carrot.domain.member.service.MemberService;
+import com.project.carrot.web.controller.member.dto.LoginMemberForm;
 import com.project.carrot.web.controller.member.validation.CreateMemberFormValidator;
 import com.project.carrot.web.controller.member.dto.CreateMemberForm;
 import com.project.carrot.web.controller.member.dto.MemberList;
@@ -38,15 +39,14 @@ public class MemberController {
     }
 
     @GetMapping("/login") //로그인폼 접속
-    public String login() {
-
-        return "/member/loginForm";
+    public String login(@ModelAttribute("loginMemberForm")LoginMemberForm loginMemberForm,BindingResult bindingResult) {
+        return "member/loginForm";
     }
 
     //회원가입페이지 이동
     @GetMapping("/sign-up")
     public String signUpForm(@ModelAttribute("createMemberForm") CreateMemberForm createMemberForm) {
-        return "/member/signUpForm";
+        return "member/signUpForm";
     }
 
     //회원가입 정보 검증 및 저장

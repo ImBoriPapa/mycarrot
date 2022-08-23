@@ -1,44 +1,160 @@
 <!DOCTYPE html>
-<html
-  th:replace="~{common/layout :: layout(~{::title},~{::section})}"
-  xmlns:th="http://www.thymleaf.org"
->
+<html xmlns:th="http://www.thymleaf.org">
   <head>
-    <title>로그인페이지</title>
+    <title>login page</title>
+    <script
+      src="https://kit.fontawesome.com/2ad92617e5.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
+  <style>
+    * {
+      margin: 0;
+      box-sizing: border-box;
+    }
+    body {
+      height: 100vh;
+      width: 100vw;
+    }
+    /* *********************************heade-start************************************* */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      height: 10%;
+      width: 100%;
+    }
+
+    .header-logo {
+      display: flex;
+      width: 20%;
+      font-size: 30px;
+      justify-content: center;
+      align-items: center;
+      color: gold;
+    }
+
+    .header-logo-item {
+      display: flex;
+    }
+
+    .header-logo-title {
+      display: flex;
+    }
+
+    .header-title {
+      display: flex;
+      width: 60%;
+    }
+
+    .header-menu {
+      width: 20%;
+    }
+    /* *********************************header-end************************************* */
+    /* *********************************secltion-start************************************* */
+    .login-section {
+      display: flex;
+      height: 70%;
+      width: 100%;
+    }
+
+    .login-form-menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      font-size: larger;
+    }
+
+    .input-box {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-box input {
+      width: 300px;
+      height: 40px;
+      text-align: center;
+      border-radius: 10px;
+    }
+
+    .field-error {
+      color: red;
+      text-align: center;
+    }
+
+    .submit-btn {
+      width: 300px;
+      height: 50px;
+      background-color: beige;
+      margin-top: 20px;
+    }
+
+    /* *********************************secltion-end*************************************** */
+    /* *********************************footer-start*************************************** */
+    .home-footer {
+      display: flex;
+      height: 20%;
+      width: 100%;
+    }
+
+    /* *********************************footer-end*************************************** */
+  </style>
+
   <body>
-    <section>
-      <div class="inputBox">
-        <form action="/member/login" method="post">
-          <div class="input-group mb-3">
-            <span class="input-group-text">@</span>
-            <input
-              name="loginId"
-              type="text"
-              class="form-control"
-              placeholder="userId"
-              aria-label="userId"
-              aria-describedby="basic-addon1"
-            />
-          </div>
-          <div class="input-group mb-3">
-            <span class="input-group-text">@</span>
-            <input
-              name="password"
-              type="text"
-              class="form-control"
-              placeholder="password"
-              aria-label="password"
-              aria-describedby="basic-addon1"
-            />
-          </div>
-          <button type="submit" class="btn btn-primary">로그인하기</button>
-          <br />
-          <button id="toSignUpForm" type="button" class="btn btn-primary">
-            회원가입하기
-          </button>
-        </form>
+    <div class="header">
+      <div class="header-logo">
+        <i class="fa-solid fa-carrot header-logo-item"></i>
+        <span header-logo-title>보리마켓</span>
       </div>
+
+      <div class="header-title"></div>
+
+      <div class="header-menu">헤더메뉴</div>
+    </div>
+    <!-- /* *********************************secltion-start************************************* */ -->
+    <section class="login-section">
+      <div class="login-form-menu">
+        <form
+          class="login-form"
+          action="/member/login"
+          method="post"
+          th:object="${loginMemberForm}"
+        >
+          <div class="input-box">
+            <div>
+              <input
+                type="text"
+                placeholder="LOGIN ID"
+                th:field="*{loginId}"
+                th:errorclass="field-error"
+              />
+            </div>
+            <div class="field-error" th:errors="*{loginId}">loginId 오류</div>
+
+            <div>
+              <input
+                type="text"
+                placeholder="PASSWORD"
+                th:field="*{password}"
+                th:errorclass="field-error"
+              />
+            </div>
+            <div class="field-error" th:errors="*{password}">password 오류</div>
+
+          <!--end of input box  -->
+          <div>
+            <button class="submit-btn" type="submit">LOGIN ID</button>
+          </div>
+        </form>
+        <!--end of form  -->
+      </div>
+      <!--end of sign-up-home-menu  -->
     </section>
+    <!--end of section  -->
+    <!-- /* *********************************footer-start*************************************** */ -->
+    <footer class="home-footer">
+      <span> 풋 메뉴 </span>
+    </footer>
   </body>
 </html>
