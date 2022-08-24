@@ -1,5 +1,6 @@
 package com.project.carrot.web.controller.member;
 
+import com.project.carrot.domain.address.entity.Address;
 import com.project.carrot.domain.member.CurrentMember;
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.service.MemberService;
@@ -40,8 +41,24 @@ public class MemberController {
         createMemberForm.setPassword("cszc7348!@");
         createMemberForm.setNickname("tester");
         createMemberForm.setEmail("test@test.com");
+        createMemberForm.setContact("010-1111-1111");
+        createMemberForm.setDistrict("서울시");
+        createMemberForm.setTown("강서구");
+        createMemberForm.setDong("우장산동");
 
-        memberService.saveMember(createMemberForm);
+        ArrayList<Address> address = new ArrayList<>();
+
+        address.add(new Address(createMemberForm.getDistrict(), createMemberForm.getTown(), createMemberForm.getDong()));
+
+        Member newMember = Member.builder()
+                .loginId(createMemberForm.getLoginId())
+                .password(createMemberForm.getPassword())
+                .nickname(createMemberForm.getNickname())
+                .contact(createMemberForm.getContact())
+                .email(createMemberForm.getEmail())
+                .address(address).build();
+
+        memberService.saveMember(newMember);
 
     }
 
@@ -79,7 +96,19 @@ public class MemberController {
             return "member/signUpForm";
         }
 
-        Long id = memberService.saveMember(createMemberForm);
+        ArrayList<Address> address = new ArrayList<>();
+
+        address.add(new Address(createMemberForm.getDistrict(), createMemberForm.getTown(), createMemberForm.getDong()));
+
+        Member newMember = Member.builder()
+                .loginId(createMemberForm.getLoginId())
+                .password(createMemberForm.getPassword())
+                .nickname(createMemberForm.getNickname())
+                .contact(createMemberForm.getContact())
+                .email(createMemberForm.getEmail())
+                .address(address).build();
+
+        memberService.saveMember(newMember);
         return "redirect:/member/login";
     }
 
@@ -113,13 +142,17 @@ public class MemberController {
         MemberProfileDto memberProfileDto = new MemberProfileDto();
         memberProfileDto.setNickname(findMember.getNickname());
         memberProfileDto.setEmail(findMember.getEmail());
+        memberProfileDto.setContact(findMember.getContact());
+        memberProfileDto.setFirstAddress(findMember.getAddress().get(0).getDong());
+        memberProfileDto.setSecondAddress(findMember.getAddress().get(1).getDong());
+
+
 
 
         if (member == null) {
             throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
         }
 
-        log.info("findMember.equals(member)={}",findMember.equals(member));
 
         model.addAttribute("member", memberProfileDto);
         model.addAttribute("isOwner", findMember.equals(member));

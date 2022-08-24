@@ -2,10 +2,7 @@ package com.project.carrot.domain.member.service;
 
 import com.project.carrot.domain.address.entity.Address;
 import com.project.carrot.domain.member.entity.Member;
-import com.project.carrot.domain.member.entity.MemberRoll;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
-import com.project.carrot.web.controller.member.dto.CreateMemberForm;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +10,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Transactional
 class MemberServiceTest {
@@ -47,15 +41,16 @@ class MemberServiceTest {
         List<Address> address = new ArrayList<>();
         address.add(new Address("서울시","우장산","1동"));
 
-        CreateMemberForm createMemberForm = new CreateMemberForm();
-        createMemberForm.setLoginId("dari1234");
-        createMemberForm.setPassword("!@#$1234");
-        createMemberForm.setNickname("testNick123");
-        createMemberForm.setEmail("test232@test.com");
-        createMemberForm.setAddress(address);
+        Member newMember = Member.builder()
+                .loginId("dari1234")
+                .password("!@#$1234")
+                .nickname("testNick123")
+                .contact("010-1111-1111")
+                .email("test232@test.com")
+                .address(address).build();
 
         //when
-        Long saveMember = memberService.saveMember(createMemberForm);
+        Long saveMember = memberService.saveMember(newMember);
         Optional<Member> findMember = memberRepository.findByMemberId(saveMember);
 
         //then
@@ -71,22 +66,60 @@ class MemberServiceTest {
         //given
 
         List<Address> address = new ArrayList<>();
-        address.add(new Address("경기도","김포시","사우동"));
+        address.add(new Address("서울시","우장산","1동"));
 
-        CreateMemberForm createMemberForm = new CreateMemberForm();
-        createMemberForm.setLoginId("dari");
-        createMemberForm.setPassword("!@#$1234");
-        createMemberForm.setNickname("test2");
-        createMemberForm.setEmail("test2@test.com");
-        createMemberForm.setAddress(address);
+        Member newMember = Member.builder()
+                .loginId("dari1234")
+                .password("!@#$1234")
+                .nickname("testNick123")
+                .contact("010-1111-1111")
+                .email("test232@test.com")
+                .address(address).build();
 
         //when
-        Long saveMember = memberService.saveMember(createMemberForm);
+        Long saveMember = memberService.saveMember(newMember);
         Optional<Member> findMember = memberRepository.findByMemberId(saveMember);
 
         //then
         assertThat(findMember.get().getPassword()).isNotEqualTo("!@#$1234"); //성공로직
         assertThat(passwordEncoder.matches("!@#$1234", findMember.get().getPassword())).isTrue();
         assertThat(passwordEncoder.matches("!@#$134", findMember.get().getPassword())).isFalse();//실패 로직
+    }
+    
+    @DisplayName("수정 테스트")
+    @Test
+    void updateMember() throws Exception{
+        //given
+        List<Address> address = new ArrayList<>();
+        address.add(new Address("서울시","우장산","1동"));
+        Member newMember = Member.builder()
+                .loginId("dari1234")
+                .password("!@#$1234")
+                .nickname("testNick123")
+                .contact("010-1111-1111")
+                .email("test232@test.com")
+                .address(address).build();
+
+        List<Address> updatedAddress = new ArrayList<>();
+        address.add(new Address("뉴욕시","힐스테이트","뉴월드"));
+        Member updatedMember = Member.builder()
+                .loginId("dari1234")
+                .password("!@#$1234")
+                .nickname("testNick123")
+                .contact("010-2222-2222")
+                .email("upadate@test.com")
+                .address(updatedAddress).build();
+        
+        //when
+        Long find = memberService.saveMember(newMember);
+
+        memberService.updateMember(find,updatedMember);
+        Member member = memberService.findMember(find);
+        //then
+        assertThat(member.getAddress().containsAll(updatedAddress)).isTrue();
+        assertThat(member.getContact()).isEqualTo(updatedMember.getContact());
+        assertThat(member.getEmail()).isEqualTo(updatedMember.getEmail());
+
+
     }
 }

@@ -1,12 +1,11 @@
 package com.project.carrot.web.controller.member.dto;
 
-import com.project.carrot.domain.address.entity.Address;
-import com.project.carrot.exception.ErrorCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.*;
-import java.util.List;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * 회원 가입 폼
@@ -31,19 +30,24 @@ public class CreateMemberForm {
     @Email(message = "형식에 맞지 않는 이메일입니다.")
     private String email;
 
-    private List<Address> address;
+    private String contact;
+
+    private String district;
+    private String town;
+    private String dong;
+
 
     public CreateMemberForm() {
     }
 
-    public CreateMemberForm(String loginId, String password, String nickname, String email, List<Address> address) {
+    public CreateMemberForm(String loginId, String password, String nickname, String email, String contact, String district, String town, String dong) {
         this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
-        this.address = address;
-
+        this.contact = contact;
+        this.district = district;
+        this.town = town;
+        this.dong = dong;
     }
-
-
 }

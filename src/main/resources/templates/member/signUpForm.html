@@ -78,6 +78,14 @@
       border-radius: 10px;
     }
 
+    .input_address {
+      display: flex;
+      width: 300px;
+      height: 20px;
+      text-align: center;
+      border-radius: 10px;
+    }
+
     .field-error {
       color: red;
       text-align: center;
@@ -161,6 +169,27 @@
               />
             </div>
             <div class="field-error" th:errors="*{email}">email 오류</div>
+
+            <div class="input_address">
+              <input
+                type="text"
+                placeholder="시"
+                th:field="*{district}"
+                th:errorclass="field-error"
+              />
+              <input
+                type="text"
+                placeholder="구"
+                th:field="*{town}"
+                th:errorclass="field-error"
+              />
+              <input
+                type="text"
+                placeholder="동"
+                th:field="*{dong}"
+                th:errorclass="field-error"
+              />
+            </div>
           </div>
           <!--end of input box  -->
           <div>
