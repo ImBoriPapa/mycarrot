@@ -34,6 +34,9 @@ public class Member {
     @Column(name = "EMAIL")
     private String email;
 
+    @Column(name ="CONTACT")
+    private String contact;
+
     @Column(name = "ROLL")
     @Enumerated(value = EnumType.STRING)
     private MemberRoll memberRoll;
@@ -48,24 +51,40 @@ public class Member {
     @Column(name = "MODIFY_DATE") //회원정보 수정일
     private LocalDateTime modifyDate;
 
-    public Member() {
+    protected Member() {
     }
 
     /**
      * 최초 가입시
      * signUpDate 설정
      * memberRoll - USER
+     * Address 는 하나의 주소만 저장 2번째 주소는 수정에서 추가
      */
-    public static Member createMember(String loginId,String password,String nickname,String email,List address) {
+    public static Member createMember(String loginId,String password,String nickname,String email,String contact,List<Address> address) {
+        Address secondAddress = new Address("no","no","2번째 동네를 설정할수 있습니다.");
+        List<Address> saveAddress = new ArrayList<>();
+
+        saveAddress.add(address.get(0));
+        saveAddress.add(secondAddress);
+
         Member member = Member.builder()
                 .loginId(loginId)
                 .password(password)
                 .nickname(nickname)
                 .email(email)
-                .address(address)
+                .address(saveAddress)
+                .contact(contact)
                 .memberRoll(MemberRoll.USER)
                 .signUpDate(LocalDateTime.now())
                 .build();
+
+        return member;
+    }
+
+    public Member modifiedMember(Member member) {
+        this.contact = member.getContact();
+        this.email = member.getEmail();
+        this.address = member.getAddress();
         return member;
     }
 

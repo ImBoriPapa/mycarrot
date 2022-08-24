@@ -82,7 +82,7 @@
     }
 
     .imgBox span {
-      font-size: large;
+      font-size: 30px;
     }
 
     .imgBox button {
@@ -90,6 +90,40 @@
       width: 300px;
       height: 50px;
       cursor: pointer;
+    }
+
+    .infomation {
+      display: flex;
+      list-style: none;
+      font-size: 25px;
+      margin-left: 60px;
+    }
+
+    .infomation ul li {
+      list-style: none;
+    }
+
+    .tradeInfo {
+      display: flex;
+      justify-content: space-evenly;
+      height: 100px;
+    }
+
+    .tradeInfo .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      border: 1px solid black;
+    }
+
+    .item i {
+      font-size: 50px;
+      color: gold;
+    }
+
+    .item span {
+      font-size: 20px;
     }
 
     /* *********************************section-end*************************************** */
@@ -140,13 +174,41 @@
         <button>프로필 수정</button>
       </div>
 
-      <div class="info">
-        <a><span th:text="${member.email}">이메일</span></a>
-        <a><span>주소</span></a>
+      <div class="infomation">
+        <ul>
+          <li>
+            <label>전화번호 :</label>
+            <span th:text="${member.contact}">전화번호</span>
+          </li>
+          <li>
+            <label>이메일 :</label>
+            <span th:text="${member.email}">이메일</span>
+          </li>
+          <li>
+            <label>동네1 :</label>
+            <span th:text="${member.firstAddress}">district</span>
+
+            <label>동네2 :</label>
+            <span th:text="${member.secondAddress}"> </span>
+          </li>
+        </ul>
       </div>
 
-      <div>
-        <a href="">프로필 수정</a>
+      <div class="tradeInfo">
+        <div class="item item1">
+          <i class="fa-solid fa-carrot header-logo-item"></i>
+          <span header-logo-title>판매내역</span>
+        </div>
+
+        <div class="item item2">
+          <i class="fa-solid fa-carrot header-logo-item"></i>
+          <span header-logo-title>구매내역</span>
+        </div>
+
+        <div class="item item3">
+          <i class="fa-solid fa-carrot header-logo-item"></i>
+          <span header-logo-title>관심목록</span>
+        </div>
       </div>
     </section>
     <!-- /* *********************************footer-start*************************************** */ -->
