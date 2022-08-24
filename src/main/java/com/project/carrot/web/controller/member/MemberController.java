@@ -1,15 +1,15 @@
 package com.project.carrot.web.controller.member;
 
+import com.project.carrot.domain.member.CurrentMember;
 import com.project.carrot.domain.member.entity.Member;
-
 import com.project.carrot.domain.member.service.MemberService;
-import com.project.carrot.web.controller.member.dto.LoginMemberForm;
-import com.project.carrot.web.controller.member.validation.CreateMemberFormValidator;
 import com.project.carrot.web.controller.member.dto.CreateMemberForm;
+import com.project.carrot.web.controller.member.dto.LoginMemberForm;
 import com.project.carrot.web.controller.member.dto.MemberList;
+import com.project.carrot.web.controller.member.dto.MemberProfileDto;
+import com.project.carrot.web.controller.member.validation.CreateMemberFormValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,6 +40,7 @@ public class MemberController {
         createMemberForm.setPassword("cszc7348!@");
         createMemberForm.setNickname("tester");
         createMemberForm.setEmail("test@test.com");
+
         memberService.saveMember(createMemberForm);
 
     }
@@ -78,7 +79,7 @@ public class MemberController {
             return "member/signUpForm";
         }
 
-        memberService.saveMember(createMemberForm);
+        Long id = memberService.saveMember(createMemberForm);
         return "redirect:/member/login";
     }
 
@@ -97,9 +98,32 @@ public class MemberController {
     }
 
 
+
     @GetMapping("/success")
     private String success() {
         return "home/success";
+    }
+
+    @GetMapping("/profile/{nickname}")
+    public String viewProfile(@PathVariable String nickname, Model model, @CurrentMember Member member) {
+        log.info("nickname ={}",nickname);
+        log.info("member ={}",member);
+        Member findMember = memberService.findMember(member.getMemberId());
+
+        MemberProfileDto memberProfileDto = new MemberProfileDto();
+        memberProfileDto.setNickname(findMember.getNickname());
+        memberProfileDto.setEmail(findMember.getEmail());
+
+
+        if (member == null) {
+            throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+        }
+
+        log.info("findMember.equals(member)={}",findMember.equals(member));
+
+        model.addAttribute("member", memberProfileDto);
+        model.addAttribute("isOwner", findMember.equals(member));
+        return "member/profile";
     }
 
 }

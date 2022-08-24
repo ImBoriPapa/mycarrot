@@ -3,25 +3,21 @@ package com.project.carrot.domain.member.service;
 
 import com.project.carrot.domain.member.MemberAccount;
 import com.project.carrot.domain.member.entity.Member;
-
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
 import com.project.carrot.exception.member_exception.MemberError;
 import com.project.carrot.exception.member_exception.MemberServiceException;
-
 import com.project.carrot.web.controller.member.dto.CreateMemberForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import javax.transaction.Transactional;
-
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -60,15 +56,11 @@ public class MemberService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
-        Optional<Member> findMember = memberRepository.findByLoginId(nickname);
+    public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
+        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
         log.info("findMember ={}",findMember);
 
-        if (findMember.isEmpty()) {
-            throw new UsernameNotFoundException(nickname);
-        }
-
-
-        return new MemberAccount(findMember.get());
+        return new MemberAccount(findMember.orElseThrow(()->new UsernameNotFoundException(loginId)));
     }
+
 }

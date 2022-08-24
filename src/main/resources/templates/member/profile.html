@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html
+  xmlns:th="http://www.thymleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
   <head>
-    <title>랜딩페이지</title>
+    <title>profilePage</title>
     <script
       src="https://kit.fontawesome.com/2ad92617e5.js"
       crossorigin="anonymous"
@@ -14,11 +15,13 @@
       margin: 0;
       box-sizing: border-box;
     }
+
     body {
       height: 100vh;
       width: 100vw;
     }
-    /* *********************************heade-start************************************* */
+
+    /* *********************************header-start************************************* */
     .header {
       display: flex;
       justify-content: space-between;
@@ -50,25 +53,46 @@
 
     .header-menu {
       width: 20%;
+      list-style: none;
     }
+
     /* *********************************header-end************************************* */
-    /* *********************************secltion-start************************************* */
-    .home-section {
+    /* *********************************section-start************************************* */
+    .profile-section {
       display: flex;
+      flex-direction: column;
       height: 70%;
       width: 100%;
     }
 
-    .home-menu {
+    .imgBox {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      width: 100%;
-      font-size: larger;
+      flex-direction: column;
+      margin-top: 50px;
     }
 
-    /* *********************************secltion-end*************************************** */
+    .imgBox img {
+      width: 200px;
+      height: 200px;
+      border-style: solid;
+      border-color: grey;
+      border-width: medium medium medium medium;
+      border-radius: 500px;
+    }
+
+    .imgBox span {
+      font-size: large;
+    }
+
+    .imgBox button {
+      border: none;
+      width: 300px;
+      height: 50px;
+      cursor: pointer;
+    }
+
+    /* *********************************section-end*************************************** */
     /* *********************************footer-start*************************************** */
     .home-footer {
       display: flex;
@@ -101,21 +125,28 @@
           </form>
         </li>
 
+        <a
+          class="dropdown-item"
+          th:href="@{'/member/profile/' + ${#authentication.name}}"
+          >프로필</a
+        >
+      </div>
+    </div>
+    <!-- /* *********************************section-start************************************* */ -->
+    <section class="profile-section">
+      <div class="imgBox">
+        <img />
+        <a><span th:text="${member.nickname}">닉네임</span></a>
+        <button>프로필 수정</button>
       </div>
 
-    </div>
-    <!-- /* *********************************secltion-start************************************* */ -->
-    <section class="home-section">
-      <div class="home-menu">
-        <a class="login-link" href="/member/login" th:href="@{/member/login}">
-          로그인</a
-        >
-        <a
-          class="signUp-link"
-          href="/member/sign-up"
-          th:href="@{/member/sign-up}"
-          >회원가입</a
-        >
+      <div class="info">
+        <a><span th:text="${member.email}">이메일</span></a>
+        <a><span>주소</span></a>
+      </div>
+
+      <div>
+        <a href="">프로필 수정</a>
       </div>
     </section>
     <!-- /* *********************************footer-start*************************************** */ -->

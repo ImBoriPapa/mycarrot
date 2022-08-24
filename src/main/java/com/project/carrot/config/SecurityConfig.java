@@ -41,6 +41,8 @@ public class SecurityConfig {
         http.authorizeRequests()
                 .mvcMatchers("/", "/member/login", "/member/sign-up", "/member/success")
                 .permitAll()
+                .mvcMatchers("/member/profile/*")
+                .permitAll()
                 .anyRequest()
                 .authenticated().and().csrf().disable();
 
