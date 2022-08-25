@@ -1,13 +1,11 @@
 package com.project.carrot.web.controller.member;
 
 import com.project.carrot.domain.address.entity.Address;
-import com.project.carrot.domain.member.CurrentMember;
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.service.MemberService;
 import com.project.carrot.web.controller.member.dto.CreateMemberForm;
 import com.project.carrot.web.controller.member.dto.LoginMemberForm;
 import com.project.carrot.web.controller.member.dto.MemberList;
-import com.project.carrot.web.controller.member.dto.MemberProfileDto;
 import com.project.carrot.web.controller.member.validation.CreateMemberFormValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +57,6 @@ public class MemberController {
                 .address(address).build();
 
         memberService.saveMember(newMember);
-
     }
 
 
@@ -67,33 +64,38 @@ public class MemberController {
         webDataBinder.addValidators(createMemberFormValidator);
     }
 
-    @GetMapping("/login") //로그인폼 접속
+    static final String LOGIN_URL = "/login";
+    static final String LOGIN_FORM = "member/loginForm";
+    static final String SIGNUP_URL = "/sign-up";
+    static final String SIGNUP_FORM = "member/signUpForm";
+
+
+    @GetMapping(LOGIN_URL) //로그인폼 접속
     public String login(@ModelAttribute("loginMemberForm") LoginMemberForm loginMemberForm,
-                        @RequestParam(value = "error",required = false)String error,
-                        @RequestParam(value = "message",required = false)String message,
+                        @RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "message", required = false) String message,
                         Model model) {
-        log.info("error={}",error);
-        log.info("message={}",message);
+        log.info("error={}", error);
+        log.info("message={}", message);
         model.addAttribute("error", error);
         model.addAttribute("message", message);
 
-        return "member/loginForm";
+        return LOGIN_FORM;
     }
 
-
     //회원가입페이지 이동
-    @GetMapping("/sign-up")
+    @GetMapping(SIGNUP_URL)
     public String signUpForm(@ModelAttribute("createMemberForm") CreateMemberForm createMemberForm) {
-        return "member/signUpForm";
+        return SIGNUP_FORM;
     }
 
     //회원가입 정보 검증 및 저장
-    @PostMapping("/sign-up")
+    @PostMapping(SIGNUP_URL)
     public String signUp(@Valid @ModelAttribute CreateMemberForm createMemberForm, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             log.error("error ={}", bindingResult);
-            return "member/signUpForm";
+            return SIGNUP_FORM;
         }
 
         ArrayList<Address> address = new ArrayList<>();
@@ -109,7 +111,7 @@ public class MemberController {
                 .address(address).build();
 
         memberService.saveMember(newMember);
-        return "redirect:/member/login";
+        return "redirect:" + SIGNUP_URL;
     }
 
     @GetMapping("/members")
@@ -127,36 +129,10 @@ public class MemberController {
     }
 
 
-
     @GetMapping("/success")
     private String success() {
         return "home/success";
     }
 
-    @GetMapping("/profile/{nickname}")
-    public String viewProfile(@PathVariable String nickname, Model model, @CurrentMember Member member) {
-        log.info("nickname ={}",nickname);
-        log.info("member ={}",member);
-        Member findMember = memberService.findMember(member.getMemberId());
-
-        MemberProfileDto memberProfileDto = new MemberProfileDto();
-        memberProfileDto.setNickname(findMember.getNickname());
-        memberProfileDto.setEmail(findMember.getEmail());
-        memberProfileDto.setContact(findMember.getContact());
-        memberProfileDto.setFirstAddress(findMember.getAddress().get(0).getDong());
-        memberProfileDto.setSecondAddress(findMember.getAddress().get(1).getDong());
-
-
-
-
-        if (member == null) {
-            throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
-        }
-
-
-        model.addAttribute("member", memberProfileDto);
-        model.addAttribute("isOwner", findMember.equals(member));
-        return "member/profile";
-    }
 
 }

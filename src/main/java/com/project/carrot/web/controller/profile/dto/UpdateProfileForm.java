@@ -1,9 +1,9 @@
-package com.project.carrot.web.controller.member.dto;
+package com.project.carrot.web.controller.profile.dto;
 
 import lombok.Data;
 
 @Data
-public class MemberProfileDto {
+public class UpdateProfileForm {
 
     private String nickname;
     private String email;
@@ -12,7 +12,7 @@ public class MemberProfileDto {
     private String firstAddress;
     private String SecondAddress;
 
-    public MemberProfileDto() {
+    public UpdateProfileForm() {
     }
 
 

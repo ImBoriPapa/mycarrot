@@ -92,14 +92,14 @@
       cursor: pointer;
     }
 
-    .infomation {
+    .information {
       display: flex;
       list-style: none;
       font-size: 25px;
       margin-left: 60px;
     }
 
-    .infomation ul li {
+    .information ul li {
       list-style: none;
     }
 
@@ -159,37 +159,33 @@
           </form>
         </li>
 
-        <a
-          class="dropdown-item"
-          th:href="@{'/member/profile/' + ${#authentication.name}}"
-          >프로필</a
-        >
+
       </div>
     </div>
     <!-- /* *********************************section-start************************************* */ -->
     <section class="profile-section">
       <div class="imgBox">
         <img />
-        <a><span th:text="${member.nickname}">닉네임</span></a>
-        <button>프로필 수정</button>
+        <a><span th:text="${profileForm.nickname}">닉네임</span></a>
+        <a th:href="@{'/profile/update/' + ${#authentication.name}}">프로필 수정</a>
       </div>
 
-      <div class="infomation">
+      <div class="information">
         <ul>
           <li>
             <label>전화번호 :</label>
-            <span th:text="${member.contact}">전화번호</span>
+            <span th:text="${profileForm.contact}">전화번호</span>
           </li>
           <li>
             <label>이메일 :</label>
-            <span th:text="${member.email}">이메일</span>
+            <span th:text="${profileForm.email}">이메일</span>
           </li>
           <li>
             <label>동네1 :</label>
-            <span th:text="${member.firstAddress}">district</span>
+            <span th:text="${profileForm.firstAddress}">district</span>
 
             <label>동네2 :</label>
-            <span th:text="${member.secondAddress}"> </span>
+            <span th:text="${profileForm.secondAddress}"> </span>
           </li>
         </ul>
       </div>

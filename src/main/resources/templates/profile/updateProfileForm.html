@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
 <head>
-    <title>로그인 성공시</title>
+    <title>profilePage</title>
     <script
             src="https://kit.fontawesome.com/2ad92617e5.js"
             crossorigin="anonymous"
@@ -14,11 +15,13 @@
         margin: 0;
         box-sizing: border-box;
     }
+
     body {
         height: 100vh;
         width: 100vw;
     }
-    /* *********************************heade-start************************************* */
+
+    /* *********************************header-start************************************* */
     .header {
         display: flex;
         justify-content: space-between;
@@ -54,23 +57,55 @@
     }
 
     /* *********************************header-end************************************* */
-    /* *********************************secltion-start************************************* */
-    .home-section {
+    /* *********************************section-start************************************* */
+    .profile-section {
         display: flex;
+        flex-direction: column;
         height: 70%;
         width: 100%;
     }
 
-    .home-menu {
+    .imgBox {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        width: 100%;
-        font-size: larger;
+        flex-direction: column;
+        margin-top: 50px;
     }
 
-    /* *********************************secltion-end*************************************** */
+    .imgBox img {
+        width: 200px;
+        height: 200px;
+        border-style: solid;
+        border-color: grey;
+        border-width: medium medium medium medium;
+        border-radius: 500px;
+    }
+
+    .imgBox span {
+        font-size: 30px;
+    }
+
+    .imgBox button {
+        border: none;
+        width: 300px;
+        height: 50px;
+        cursor: pointer;
+    }
+
+    .information {
+        display: flex;
+        list-style: none;
+        font-size: 25px;
+        margin-left: 60px;
+    }
+
+    .information ul li {
+        list-style: none;
+    }
+
+
+
+    /* *********************************section-end*************************************** */
     /* *********************************footer-start*************************************** */
     .home-footer {
         display: flex;
@@ -90,7 +125,7 @@
 
     <div class="header-title"></div>
 
-    <ul class="header-menu">
+    <div class="header-menu">
         <li class="nav-item" sec:authorize="!isAuthenticated()">
             <a class="nav-link" th:href="@{/member/login}">로그인</a>
         </li>
@@ -102,12 +137,46 @@
                 <button type="submit">로그아웃</button>
             </form>
         </li>
-        <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
-    </ul>
+
+
+    </div>
 </div>
-<!-- /* *********************************secltion-start************************************* */ -->
-<section class="home-section">
-    <h1>로그인 성공 페이지</h1>
+<!-- /* *********************************section-start************************************* */ -->
+<section class="profile-section">
+    <form th:action method="post"
+          th:object="${updateProfileForm}">
+    <div class="imgBox">
+        <img />
+        <a><span name="nickname" th:text="${profileForm.nickname}">닉네임</span></a>
+    </div>
+
+    <div class="information">
+        <ul>
+            <li>
+                <label>전화번호 :</label>
+                <input name="contact" th:value="${profileForm.contact}">
+            </li>
+            <li>
+                <label>이메일 :</label>
+
+                <input name="email" th:value="${profileForm.email}">
+            </li>
+            <li>
+                <label>동네1 :</label>
+
+                <input name="firstAddress" th:value="${profileForm.firstAddress}">
+
+                <label>동네2 :</label>
+
+                <input name="secondAddress" th:value="${profileForm.secondAddress}">
+            </li>
+        </ul>
+    </div>
+
+        <div>
+            <button type="submit">수정</button>
+        </div>
+    </form>
 </section>
 <!-- /* *********************************footer-start*************************************** */ -->
 <footer class="home-footer">
