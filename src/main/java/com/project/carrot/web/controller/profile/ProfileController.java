@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -38,7 +37,7 @@ public class ProfileController {
 
     protected final String TO_UPDATE_PROFILE_FORM = "profile/updateProfileForm";
 
-    protected final String REDIRECT_UPDATE_FORM = "redirect:/update/{memberId}";
+    protected final String REDIRECT_UPDATE_FORM = "redirect:/profile/update/{memberId}";
 
     protected final String REDIRECT_PROFILE = "redirect:/profile/";
 
@@ -68,12 +67,13 @@ public class ProfileController {
         return TO_PROFILE_VIEW;
     }
 
-    @GetMapping(UPDATE_PATH)
-    public String updateProfileForm(@PathVariable String memberId, Model model, @CurrentMember Member member) {
+    @GetMapping("/update/{memberId}")
+    public String updateProfileForm(@PathVariable String memberId, @ModelAttribute("updateProfileForm")UpdateProfileForm updateProfileForm,  Model model, @CurrentMember Member member) {
 
         if (member == null) {
             return REDIRECT_HOME;
         }
+
         Member findMember = memberService.findMember(Long.valueOf(memberId));
 
         ProfileForm profileForm = new ProfileForm();
@@ -88,12 +88,10 @@ public class ProfileController {
     }
 
     @PostMapping(UPDATE_PATH)
-    public String updateProfile(@PathVariable String memberId, @Valid @ModelAttribute UpdateProfileForm updateProfileForm, BindingResult bindingResult
-            , @CurrentMember Member member
-            , RedirectAttributes redirectAttributes) throws IOException {
+    public String updateProfile(@Valid @ModelAttribute UpdateProfileForm updateProfileForm, BindingResult bindingResult,@PathVariable String memberId
+            , @CurrentMember Member member) throws IOException {
         if (bindingResult.hasErrors()) {
             log.info("has error");
-            redirectAttributes.addAttribute("updateProfileForm", updateProfileForm);
             return REDIRECT_UPDATE_FORM;
         }
 

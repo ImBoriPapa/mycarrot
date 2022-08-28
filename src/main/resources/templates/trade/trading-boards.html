@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <title>거래</title>
+  <script
+          src="https://kit.fontawesome.com/2ad92617e5.js"
+          crossorigin="anonymous"
+  ></script>
+</head>
+<style>
+  * {
+    margin: 0;
+    box-sizing: border-box;
+  }
+  body {
+    height: 100vh;
+    width: 100vw;
+  }
+  /* *********************************heade-start************************************* */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    height: 10%;
+    width: 100%;
+  }
+
+  .header-logo {
+    display: flex;
+    width: 20%;
+    font-size: 30px;
+    justify-content: center;
+    align-items: center;
+    color: gold;
+  }
+
+  .header-logo-item {
+    display: flex;
+  }
+
+  .header-logo-title {
+    display: flex;
+  }
+
+  .header-title {
+    display: flex;
+    width: 60%;
+  }
+
+  .header-menu {
+    width: 20%;
+    list-style: none;
+  }
+
+  /* *********************************header-end************************************* */
+  /* *********************************secltion-start************************************* */
+  .home-section {
+    display: flex;
+    height: 70%;
+    width: 100%;
+  }
+
+  .home-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-size: larger;
+  }
+
+  /* *********************************secltion-end*************************************** */
+  /* *********************************footer-start*************************************** */
+  .home-footer {
+    display: flex;
+    height: 20%;
+    width: 100%;
+  }
+
+  /* *********************************footer-end*************************************** */
+</style>
+
+<body>
+<div class="header">
+  <div class="header-logo">
+    <i class="fa-solid fa-carrot header-logo-item"></i>
+    <span header-logo-title>보리마켓</span>
+  </div>
+
+  <div class="header-title"></div>
+
+  <ul class="header-menu">
+    <li class="nav-item" sec:authorize="!isAuthenticated()">
+      <a class="nav-link" th:href="@{/member/login}">로그인</a>
+    </li>
+    <li class="nav-item" sec:authorize="!isAuthenticated()">
+      <a class="nav-link" th:href="@{/member/sign-up}">가입</a>
+    </li>
+    <li class="nav-item" sec:authorize="isAuthenticated()">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit">로그아웃</button>
+      </form>
+    </li>
+    <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
+  </ul>
+</div>
+<!-- /* *********************************secltion-start************************************* */ -->
+<section class="home-section">
+  <div class="navi">
+    <span>navi</span>
+  </div>
+  <div class="item" >
+
+    <table>
+      <thead>
+      <th>인덱스</th>
+      <th>판매자</th>
+      <th>제목</th>
+      <th>지역</th>
+      </thead>
+      <tbody th:each="boards : ${boards}">
+      <td th:text="${boards.id}"></td>
+      <td th:text="${boards.member.nickname}"></td>
+      <td th:text="${boards.title}"></td>
+      <td th:text="${boards.location}"></td>
+      </tbody>
+    </table>
+
+  </div>
+  <div class="underNavi">underNavi</div>
+</section>
+<!-- /* *********************************footer-start*************************************** */ -->
+<footer class="home-footer">
+  <span> 풋 메뉴 </span>
+</footer>
+</body>
+</html>

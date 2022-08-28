@@ -39,7 +39,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/", "/member/login", "/member/sign-up", "/member/success","/image/*")
+                .mvcMatchers("/", "/member/login", "/member/sign-up", "/member/success","/image/*","/trade/*")
                 .permitAll()
                 .mvcMatchers("/profile/*","/profileImages/*")
                 .permitAll()
@@ -49,13 +49,13 @@ public class SecurityConfig {
         http.formLogin()
                 .loginPage("/member/login").permitAll()
                 .loginProcessingUrl("/member/login")
-                .defaultSuccessUrl("/member/success")
+                .defaultSuccessUrl("/trading-boards")
                 .usernameParameter("loginId")
                 .successHandler(
                         new AuthenticationSuccessHandler() {
                             @Override
                             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                                response.sendRedirect("/member/success"); // 인증이 성공한 후에는 root로 이동
+                                response.sendRedirect("/trading-boards"); // 인증이 성공한 후에는 root로 이동
                             }
                         })
                 .failureHandler(

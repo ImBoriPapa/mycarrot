@@ -163,8 +163,11 @@
             name="nickname"
             type="text"
             th:value="${profileForm.nickname}"
+            th:filed="*{nickname}"
+            th:errorclass="field-error"
             placeholder="닉네임"
           />
+          <div class="field-error" th:errors="*{updateProfileForm.nickname}">닉네임 오류</div>
         </div>
 
         <div class="update-btn">

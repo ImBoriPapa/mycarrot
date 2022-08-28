@@ -1,6 +1,7 @@
 package com.project.carrot.domain.member.entity;
 
 import com.project.carrot.domain.address.entity.Address;
+import com.project.carrot.domain.trade.entity.Trade;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,6 +48,9 @@ public class Member {
     @Column(name = "ROLL")
     @Enumerated(value = EnumType.STRING)
     private MemberRoll memberRoll;
+
+    @OneToMany(mappedBy ="member" )
+    private List<Trade> tradeList = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)//일대다 관계 주소를 1개 혹은 2개를 저장하고 수정이 가능
     @JoinColumn(name = "MEMBER_ID")

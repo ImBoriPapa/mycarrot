@@ -129,10 +129,7 @@ public class MemberController {
     }
 
 
-    @GetMapping("/success")
-    private String success() {
-        return "home/success";
-    }
+
 
 
 }
