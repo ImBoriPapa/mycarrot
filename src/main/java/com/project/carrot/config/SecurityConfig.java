@@ -39,9 +39,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/", "/member/login", "/member/sign-up", "/member/success")
+                .mvcMatchers("/", "/member/login", "/member/sign-up", "/member/success","/image/*")
                 .permitAll()
-                .mvcMatchers("/member/profile/*")
+                .mvcMatchers("/profile/*","/profileImages/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated().and().csrf().disable();

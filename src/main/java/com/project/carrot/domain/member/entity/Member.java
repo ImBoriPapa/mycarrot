@@ -4,6 +4,7 @@ import com.project.carrot.domain.address.entity.Address;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.List;
 @Builder
 @Table(name = "MEMBER")
 @AllArgsConstructor
+@Transactional
 public class Member {
 
     @Id
@@ -34,6 +36,11 @@ public class Member {
     @Column(name = "EMAIL")
     private String email;
 
+    @Column(name = "UPLOAD_IMAGE_NAME")
+    private String upLoadImageName;
+
+    @Column(name = "STORED_IMAGE_NAME")
+    private String storedImageName;
     @Column(name ="CONTACT")
     private String contact;
 
@@ -60,9 +67,12 @@ public class Member {
      * memberRoll - USER
      * Address 는 하나의 주소만 저장 2번째 주소는 수정에서 추가
      */
-    public static Member createMember(String loginId,String password,String nickname,String email,String contact,List<Address> address) {
+
+    public static Member createMember(String loginId,String password,String nickname,String email ,String contact,List<Address> address) {
         Address secondAddress = new Address("no","no","2번째 동네를 설정할수 있습니다.");
         List<Address> saveAddress = new ArrayList<>();
+
+        final String DEFAULT_PROFILE_IMAGE = "default.jpeg";
 
         saveAddress.add(address.get(0));
         saveAddress.add(secondAddress);
@@ -73,6 +83,7 @@ public class Member {
                 .nickname(nickname)
                 .email(email)
                 .address(saveAddress)
+                .storedImageName(DEFAULT_PROFILE_IMAGE)
                 .contact(contact)
                 .memberRoll(MemberRoll.USER)
                 .signUpDate(LocalDateTime.now())
@@ -88,6 +99,22 @@ public class Member {
         return member;
     }
 
+    public void updateProfile(String nickname, String upLoadImageName, String storedImageName) {
+        this.nickname = nickname;
+        this.upLoadImageName = upLoadImageName;
+        this.storedImageName = storedImageName;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updateProfileImage(String upLoadImageName, String storedImageName) {
+        this.upLoadImageName = upLoadImageName;
+        this.storedImageName = storedImageName;
+    }
+
 }
+
 
 

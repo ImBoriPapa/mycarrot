@@ -28,7 +28,6 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     //회원 정보 저장
     public Long saveMember(Member member) {
 
@@ -40,7 +39,6 @@ public class MemberService implements UserDetailsService {
                 member.getEmail(),
                 member.getContact(),
                 member.getAddress());
-
         return memberRepository.save(createMember).getMemberId();
     }
 

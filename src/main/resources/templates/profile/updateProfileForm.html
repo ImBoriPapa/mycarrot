@@ -1,186 +1,180 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="http://www.thymleaf.org"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+  xmlns:th="http://www.thymleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
-<head>
+  <head>
     <title>profilePage</title>
     <script
-            src="https://kit.fontawesome.com/2ad92617e5.js"
-            crossorigin="anonymous"
+      src="https://kit.fontawesome.com/2ad92617e5.js"
+      crossorigin="anonymous"
     ></script>
-</head>
-<style>
+  </head>
+  <style>
     * {
-        margin: 0;
-        box-sizing: border-box;
+      margin: 0;
+      box-sizing: border-box;
     }
 
     body {
-        height: 100vh;
-        width: 100vw;
+      height: 100vh;
+      width: 100vw;
     }
 
     /* *********************************header-start************************************* */
     .header {
-        display: flex;
-        justify-content: space-between;
-        height: 10%;
-        width: 100%;
+      display: flex;
+      justify-content: space-between;
+      height: 10%;
+      width: 100%;
     }
 
     .header-logo {
-        display: flex;
-        width: 20%;
-        font-size: 30px;
-        justify-content: center;
-        align-items: center;
-        color: gold;
+      display: flex;
+      width: 20%;
+      font-size: 30px;
+      justify-content: center;
+      align-items: center;
+      color: gold;
     }
 
     .header-logo-item {
-        display: flex;
+      display: flex;
     }
 
     .header-logo-title {
-        display: flex;
+      display: flex;
     }
 
     .header-title {
-        display: flex;
-        width: 60%;
+      display: flex;
+      width: 60%;
     }
 
     .header-menu {
-        width: 20%;
-        list-style: none;
+      width: 20%;
+      list-style: none;
     }
 
     /* *********************************header-end************************************* */
     /* *********************************section-start************************************* */
     .profile-section {
-        display: flex;
-        flex-direction: column;
-        height: 70%;
-        width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 70%;
+      width: 100%;
     }
 
-    .imgBox {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        margin-top: 50px;
+    .update-img {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin-top: 50px;
     }
 
-    .imgBox img {
-        width: 200px;
-        height: 200px;
-        border-style: solid;
-        border-color: grey;
-        border-width: medium medium medium medium;
-        border-radius: 500px;
+    .update-img img {
+      width: 200px;
+      height: 200px;
+      border-style: solid;
+      border-color: grey;
+      border-width: medium medium medium medium;
+      border-radius: 500px;
     }
 
-    .imgBox span {
-        font-size: 30px;
+    .update-nickname {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    .imgBox button {
-        border: none;
-        width: 300px;
-        height: 50px;
-        cursor: pointer;
+    .update-nickname input {
+      width: 300px;
+      height: 50px;
+      margin-top: 50px;
+      font-size: large;
+      text-align: center;
     }
 
-    .information {
-        display: flex;
-        list-style: none;
-        font-size: 25px;
-        margin-left: 60px;
+    .update-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+
+      cursor: pointer;
     }
-
-    .information ul li {
-        list-style: none;
+    .update-btn button {
+      width: 300px;
+      height: 50px;
+      background-color: whitesmoke;
     }
-
-
 
     /* *********************************section-end*************************************** */
     /* *********************************footer-start*************************************** */
     .home-footer {
-        display: flex;
-        height: 20%;
-        width: 100%;
+      display: flex;
+      height: 20%;
+      width: 100%;
     }
 
     /* *********************************footer-end*************************************** */
-</style>
+  </style>
 
-<body>
-<div class="header">
-    <div class="header-logo">
+  <body>
+    <div class="header">
+      <div class="header-logo">
         <i class="fa-solid fa-carrot header-logo-item"></i>
         <span header-logo-title>보리마켓</span>
-    </div>
+      </div>
 
-    <div class="header-title"></div>
+      <div class="header-title"></div>
 
-    <div class="header-menu">
+      <div class="header-menu">
         <li class="nav-item" sec:authorize="!isAuthenticated()">
-            <a class="nav-link" th:href="@{/member/login}">로그인</a>
+          <a class="nav-link" th:href="@{/member/login}">로그인</a>
         </li>
         <li class="nav-item" sec:authorize="!isAuthenticated()">
-            <a class="nav-link" th:href="@{/member/sign-up}">가입</a>
+          <a class="nav-link" th:href="@{/member/sign-up}">가입</a>
         </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
-            <form th:action="@{/logout}" method="post">
-                <button type="submit">로그아웃</button>
-            </form>
+          <form th:action="@{/logout}" method="post">
+            <button type="submit">로그아웃</button>
+          </form>
         </li>
-
-
+      </div>
     </div>
-</div>
-<!-- /* *********************************section-start************************************* */ -->
-<section class="profile-section">
-    <form th:action method="post"
-          th:object="${updateProfileForm}">
-    <div class="imgBox">
-        <img />
-        <a><span name="nickname" th:text="${profileForm.nickname}">닉네임</span></a>
-    </div>
+    <!-- /* *********************************section-start************************************* */ -->
+    <section class="profile-section">
+      <form
+        th:action
+        method="post"
+        th:object="${updateProfileForm}"
+        enctype="multipart/form-data"
+      >
+        <div class="update-img">
+          <img  th:src="|/profile/profileImages/${profileForm.imageName}|" />
 
-    <div class="information">
-        <ul>
-            <li>
-                <label>전화번호 :</label>
-                <input name="contact" th:value="${profileForm.contact}">
-            </li>
-            <li>
-                <label>이메일 :</label>
-
-                <input name="email" th:value="${profileForm.email}">
-            </li>
-            <li>
-                <label>동네1 :</label>
-
-                <input name="firstAddress" th:value="${profileForm.firstAddress}">
-
-                <label>동네2 :</label>
-
-                <input name="secondAddress" th:value="${profileForm.secondAddress}">
-            </li>
-        </ul>
-    </div>
-
-        <div>
-            <button type="submit">수정</button>
+          <input type="file" multiple="multiple" name="imageName" />
         </div>
-    </form>
-</section>
-<!-- /* *********************************footer-start*************************************** */ -->
-<footer class="home-footer">
-    <span> 풋 메뉴 </span>
-</footer>
-</body>
+
+        <div class="update-nickname">
+          <input
+            name="nickname"
+            type="text"
+            th:value="${profileForm.nickname}"
+            placeholder="닉네임"
+          />
+        </div>
+
+        <div class="update-btn">
+          <button type="submit">수정</button>
+        </div>
+      </form>
+    </section>
+    <!-- /* *********************************footer-start*************************************** */ -->
+    <footer class="home-footer">
+      <span> 풋 메뉴 </span>
+    </footer>
+  </body>
 </html>

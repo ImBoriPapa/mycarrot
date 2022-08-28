@@ -7,7 +7,7 @@ public class ProfileForm {
 
     private String nickname;
     private String email;
-    private String image;
+    private String imageName;
     private String contact;
     private String firstAddress;
     private String SecondAddress;
