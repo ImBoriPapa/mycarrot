@@ -35,6 +35,9 @@ public class Trade {
     public Trade() {
     }
 
+    public Trade(Trade trade) {
+    }
+
     public static Trade createBoard(Member member,String title,Category category,int price,boolean offer,boolean share,String context) {
         Trade newTrade = Trade.builder()
                 .member(member)
@@ -48,4 +51,5 @@ public class Trade {
                 .build();
         return newTrade;
     }
+
 }
