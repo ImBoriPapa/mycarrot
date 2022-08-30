@@ -2,6 +2,7 @@ package com.project.carrot.domain.member.entity;
 
 import com.project.carrot.domain.address.entity.Address;
 import com.project.carrot.domain.trade.entity.Trade;
+import com.project.carrot.web.controller.member.ImagePath;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,16 +26,16 @@ public class Member {
     @Column(name = "MEMBER_ID")
     private Long memberId;
 
-    @Column(name = "LOGIN_ID")
+    @Column(name = "LOGIN_ID",unique = true)
     private String loginId;
 
-    @Column(name = "password")
+    @Column(name = "password",nullable = false)
     private String password;
 
-    @Column(name = "NICKNAME")
+    @Column(name = "NICKNAME",unique = true)
     private String nickname;
 
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL",unique = true)
     private String email;
 
     @Column(name = "UPLOAD_IMAGE_NAME")
@@ -42,21 +43,20 @@ public class Member {
 
     @Column(name = "STORED_IMAGE_NAME")
     private String storedImageName;
-    @Column(name ="CONTACT")
+    @Column(name ="CONTACT",unique = true)
     private String contact;
 
     @Column(name = "ROLL")
     @Enumerated(value = EnumType.STRING)
     private MemberRoll memberRoll;
 
-    @OneToMany(mappedBy ="member" )
+    @OneToMany(mappedBy ="member")
     private List<Trade> tradeList = new ArrayList<>();
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)//일대다 관계 주소를 1개 혹은 2개를 저장하고 수정이 가능
     @JoinColumn(name = "MEMBER_ID")
     private List<Address> address = new ArrayList();
 
-    @Column(name = "SIGN_UP_DATE") //회원 등록일
+    @Column(name = "SIGN_UP_DATE",nullable = false) //회원 등록일
     private LocalDateTime signUpDate;
 
     @Column(name = "MODIFY_DATE") //회원정보 수정일
@@ -68,32 +68,42 @@ public class Member {
     /**
      * 최초 가입시
      * signUpDate 설정
-     * memberRoll - USER
-     * Address 는 하나의 주소만 저장 2번째 주소는 수정에서 추가
+     * memberRoll 설정
+     * 주소 설정
      */
+    public static Member createMember(Member member, String encodedPassword,ImagePath path,MemberRoll roll) {
 
-    public static Member createMember(String loginId,String password,String nickname,String email ,String contact,List<Address> address) {
-        Address secondAddress = new Address("no","no","2번째 동네를 설정할수 있습니다.");
-        List<Address> saveAddress = new ArrayList<>();
-
-        final String DEFAULT_PROFILE_IMAGE = "default.jpeg";
-
-        saveAddress.add(address.get(0));
-        saveAddress.add(secondAddress);
-
-        Member member = Member.builder()
-                .loginId(loginId)
-                .password(password)
-                .nickname(nickname)
-                .email(email)
-                .address(saveAddress)
-                .storedImageName(DEFAULT_PROFILE_IMAGE)
-                .contact(contact)
-                .memberRoll(MemberRoll.USER)
+        Member createdMember = Member.builder()
+                .loginId(member.getLoginId())
+                .password(encodedPassword)
+                .nickname(member.getNickname())
+                .email(member.getEmail())
+                .address(setAddress(member.getAddress()))
+                .storedImageName(path.PATH)
+                .contact(member.getContact())
+                .memberRoll(roll)
                 .signUpDate(LocalDateTime.now())
                 .build();
 
-        return member;
+        return createdMember;
+    }
+
+    protected static List<Address> setAddress(List<Address> address) {
+        List<Address> result = new ArrayList<>();
+
+        if(address.isEmpty()){
+            throw new IllegalArgumentException("주소는 최소한 1개 이상 저장되어야 합니다.");
+        }
+
+        if(address.size() ==1){
+            result.add(0,address.stream().findFirst().get());
+            result.add(1,new Address("no","no","2번째 동네를 설정할수 있습니다."));
+        }
+        if(address.size() ==2){
+            result.add(address.get(0));
+            result.add(address.get(1));
+        }
+        return result;
     }
 
     public Member modifiedMember(Member member) {

@@ -57,8 +57,7 @@ public class ProfileController {
         profileForm.setEmail(findMember.getEmail());
         profileForm.setContact(findMember.getContact());
         profileForm.setImageName(findMember.getStoredImageName());
-        profileForm.setFirstAddress(findMember.getAddress().get(0).getDong());
-        profileForm.setSecondAddress(findMember.getAddress().get(1).getDong());
+
 
         log.info("imageName={}", findMember.getStoredImageName());
 

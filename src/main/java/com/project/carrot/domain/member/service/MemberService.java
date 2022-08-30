@@ -3,9 +3,11 @@ package com.project.carrot.domain.member.service;
 
 import com.project.carrot.domain.member.MemberAccount;
 import com.project.carrot.domain.member.entity.Member;
+import com.project.carrot.domain.member.entity.MemberRoll;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
 import com.project.carrot.exception.member_exception.MemberError;
 import com.project.carrot.exception.member_exception.MemberServiceException;
+import com.project.carrot.web.controller.member.ImagePath;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,22 +32,16 @@ public class MemberService implements UserDetailsService {
 
     //회원 정보 저장
     public Long saveMember(Member member) {
+        String encodedPassword = passwordEncoder.encode(member.getPassword());
 
-        //회원정보 저장
-        Member createMember = Member.createMember(
-                member.getLoginId(),
-                passwordEncoder.encode(member.getPassword()),
-                member.getNickname(),
-                member.getEmail(),
-                member.getContact(),
-                member.getAddress());
-        return memberRepository.save(createMember).getMemberId();
+        Member createdMember = Member.createMember(member,encodedPassword, ImagePath.DEFAULT_PROFILE_IMAGE,MemberRoll.USER);
+
+        return memberRepository.save(createdMember).getMemberId();
     }
 
     public void updateMember(Long id,Member updateParam) {
         Optional<Member> findMember = memberRepository.findByMemberId(id);
         findMember.orElseThrow(()->new IllegalArgumentException("회원정보가 없습니다.")).modifiedMember(updateParam);
-
     }
 
     //회원 전체 목록 조회

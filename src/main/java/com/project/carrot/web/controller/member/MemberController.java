@@ -44,19 +44,9 @@ public class MemberController {
         createMemberForm.setTown("강서구");
         createMemberForm.setDong("우장산동");
 
-        ArrayList<Address> address = new ArrayList<>();
 
-        address.add(new Address(createMemberForm.getDistrict(), createMemberForm.getTown(), createMemberForm.getDong()));
 
-        Member newMember = Member.builder()
-                .loginId(createMemberForm.getLoginId())
-                .password(createMemberForm.getPassword())
-                .nickname(createMemberForm.getNickname())
-                .contact(createMemberForm.getContact())
-                .email(createMemberForm.getEmail())
-                .address(address).build();
 
-        memberService.saveMember(newMember);
     }
 
 
@@ -98,19 +88,20 @@ public class MemberController {
             return SIGNUP_FORM;
         }
 
-        ArrayList<Address> address = new ArrayList<>();
+        List<Address> firstAddress = new ArrayList<>();
+        firstAddress.add(new Address(createMemberForm.getDistrict(), createMemberForm.getTown(), createMemberForm.getDong()));
 
-        address.add(new Address(createMemberForm.getDistrict(), createMemberForm.getTown(), createMemberForm.getDong()));
-
-        Member newMember = Member.builder()
+        Member member = Member.builder()
                 .loginId(createMemberForm.getLoginId())
                 .password(createMemberForm.getPassword())
                 .nickname(createMemberForm.getNickname())
                 .contact(createMemberForm.getContact())
                 .email(createMemberForm.getEmail())
-                .address(address).build();
+                .address(firstAddress)
+                .build();
 
-        memberService.saveMember(newMember);
+        memberService.saveMember(member);
+
         return "redirect:" + SIGNUP_URL;
     }
 

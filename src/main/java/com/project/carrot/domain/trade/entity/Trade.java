@@ -46,7 +46,6 @@ public class Trade {
                 .price(price)
                 .offer(offer)
                 .share(share)
-                .location(member.getAddress().get(0).getDong())
                 .context(context)
                 .build();
         return newTrade;
