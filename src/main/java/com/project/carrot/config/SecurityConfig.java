@@ -43,6 +43,8 @@ public class SecurityConfig {
                 .permitAll()
                 .mvcMatchers("/profile/*","/profileImages/*")
                 .permitAll()
+                .antMatchers("/api/*")
+                .permitAll()
                 .anyRequest()
                 .authenticated().and().csrf().disable();
 
