@@ -97,7 +97,7 @@ public class Member {
 
         if(address.size() ==1){
             result.add(0,address.stream().findFirst().get());
-            result.add(1,new Address("no","no","2번째 동네를 설정할수 있습니다."));
+            result.add(1,new Address());
         }
         if(address.size() ==2){
             result.add(address.get(0));

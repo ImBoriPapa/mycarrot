@@ -40,9 +40,9 @@ public class MemberController {
         createMemberForm.setNickname("tester");
         createMemberForm.setEmail("test@test.com");
         createMemberForm.setContact("010-1111-1111");
-        createMemberForm.setDistrict("서울시");
-        createMemberForm.setTown("강서구");
-        createMemberForm.setDong("우장산동");
+        createMemberForm.setCity("서울시");
+        createMemberForm.setDistrict("강서구");
+        createMemberForm.setTown("우장산동");
 
 
 
@@ -89,7 +89,10 @@ public class MemberController {
         }
 
         List<Address> firstAddress = new ArrayList<>();
-        firstAddress.add(new Address(createMemberForm.getDistrict(), createMemberForm.getTown(), createMemberForm.getDong()));
+        firstAddress.add(Address.builder()
+                .city(createMemberForm.getCity())
+                .district(createMemberForm.getDistrict())
+                .town(createMemberForm.getTown()).build());
 
         Member member = Member.builder()
                 .loginId(createMemberForm.getLoginId())

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+    .main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .search-area {
+      margin-top: 100px;
+      width: 500px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid black;
+    }
+
+    .search-area input {
+      width: 300px;
+      height: 50px;
+    }
+
+    .list-area {
+      width: 500px;
+      margin-top: 10px;
+    }
+
+    .list {
+      padding: 0;
+    }
+
+    ul li {
+      width: 500px;
+      height: 30px;
+      margin-top: 20px;
+      list-style: none;
+      font-size: large;
+      cursor: pointer;
+      padding-bottom: 20px;
+      border-bottom: 1px solid black;
+    }
+
+    .close-area {
+      margin-top: 100px;
+      bottom: 100px;
+    }
+
+    .close {
+      background-color: whitesmoke;
+      width: 300px;
+      height: 30px;
+    }
+  </style>
+  <body>
+    <div class="main">
+      <div class="search-area">
+        <input
+          class="input-address"
+          type="text"
+          placeholder="동명(읍,면)으로 검색 (ex, 서초동)"
+        />
+        <button class="search-address">주소 검색</button>
+        <button class="delete-address">주소 삭제</button>
+      </div>
+
+      <div class="list-area">
+        <ul class="list">
+          검색 결과
+        </ul>
+      </div>
+
+      <div class="close-area">
+        <button class="close">검색창 닫기</button>
+      </div>
+    </div>
+
+    <script>
+      const close_btn = document.querySelector(".close");
+      const input_address = document.querySelector(".input-address");
+      const addList = document.querySelector(".list");
+      const delete_address = document.querySelector(".delete-address");
+
+      input_address.addEventListener("keyup", (e) => {
+        getAddressList(input_address.value);
+        keyEvent(e);
+      });
+
+      function keyEvent(e) {
+        if (e.key === " " || e.key === "Backspace") {
+          deleteAddress();
+        }
+      }
+
+      delete_address.addEventListener("click", () => {
+        deleteAddress();
+      });
+
+      function getAddressList(value) {
+        try {
+          fetch(`/api/address_data/${value}`)
+            .then((response) => response.json())
+            .then((data) => {
+              data.addressToString && addAddress(data.addressToString);
+              if (data.addressToString == null) {
+                deleteAddress();
+              }
+              if (data.code == 404) {
+                throw new Error("NO VALUE RESPONSE");
+              }
+            })
+            .catch(console.log);
+        } catch (error) {
+          console.log("NO VALUE RESPONSE");
+          deleteAddress();
+        }
+      }
+
+      function addAddress(address) {
+        address.forEach((value) => {
+          const item = document.createElement("li");
+          item.setAttribute("class", "list-item");
+          item.textContent = value;
+          addList.appendChild(item);
+        });
+      }
+
+      function deleteAddress() {
+        try {
+          while (addList.hasChildNodes) {
+            addList.removeChild(addList.firstChild);
+          }
+        } catch (error) {
+          console.log("NO TARGET FOR DELETE");
+        }
+      }
+
+      addList.addEventListener("click", (event) => {
+        const target = event.target;
+
+        if (target.matches(".list-item")) {
+          window.opener.document.querySelector(".get-address-from-pop").value =
+            target.textContent;
+        }
+        window.close();
+      });
+
+      close_btn.addEventListener("click", () => {
+        window.close();
+      });
+    </script>
+  </body>
+</html>

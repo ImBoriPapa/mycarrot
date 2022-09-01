@@ -174,19 +174,19 @@
               <input
                 type="text"
                 placeholder="시"
-                th:field="*{district}"
+                th:field="*{city}"
                 th:errorclass="field-error"
               />
               <input
                 type="text"
                 placeholder="구"
-                th:field="*{town}"
+                th:field="*{district}"
                 th:errorclass="field-error"
               />
               <input
                 type="text"
                 placeholder="동"
-                th:field="*{dong}"
+                th:field="*{town}"
                 th:errorclass="field-error"
               />
             </div>
@@ -197,13 +197,35 @@
           </div>
         </form>
         <!--end of form  -->
+        <div>
+          <input class="get-address-from-pop" type="text" readonly>
+        </div>
+
+          <div>
+            <button class="open">주소 검색창</button>
+          </div>
+        </div>
       </div>
+
       <!--end of sign-up-home-menu  -->
     </section>
+
     <!--end of section  -->
     <!-- /* *********************************footer-start*************************************** */ -->
     <footer class="home-footer">
       <span> 풋 메뉴 </span>
     </footer>
+
+    <script type="text/javascript">
+      const pop = document.querySelector(".open");
+      let options =
+        "toolbar=no,scrollbars=no,resizable=no,status=no,menubar=no,width=600, height=600, top=50px,left=200px,location=no";
+      pop.addEventListener("click", () => {
+        window.open("/api/address_data/open-pop", "_blank", options);
+      });
+
+      
+
+    </script>
   </body>
 </html>

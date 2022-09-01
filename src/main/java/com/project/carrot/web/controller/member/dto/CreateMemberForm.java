@@ -32,22 +32,22 @@ public class CreateMemberForm {
 
     private String contact;
 
+    private String city;
     private String district;
     private String town;
-    private String dong;
 
 
     public CreateMemberForm() {
     }
 
-    public CreateMemberForm(String loginId, String password, String nickname, String email, String contact, String district, String town, String dong) {
+    public CreateMemberForm(String loginId, String password, String nickname, String email, String contact, String city, String district, String town) {
         this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
         this.contact = contact;
+        this.city = city;
         this.district = district;
         this.town = town;
-        this.dong = dong;
     }
 }

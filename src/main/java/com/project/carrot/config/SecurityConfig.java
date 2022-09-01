@@ -39,11 +39,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/", "/member/login", "/member/sign-up", "/member/success","/image/*","/trade/*")
+                .mvcMatchers("/", "/member/login", "/member/sign-up", "/member/success", "/image/*", "/trade/*")
                 .permitAll()
-                .mvcMatchers("/profile/*","/profileImages/*")
+                .mvcMatchers("/profile/*", "/profileImages/*")
                 .permitAll()
-                .antMatchers("/api/*")
+                .antMatchers("/api/address_data/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated().and().csrf().disable();
@@ -102,8 +102,9 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() throws Exception {
         return (web) -> {
             web.ignoring()
+
                     .requestMatchers(PathRequest
-                            .toStaticResources() //static resources 접근 허용
+                            .toStaticResources() //static resources 접근 허
                             .atCommonLocations());
         };
     }
