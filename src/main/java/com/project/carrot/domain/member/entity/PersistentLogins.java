@@ -9,6 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
+/**
+ * Spring Security 토큰
+ */
+
 @Table(name="persistent_logins")
 @Entity
 @Getter @Setter

@@ -1,6 +1,6 @@
 package com.project.carrot.config;
 
-import com.project.carrot.domain.member.service.MemberService;
+import com.project.carrot.domain.member.userDetailsService.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -32,7 +32,7 @@ import java.net.URLEncoder;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final MemberService memberService;
+    private final UserDetailsServiceImpl userDetailsService;
     private final DataSource dataSource;
 
 
@@ -85,7 +85,7 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/");
 
         http.rememberMe()
-                .userDetailsService(memberService)
+                .userDetailsService(userDetailsService)
                 .tokenRepository(tokenRepository());
 
         return http.build();

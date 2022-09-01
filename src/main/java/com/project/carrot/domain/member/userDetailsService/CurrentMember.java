@@ -1,4 +1,4 @@
-package com.project.carrot.domain.member;
+package com.project.carrot.domain.member.userDetailsService;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

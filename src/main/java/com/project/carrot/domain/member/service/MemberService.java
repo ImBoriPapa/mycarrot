@@ -1,18 +1,14 @@
 package com.project.carrot.domain.member.service;
 
 
-import com.project.carrot.domain.member.MemberAccount;
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.entity.MemberRoll;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
 import com.project.carrot.exception.member_exception.MemberError;
-import com.project.carrot.exception.member_exception.MemberServiceException;
+import com.project.carrot.exception.member_exception.NotExistMemberException;
 import com.project.carrot.web.controller.member.ImagePath;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +21,18 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class MemberService implements UserDetailsService {
+public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    //회원 정보 저장
+    /**
+     * 회원 정보 저장 기능
+     * password encoding 후 저장
+     * @param member
+     * @param fullAddress
+     * @return
+     */
     public Long saveMember(Member member,String fullAddress) {
         String encodedPassword = passwordEncoder.encode(member.getPassword());
 
@@ -51,16 +53,8 @@ public class MemberService implements UserDetailsService {
 
     //회원 목록 아이디로 조회
     public Member findMember(Long id) {
-        return memberRepository.findByMemberId(id).orElseThrow(() -> new MemberServiceException(MemberError.NOT_EXIST_MEMBER));
+        return memberRepository.findByMemberId(id).orElseThrow(() -> new NotExistMemberException(MemberError.NOT_EXIST_MEMBER));
     }
 
-
-    @Override
-    public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
-        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
-        log.info("findMember ={}",findMember);
-
-        return new MemberAccount(findMember.orElseThrow(()->new UsernameNotFoundException(loginId)));
-    }
 
 }
