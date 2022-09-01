@@ -1,6 +1,8 @@
 package com.project.carrot.web.controller.member.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
@@ -13,6 +15,8 @@ import javax.validation.constraints.Size;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateMemberForm {
     @NotBlank(message = "공백없이 입력해주세요")
     @Size(min=5,max = 10,message = "5~10사이")
@@ -32,22 +36,8 @@ public class CreateMemberForm {
 
     private String contact;
 
-    private String city;
-    private String district;
-    private String town;
+    private String fullAddress;
 
 
-    public CreateMemberForm() {
-    }
 
-    public CreateMemberForm(String loginId, String password, String nickname, String email, String contact, String city, String district, String town) {
-        this.loginId = loginId;
-        this.password = password;
-        this.nickname = nickname;
-        this.email = email;
-        this.contact = contact;
-        this.city = city;
-        this.district = district;
-        this.town = town;
-    }
 }

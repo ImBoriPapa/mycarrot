@@ -31,10 +31,10 @@ public class MemberService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     //회원 정보 저장
-    public Long saveMember(Member member) {
+    public Long saveMember(Member member,String fullAddress) {
         String encodedPassword = passwordEncoder.encode(member.getPassword());
 
-        Member createdMember = Member.createMember(member,encodedPassword, ImagePath.DEFAULT_PROFILE_IMAGE,MemberRoll.USER);
+        Member createdMember = Member.createMember(member,encodedPassword, ImagePath.DEFAULT_PROFILE_IMAGE,MemberRoll.USER,fullAddress);
 
         return memberRepository.save(createdMember).getMemberId();
     }

@@ -71,14 +71,14 @@ public class Member {
      * memberRoll 설정
      * 주소 설정
      */
-    public static Member createMember(Member member, String encodedPassword,ImagePath path,MemberRoll roll) {
-
+    public static Member createMember(Member member, String encodedPassword,ImagePath path,MemberRoll roll,String fullAddress) {
+        
         Member createdMember = Member.builder()
                 .loginId(member.getLoginId())
                 .password(encodedPassword)
                 .nickname(member.getNickname())
                 .email(member.getEmail())
-                .address(setAddress(member.getAddress()))
+                .address(addressSaveProcessing(fullAddress))
                 .storedImageName(path.PATH)
                 .contact(member.getContact())
                 .memberRoll(roll)
@@ -86,6 +86,17 @@ public class Member {
                 .build();
 
         return createdMember;
+    }
+    public static List<Address> addressSaveProcessing(String fullAddress){
+        List<Address> addresses = splitAddress(fullAddress);
+        List<Address> result = setAddress(addresses);
+        return result;
+    }
+    protected static List<Address> splitAddress(String fullAddress) {
+        List<Address> firstAddress = new ArrayList<>();
+        String[] splitAddress = fullAddress.split(" ", 3);
+        firstAddress.add(Address.builder().city(splitAddress[0]).district(splitAddress[1]).town(splitAddress[2]).build());
+        return firstAddress;
     }
 
     protected static List<Address> setAddress(List<Address> address) {

@@ -1,6 +1,5 @@
 package com.project.carrot.web.controller.member;
 
-import com.project.carrot.domain.address.entity.Address;
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.service.MemberService;
 import com.project.carrot.web.controller.member.dto.CreateMemberForm;
@@ -15,7 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,26 +27,6 @@ public class MemberController {
 
     private final MemberService memberService;
     private final CreateMemberFormValidator createMemberFormValidator;
-
-
-    @InitBinder("createMemberForm")
-    @PostConstruct
-    public void initData() {
-        CreateMemberForm createMemberForm = new CreateMemberForm();
-        createMemberForm.setLoginId("test");
-        createMemberForm.setPassword("cszc7348!@");
-        createMemberForm.setNickname("tester");
-        createMemberForm.setEmail("test@test.com");
-        createMemberForm.setContact("010-1111-1111");
-        createMemberForm.setCity("서울시");
-        createMemberForm.setDistrict("강서구");
-        createMemberForm.setTown("우장산동");
-
-
-
-
-    }
-
 
     public void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(createMemberFormValidator);
@@ -88,22 +66,15 @@ public class MemberController {
             return SIGNUP_FORM;
         }
 
-        List<Address> firstAddress = new ArrayList<>();
-        firstAddress.add(Address.builder()
-                .city(createMemberForm.getCity())
-                .district(createMemberForm.getDistrict())
-                .town(createMemberForm.getTown()).build());
-
         Member member = Member.builder()
                 .loginId(createMemberForm.getLoginId())
                 .password(createMemberForm.getPassword())
                 .nickname(createMemberForm.getNickname())
                 .contact(createMemberForm.getContact())
                 .email(createMemberForm.getEmail())
-                .address(firstAddress)
                 .build();
 
-        memberService.saveMember(member);
+        memberService.saveMember(member,createMemberForm.getFullAddress());
 
         return "redirect:" + SIGNUP_URL;
     }

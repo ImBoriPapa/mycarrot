@@ -173,22 +173,13 @@
             <div class="input_address">
               <input
                 type="text"
-                placeholder="시"
+                class="open"
+                placeholder="Address"
                 th:field="*{city}"
                 th:errorclass="field-error"
+                readonly
               />
-              <input
-                type="text"
-                placeholder="구"
-                th:field="*{district}"
-                th:errorclass="field-error"
-              />
-              <input
-                type="text"
-                placeholder="동"
-                th:field="*{town}"
-                th:errorclass="field-error"
-              />
+        
             </div>
           </div>
           <!--end of input box  -->
@@ -197,13 +188,7 @@
           </div>
         </form>
         <!--end of form  -->
-        <div>
-          <input class="get-address-from-pop" type="text" readonly>
-        </div>
-
-          <div>
-            <button class="open">주소 검색창</button>
-          </div>
+          
         </div>
       </div>
 
