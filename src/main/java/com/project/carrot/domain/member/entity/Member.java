@@ -7,6 +7,7 @@ import com.project.carrot.exception.member_exception.ToManyAddressException;
 import com.project.carrot.web.controller.member.ImagePath;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.List;
 @Builder
 @Table(name = "MEMBER")
 @AllArgsConstructor
+@EqualsAndHashCode(of = "memberId")
 @Transactional
 public class Member {
 
@@ -42,7 +44,6 @@ public class Member {
 
     @Column(name = "UPLOAD_IMAGE_NAME")
     private String upLoadImageName;
-
     @Column(name = "STORED_IMAGE_NAME")
     private String storedImageName;
     @Column(name = "CONTACT", unique = true)
@@ -54,9 +55,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Trade> tradeList = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)//일대다 관계 주소를 1개 혹은 2개를 저장하고 수정이 가능
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)//일대다 관계 주소를 1개 혹은 2개 까지 저장하고 수정이 가능
     @JoinColumn(name = "MEMBER_ID")
-    private List<Address> address = new ArrayList();
+    private List<Address> address = new ArrayList(2);
 
     @Column(name = "SIGN_UP_DATE", nullable = false) //회원 등록일
     private LocalDateTime signUpDate;

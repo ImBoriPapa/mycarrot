@@ -12,8 +12,6 @@ import java.util.Optional;
 @Transactional
 public interface MemberRepository extends JpaRepository<Member,Long>,CustomMemberRepository {
 
-
-
     Optional<Member> findByLoginId(String loginId); //회원 아이디로 검색하기
     Optional<Member> findByMemberId(Long memberId);// 단건 조회
 
@@ -38,6 +36,6 @@ public interface MemberRepository extends JpaRepository<Member,Long>,CustomMembe
      * @param loginId
      * @return loginId,password
      */
-    @Query("select m.loginId,m.password from Member m where m.loginId = :loginId")
+    @Query("select m from Member m where m.loginId = :loginId")
     Optional<Member> findIdAndPw(@Param("loginId") String loginId);
 }

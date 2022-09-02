@@ -36,7 +36,7 @@ public class MemberService {
     public Long saveMember(Member member,String fullAddress) {
         String encodedPassword = passwordEncoder.encode(member.getPassword());
 
-        Member createdMember = Member.createMember(member,encodedPassword, ImagePath.DEFAULT_PROFILE_IMAGE,MemberRoll.USER,fullAddress);
+        Member createdMember = Member.createMember(member,encodedPassword, ImagePath.DEFAULT_PROFILE_IMAGE,MemberRoll.R0LL_USER,fullAddress);
 
         return memberRepository.save(createdMember).getMemberId();
     }

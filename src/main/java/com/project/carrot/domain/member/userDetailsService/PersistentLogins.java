@@ -1,4 +1,4 @@
-package com.project.carrot.domain.member.entity;
+package com.project.carrot.domain.member.userDetailsService;
 
 import lombok.Getter;
 import lombok.Setter;
