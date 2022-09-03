@@ -39,11 +39,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/", "/member/login", "/member/sign-up", "/member/success", "/image/*", "/trade/*")
+                .mvcMatchers("/", "/member/login", "/member/sign-up", "/member/success", "/image/*", "/trade/*","/profile/*", "/profileImages/*")
                 .permitAll()
-                .mvcMatchers("/profile/*", "/profileImages/*")
-                .permitAll()
-                .antMatchers("/api/address_data/*")
+                .antMatchers("/api/address_data/*","/api/member/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated().and().csrf().disable();
