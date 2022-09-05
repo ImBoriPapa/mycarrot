@@ -31,16 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         log.info("=================call loadUserByUsername====================");
         Optional<Member> findMember = memberRepository.findByLoginId(loginId);
 
-        return new MemberAccount(findMember.orElseThrow(()->new UsernameNotFoundException(loginId)));
-    }
-
-
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername2(String loginId) throws UsernameNotFoundException {
-        log.info("=================call loadUserByUsername====================");
-        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
-
-        return new MemberAccount(findMember.orElseThrow(()->new UsernameNotFoundException(loginId)));
+        return new MemberAccount(findMember.orElseThrow(() -> new UsernameNotFoundException(loginId)));
     }
 
 

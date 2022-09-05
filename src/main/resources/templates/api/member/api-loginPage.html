@@ -1,10 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
- <h1> api loginPage</h1>
-</body>
+  <head>
+    <title>login page</title>
+    <script
+      src="https://kit.fontawesome.com/2ad92617e5.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      box-sizing: border-box;
+    }
+    body {
+      height: 100vh;
+      width: 100vw;
+    }
+    /* *********************************heade-start************************************* */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      height: 10%;
+      width: 100%;
+    }
+
+    .header-logo {
+      display: flex;
+      width: 20%;
+      font-size: 30px;
+      justify-content: center;
+      align-items: center;
+      color: gold;
+    }
+
+    .header-logo-item {
+      display: flex;
+    }
+
+    .header-logo-title {
+      display: flex;
+    }
+
+    .header-title {
+      display: flex;
+      width: 60%;
+    }
+
+    .header-menu {
+      width: 20%;
+    }
+    /* *********************************header-end************************************* */
+    /* *********************************secltion-start************************************* */
+    .login-section {
+      display: flex;
+      height: 70%;
+      width: 100%;
+    }
+
+    .login-form-menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      font-size: larger;
+    }
+
+    .input-box {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-box input {
+      width: 300px;
+      height: 40px;
+      text-align: center;
+      border-radius: 10px;
+    }
+
+    .field-error {
+      color: red;
+      text-align: center;
+    }
+
+    .submit-btn {
+      width: 300px;
+      height: 50px;
+      background-color: beige;
+      margin-top: 20px;
+    }
+
+    /* *********************************secltion-end*************************************** */
+    /* *********************************footer-start*************************************** */
+    .home-footer {
+      display: flex;
+      height: 20%;
+      width: 100%;
+    }
+
+    /* *********************************footer-end*************************************** */
+  </style>
+
+  <body>
+    <div class="header">
+      <div class="header-logo">
+        <i class="fa-solid fa-carrot header-logo-item"></i>
+        <span header-logo-title>보리마켓</span>
+      </div>
+
+      <div class="header-title"></div>
+
+      <div class="header-menu">헤더메뉴</div>
+    </div>
+    <!-- /* *********************************secltion-start************************************* */ -->
+    <section class="login-section">
+      <div class="login-form-menu">
+        <div class="input-box">
+          <div>
+            <input class="loginId" type="text" placeholder="LOGIN ID" />
+          </div>
+
+          <div>
+            <input class="password" type="text" placeholder="PASSWORD" />
+          </div>
+
+          <div class="form-group form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="rememberMe"
+              name="remember-me"
+              checked
+            />
+            <label
+              class="form-check-label"
+              for="rememberMe"
+              aria-describedby="rememberMeHelp"
+              >로그인 유지</label
+            >
+          </div>
+
+          <!--end of input box  -->
+          <div>
+            <div class="field-error">loginId 오류</div>
+            <button class="submit-btn" type="button">LOGIN</button>
+          </div>
+        </div>
+      </div>
+      <!--end of sign-up-home-menu  -->
+    </section>
+    <!--end of section  -->
+    <!-- /* *********************************footer-start*************************************** */ -->
+    <footer class="home-footer">
+      <span> 풋 메뉴 </span>
+    </footer>
+    <script>
+      const submit_btn = document.querySelector(".submit-btn");
+      const loginId = document.querySelector(".loginId");
+      const password = document.querySelector(".password");
+      submit_btn.addEventListener("click", () => {
+        const data = {
+          loginId: loginId,
+          password: password,
+        };
+        fetch("/api/member/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+          });
+      });
+    </script>
+  </body>
 </html>

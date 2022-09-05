@@ -56,8 +56,8 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Trade> tradeList = new ArrayList<>();
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//일대다 관계 주소를 1개 혹은 2개 까지 저장하고 수정이 가능
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    //일대다 관계 주소를 1개 혹은 2개 까지 저장하고 수정이 가능
     @JoinColumn(name = "MEMBER_ID")
     private List<Address> address = new ArrayList();
 
@@ -187,6 +187,10 @@ public class Member {
      * @return
      */
     private List<Address> setAddress(String... address) {
+        final String DEFAULT_ADDRESS_CITY = "NOT SETTING VALUE";
+        final String DEFAULT_ADDRESS_DISTRICT = "NOT SETTING VALUE";
+        final String DEFAULT_ADDRESS_TOWN = "두번째 주소를 설정할수 있습니다.";
+
         List<Address> result = new ArrayList<>();
 
         if (address.length == 0 || address.length <= 0) {
@@ -201,9 +205,9 @@ public class Member {
                     .town(first[2])
                     .build());
             result.add(1, Address.CreateAddress()
-                    .city("NOT SETTING VALUE")
-                    .district("NOT SETTING VALUE")
-                    .town("두번째 주소를 설정할수 있습니다.")
+                    .city(DEFAULT_ADDRESS_CITY)
+                    .district(DEFAULT_ADDRESS_DISTRICT)
+                    .town(DEFAULT_ADDRESS_TOWN)
                     .build());
         }
 
