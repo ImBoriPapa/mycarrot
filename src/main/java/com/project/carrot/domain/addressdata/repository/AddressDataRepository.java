@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface AddressRepository extends JpaRepository<AddressData,Long> {
+public interface AddressDataRepository extends JpaRepository<AddressData,Long> {
 
     @Query("SELECT a FROM AddressData a where a.town like  %:town%")
     List<AddressData> findByTown(@Param("town") String town);

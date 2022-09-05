@@ -222,9 +222,7 @@
               error.textContent = result.message;
             } else {
               console.log("success");
-              fetch("/api/member/login-page", {
-                method: "GET",
-              });
+              location.href = "/api/member/login-page";
             }
           })
           .catch((error) => {

@@ -2,7 +2,7 @@ package com.project.carrot.api.addressdata.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.carrot.domain.addressdata.entity.AddressData;
-import com.project.carrot.domain.addressdata.repository.AddressRepository;
+import com.project.carrot.domain.addressdata.repository.AddressDataRepository;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AddressDataApiController {
 
-    private final AddressRepository addressRepository;
+    private final AddressDataRepository addressDataRepository;
     @GetMapping("/api/address_data/open-pop")
     public ModelAndView open(){
         ModelAndView mav = new ModelAndView("address/search_address_pop");
@@ -33,8 +33,8 @@ public class AddressDataApiController {
     public ResponseEntity<AddressDataResponseForm> address(@PathVariable String town) throws JsonProcessingException {
         AddressDataResponseForm success = new AddressDataResponseForm();
         log.info("town ={}",town);
-        List<AddressData> addressList = addressRepository.findAll();
-        List<AddressData> findByTown = addressRepository.findByTown(town);
+        List<AddressData> addressList = addressDataRepository.findAll();
+        List<AddressData> findByTown = addressDataRepository.findByTown(town);
         log.info("findByTown={}",findByTown.stream().count());
 
         if (!findByTown.isEmpty()) {

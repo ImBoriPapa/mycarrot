@@ -65,15 +65,7 @@ public class MemberController {
             return SIGNUP_FORM;
         }
 
-        Member member = Member.builder()
-                .loginId(createMemberForm.getLoginId())
-                .password(createMemberForm.getPassword())
-                .nickname(createMemberForm.getNickname())
-                .contact(createMemberForm.getContact())
-                .email(createMemberForm.getEmail())
-                .build();
 
-        memberService.saveMember(member,createMemberForm.getFullAddress());
 
         return "redirect:" + SIGNUP_URL;
     }

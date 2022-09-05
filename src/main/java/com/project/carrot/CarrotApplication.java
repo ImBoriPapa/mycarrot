@@ -1,8 +1,8 @@
 package com.project.carrot;
 
 import com.project.carrot.domain.addressdata.entity.AddressData;
-import com.project.carrot.domain.addressdata.repository.AddressRepository;
-import com.project.carrot.domain.member.entity.Member;
+import com.project.carrot.domain.addressdata.repository.AddressDataRepository;
+import com.project.carrot.domain.member.dto.CreateMemberDto;
 import com.project.carrot.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CarrotApplication {
 
-	private final AddressRepository repository;
+	private final AddressDataRepository repository;
 	private final MemberService memberService;
 
 	public static void main(String[] args) {
@@ -46,15 +46,14 @@ public class CarrotApplication {
 	@PostConstruct
 	public void initTestMember(){
 		String address = "서울시 강서구 화곡동";
-
-		Member member = Member.builder()
+		CreateMemberDto createMemberDto = CreateMemberDto.builder()
 				.loginId("test")
 				.password("cszc7348!@")
 				.nickname("tester")
 				.email("tester@test.com")
-				.contact("010-0101-0101").build();
-
-		memberService.saveMember(member,address);
+				.contact("010-0101-0101")
+				.address(address).build();
+		memberService.saveMember(createMemberDto);
 	}
 
 }

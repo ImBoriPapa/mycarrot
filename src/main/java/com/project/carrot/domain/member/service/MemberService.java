@@ -1,12 +1,11 @@
 package com.project.carrot.domain.member.service;
 
 
+import com.project.carrot.domain.member.dto.CreateMemberDto;
 import com.project.carrot.domain.member.entity.Member;
-import com.project.carrot.domain.member.entity.MemberRoll;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
 import com.project.carrot.exception.member_exception.MemberError;
 import com.project.carrot.exception.member_exception.NotExistMemberException;
-import com.project.carrot.web.controller.member.ImagePath;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,14 +28,20 @@ public class MemberService {
     /**
      * 회원 정보 저장 기능
      * password encoding 후 저장
-     * @param member
-     * @param fullAddress
+     * @param dto
      * @return
      */
-    public Long saveMember(Member member,String fullAddress) {
-        String encodedPassword = passwordEncoder.encode(member.getPassword());
+    public Long saveMember(CreateMemberDto dto) {
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
 
-        Member createdMember = Member.createMember(member,encodedPassword, ImagePath.DEFAULT_PROFILE_IMAGE,MemberRoll.R0LL_USER,fullAddress);
+        Member createdMember = Member.CreateMember()
+                .loginId(dto.getLoginId())
+                .password(encodedPassword)
+                .nickname(dto.getNickname())
+                .email(dto.getEmail())
+                .contact(dto.getContact())
+                .address(dto.getAddress())
+                .build();
 
         return memberRepository.save(createdMember).getMemberId();
     }
