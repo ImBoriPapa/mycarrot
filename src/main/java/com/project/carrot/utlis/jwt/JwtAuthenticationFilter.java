@@ -1,29 +1,57 @@
 package com.project.carrot.utlis.jwt;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends GenericFilter {
+@Slf4j
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String REFRESH_HEADER = "Refresh";
 
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String jwt = resolveToken(request, AUTHORIZATION_HEADER);
 
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-
-        if(token != null && jwtTokenProvider.validateToken(token)){
-
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-
+        if (jwt != null && jwtTokenProvider.validateToken(jwt) == JwtTokenProvider.JwtCode.ACCESS) {
+            Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        } else if (jwt != null && jwtTokenProvider.validateToken(jwt) == JwtTokenProvider.JwtCode.EXPIRED) {
+            String refresh = resolveToken(request, REFRESH_HEADER);
 
+            if (refresh != null && jwtTokenProvider.validateToken(refresh) == JwtTokenProvider.JwtCode.ACCESS) {
+                String newRefresh = jwtTokenProvider.reissueRefreshToken(refresh);
+                if (newRefresh != null) {
+                    response.setHeader(AUTHORIZATION_HEADER, "Bearer-" + newRefresh);
+
+                    Authentication authentication = jwtTokenProvider.getAuthentication(refresh);
+                    response.setHeader(AUTHORIZATION_HEADER, "Bearer-" + jwtTokenProvider.createToken(authentication));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
+        } else {
+            log.info("no valid JWT token found, uri: {}", request.getRequestURI());
         }
-        chain.doFilter(request,response);
+        filterChain.doFilter(request, response);
+    }
+
+    private String resolveToken(HttpServletRequest request, String header) {
+        String bearerToken = request.getHeader(header);
+        if (bearerToken != null && bearerToken.startsWith("Bearer-")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }

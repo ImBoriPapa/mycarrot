@@ -4,10 +4,9 @@ import com.project.carrot.api.member.form.ApiCreateMemberForm;
 import com.project.carrot.api.response.BaseResponse;
 import com.project.carrot.api.response.CustomResponseStatus;
 import com.project.carrot.domain.member.dto.CreateMemberDto;
-import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
 import com.project.carrot.domain.member.service.MemberService;
-import com.project.carrot.utlis.jwt.JwtTokenProvider;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -37,7 +35,7 @@ public class MemberApiController {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final LoginService loginService;
 
 //    @InitBinder
     public void init(WebDataBinder dataBinder){
@@ -79,14 +77,10 @@ public class MemberApiController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody Map<String,String> user){
-        Optional<Member> loginId = memberRepository.findByLoginId(user.get("loginId"));
-        loginId.orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디입니다."));
-
-        if (!passwordEncoder.matches(user.get("password"), loginId.get().getPassword())) {
-            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
-        }
-        return jwtTokenProvider.createToken(loginId.get().getLoginId(), List.of("ROLL_USER"));
+    public SingInResponseDto login(@RequestBody LoginDto loginDto){
+        log.info("loginId={}",loginDto.getLoginId());
+        log.info("password={}",loginDto.getPassword());
+        return loginService.signIn(loginDto.getLoginId(), loginDto.getPassword());
     }
 
     @PostMapping("/test")
@@ -95,6 +89,10 @@ public class MemberApiController {
         result.put("result","user ok");
         return result;
     }
-
+    @Data
+    static class LoginDto{
+        private String loginId;
+        private String password;
+    }
 
 }
