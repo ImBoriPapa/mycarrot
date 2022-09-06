@@ -1,4 +1,4 @@
-package com.project.carrot.domain.member.userDetailsService;
+package com.project.carrot.domain.member.service;
 
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
@@ -12,8 +12,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.project.carrot.exception.errorCode.ErrorCode.NO_RESULT_FIND_MEMBER;
 
 @Service
 @Transactional
@@ -30,16 +32,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
-
         Member findMember = memberRepository.findByLoginId(loginId)
-                .orElseThrow(()-> new UsernameNotFoundException(loginId));
-
+                .orElseThrow(() -> new UsernameNotFoundException(loginId+NO_RESULT_FIND_MEMBER.getMessage()));
         return createUserDetails(findMember);
     }
 
-    private UserDetails createUserDetails(Member member){
-        List<SimpleGrantedAuthority> grantedAuthority = Collections.singletonList(new SimpleGrantedAuthority("USER_ROLL"));
-        return new User(member.getLoginId(), member.getPassword(),grantedAuthority);
+    /**
+     *
+     * @param member
+     * required: loginId,password,memberRoll
+     * @return UserDetails
+     */
+    private UserDetails createUserDetails(Member member) {
+        List<SimpleGrantedAuthority> grantedAuthority = member.getRoll().stream()
+                .map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toList());
+        return new User(String.valueOf(member.getMemberId()), member.getPassword(), grantedAuthority);
     }
 
 

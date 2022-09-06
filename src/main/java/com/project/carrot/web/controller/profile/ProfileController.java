@@ -1,6 +1,6 @@
 package com.project.carrot.web.controller.profile;
 
-import com.project.carrot.domain.member.userDetailsService.CurrentMember;
+import com.project.carrot.domain.member.sessionLoginInformation.CurrentMember;
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.service.MemberService;
 import com.project.carrot.domain.profile.service.ProfileService;

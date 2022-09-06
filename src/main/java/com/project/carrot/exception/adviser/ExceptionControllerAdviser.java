@@ -11,7 +11,7 @@ public class ExceptionControllerAdviser {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public void illegal(IllegalArgumentException e){
-        log.error("ExceptionControllerAdviser is called exception = IllegalArgumentException");
+        log.error("ExceptionControllerAdviser is called exception = ",e);
     }
 
     @ExceptionHandler(NoAddressException.class)

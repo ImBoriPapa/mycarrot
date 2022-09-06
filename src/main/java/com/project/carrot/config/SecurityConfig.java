@@ -1,6 +1,6 @@
 package com.project.carrot.config;
 
-import com.project.carrot.domain.member.userDetailsService.UserDetailsServiceImpl;
+import com.project.carrot.domain.member.service.UserDetailsServiceImpl;
 import com.project.carrot.utlis.jwt.JwtAuthenticationFilter;
 import com.project.carrot.utlis.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,6 @@ public class SecurityConfig {
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
-
         http.logout()
                 .logoutSuccessUrl("/");
 
@@ -69,7 +68,6 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() throws Exception {
         return (web) -> {
             web.ignoring()
-
                     .requestMatchers(PathRequest
                             .toStaticResources() //static resources 접근 허
                             .atCommonLocations());

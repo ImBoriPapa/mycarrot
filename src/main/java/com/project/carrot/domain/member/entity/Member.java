@@ -280,6 +280,14 @@ public class Member {
         this.storedImageName = storedImageName;
     }
 
+    /**
+     * 회원 인가 정보
+     */
+    public List<String> getRoll(){
+        return List.of(memberRoll.getRollValue());
+    }
+
+
 }
 
 

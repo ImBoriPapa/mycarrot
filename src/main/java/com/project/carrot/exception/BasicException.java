@@ -1,4 +1,4 @@
-package com.project.carrot.api.exception;
+package com.project.carrot.exception;
 
 import com.project.carrot.api.response.CustomResponseStatus;
 import lombok.AllArgsConstructor;

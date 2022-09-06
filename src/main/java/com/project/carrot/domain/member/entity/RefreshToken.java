@@ -1,4 +1,4 @@
-package com.project.carrot.utlis.jwt;
+package com.project.carrot.domain.member.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,16 +13,14 @@ public class RefreshToken {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "REFRESH_TOKEN_ID")
     private Long id;
-
-    private String memberId;
+    private Long memberId;
     private String token;
 
-    private RefreshToken(String memberId, String token) {
+    private RefreshToken(Long memberId, String token) {
         this.memberId = memberId;
         this.token = token;
     }
-
-    public static RefreshToken createToken(String memberId, String token) {
+    public static RefreshToken createToken(Long memberId, String token) {
         return new RefreshToken(memberId, token);
     }
 

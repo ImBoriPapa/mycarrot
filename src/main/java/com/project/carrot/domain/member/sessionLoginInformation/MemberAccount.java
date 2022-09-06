@@ -1,4 +1,4 @@
-package com.project.carrot.domain.member.userDetailsService;
+package com.project.carrot.domain.member.sessionLoginInformation;
 
 import com.project.carrot.domain.member.entity.Member;
 import lombok.Getter;
