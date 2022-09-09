@@ -1,6 +1,5 @@
 package com.project.carrot.domain.member.service;
 
-import com.project.carrot.api.member.LoginResponseDto;
 import com.project.carrot.exception.member_exception.WrongPasswordException;
 import com.project.carrot.utlis.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.project.carrot.exception.errorCode.ErrorCode.WRONG_PASSWORD;
-import static com.project.carrot.utlis.jwt.JwtHeader.JWT_HEADER_PREFIX;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +30,7 @@ public class LoginService {
      * @return LoginResponseDto(createToken(),issuedRefreshToken())
      */
     @Transactional
-    public LoginResponseDto login(String loginId, String password){
+    public void login(String loginId, String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginId);
 
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
@@ -42,8 +40,5 @@ public class LoginService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities()
         );
-        return new LoginResponseDto(
-                JWT_HEADER_PREFIX+jwtTokenProvider.createToken(authentication),
-                JWT_HEADER_PREFIX+jwtTokenProvider.issuedRefreshToken(authentication));
     }
 }

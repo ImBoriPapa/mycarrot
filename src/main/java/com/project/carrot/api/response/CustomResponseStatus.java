@@ -1,30 +1,26 @@
 package com.project.carrot.api.response;
 
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public enum CustomResponseStatus {
 
     /**
-     * 2000~
+     * Request success
      */
-    SUCCESS(HttpStatus.OK.value(),HttpStatus.OK,2000,"요청이 정상적으로 처리 되었습니다."),
+    SUCCESS("요청이 정상적으로 처리 되었습니다."),
+    SIGNUP_REQUEST_IS_SUCCESS("회원 가입 요청이 성공하였습니다."),
 
     /**
-     * 4000
+     * Request Fail
      */
-    REQUEST_ERROR(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST,4000,"비정상적인 요청입니다.");
+    REQUEST_ERROR("비정상적인 요청입니다."),
+    REQUEST_FAIL("요청이 실패하였습니다."),
+    SIGNUP_REQUEST_IS_FAIL("회원 가입 요청이 실패하였습니다.");
 
-    private Integer httpStatusCode;
-    private HttpStatus httpStatus;
-    private Integer customCode;
     private String message;
 
-    CustomResponseStatus(Integer httpStatusCode, HttpStatus httpStatus, Integer customCode, String message) {
-        this.httpStatusCode = httpStatusCode;
-        this.httpStatus = httpStatus;
-        this.customCode = customCode;
+    CustomResponseStatus(String message) {
         this.message = message;
     }
 }
