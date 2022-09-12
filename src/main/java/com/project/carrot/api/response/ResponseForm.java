@@ -3,11 +3,12 @@ package com.project.carrot.api.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 
 @Getter
 @NoArgsConstructor
-public class ResponseForm<T> {
+public class ResponseForm<T> extends RepresentationModel {
 
     private CustomResponseStatus status;
     private String message;

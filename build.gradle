@@ -22,21 +22,27 @@ repositories {
 
 
 dependencies {
-	// Spring Security 추가
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// Spring Security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+
 	//jwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5', 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-
+	//Spring hateoas
+	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	//jpa
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	//thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//devtools
 	implementation 'org.springframework.boot:spring-boot-devtools'
+	//validation
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.6'
+	//lombok
 	compileOnly 'org.projectlombok:lombok'
+	//mariadb
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 

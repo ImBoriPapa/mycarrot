@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class BasicException extends RuntimeException{
+public class BasicException extends RuntimeException {
     private String errorType;
     private int errorCode;
     private List<String> errorMessage;
@@ -24,7 +24,7 @@ public class BasicException extends RuntimeException{
         List<String> errorMessage = getErrorList(bindingResult);
         this.errorType = this.getClass().getName();
         this.errorCode = code.code;
-        this.errorMessage =  errorMessage;
+        this.errorMessage = errorMessage;
     }
 
     private static List<String> getErrorList(BindingResult bindingResult) {

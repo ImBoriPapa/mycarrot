@@ -1,7 +1,6 @@
 package com.project.carrot.api.member;
 
-import com.project.carrot.api.header.HeadersProvider;
-import com.project.carrot.api.header.ResponseHeader;
+import com.project.carrot.utlis.header.ResponseHeader;
 import com.project.carrot.api.member.form.ApiCreateMemberForm;
 import com.project.carrot.api.response.CustomResponseStatus;
 import com.project.carrot.api.response.ResponseForm;
@@ -13,6 +12,8 @@ import com.project.carrot.exception.errorCode.ErrorCode;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,10 +55,10 @@ public class MemberApiController {
     }
 
     @PostMapping("/member")
-    public ResponseEntity<Object> signUp(@RequestBody @Validated ApiCreateMemberForm form, BindingResult bindingResult) {
+    public ResponseEntity<Object> signUp(@RequestBody @Validated ApiCreateMemberForm form, BindingResult bindingResult) throws URISyntaxException {
         log.info("POST : Member");
         if (bindingResult.hasErrors()) {
-             throw new BasicException(ErrorCode.VALID_FAIL_ERROR,bindingResult);
+            throw new BasicException(ErrorCode.VALID_FAIL_ERROR, bindingResult);
         }
 
         CreateMemberDto memberDto = CreateMemberDto.builder()
@@ -67,16 +69,27 @@ public class MemberApiController {
                 .contact(form.getContact())
                 .address(form.getAddress()).build();
 
+
         Long getId = memberService.saveMember(memberDto);
         Long memberId = getId;
-        HttpHeaders headers = HeadersProvider.defaultResponseHeader();
-        ResponseForm<Object> responseForm = new ResponseForm<>(CustomResponseStatus.SUCCESS, memberId);
 
-        return ResponseEntity.ok()
+        WebMvcLinkBuilder webMvcLinkBuilder = WebMvcLinkBuilder.linkTo(MemberApiController.class);
+        Link withSelfRel = webMvcLinkBuilder.withSelfRel();
+
+        ResponseForm<Object> responseForm = new ResponseForm<>(CustomResponseStatus.SUCCESS, memberId);
+        responseForm.add(withSelfRel);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.ACCEPT,ResponseHeader.APPLICATION_JSON);
+        headers.add(HttpHeaders.CONTENT_TYPE,ResponseHeader.APPLICATION_JSON_UTF8);
+        headers.add(HttpHeaders.LOCATION, withSelfRel.getHref());
+
+        return ResponseEntity.created(withSelfRel.toUri())
                 .headers(headers)
                 .body(responseForm);
 
     }
+
 
     @GetMapping("/member")
     public void findMembers() {
@@ -88,8 +101,7 @@ public class MemberApiController {
         log.info("loginId={}", loginDto.getLoginId());
         log.info("password={}", loginDto.getPassword());
         HttpHeaders headers = new HttpHeaders();
-        headers.add(ResponseHeader.ACCEPT.getKEY(), ResponseHeader.ACCEPT.getVALUE());
-        headers.add(ResponseHeader.CONTENT_TYPE.getKEY(), ResponseHeader.CONTENT_TYPE.getVALUE());
+
         return ResponseEntity.ok().headers(headers).body("ㅠㅠ");
     }
 
