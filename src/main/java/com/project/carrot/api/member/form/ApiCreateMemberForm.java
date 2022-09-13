@@ -24,5 +24,5 @@ public class ApiCreateMemberForm {
     @Email(message = "형식에 맞지 않는 이메일입니다.")
     private String email;
     private String contact;
-    private String address;
+    private Long address;
 }

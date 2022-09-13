@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
@@ -33,18 +31,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
+        http.httpBasic().disable();
+        http.csrf().disable();
+        http.cors().disable();
+        http.headers().frameOptions().disable();
+        http.authorizeRequests()
                 .mvcMatchers("/", "/member/login", "/member/sign-up", "/member/success", "/image/*", "/trade/*", "/profile/*", "/profileImages/*")
                 .permitAll()
-                .antMatchers("/api/address_data/*", "/api/member/*")
+                .antMatchers("/api/address_data/*","/api/member" ,"/api/member/*","/test")
                 .permitAll()
-                .anyRequest().permitAll()
+                .antMatchers("/h2-console","/h2-console/*")
+                .permitAll()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+
 
         http.logout()
                 .logoutSuccessUrl("/");
@@ -64,15 +67,8 @@ public class SecurityConfig {
         return jdbcTokenRepository;
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() throws Exception {
-        return (web) -> {
-            web.ignoring()
-                    .requestMatchers(PathRequest
-                            .toStaticResources() //static resources 접근 허
-                            .atCommonLocations());
-        };
-    }
+
+
 
 
 }

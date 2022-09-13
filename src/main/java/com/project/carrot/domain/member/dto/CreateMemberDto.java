@@ -10,6 +10,6 @@ public class CreateMemberDto {
     private String password;
     private String nickname;
     private String email;
-    private String address;
+    private Long address;
     private String contact;
 }

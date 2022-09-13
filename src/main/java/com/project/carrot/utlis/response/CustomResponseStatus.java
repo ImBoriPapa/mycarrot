@@ -1,4 +1,4 @@
-package com.project.carrot.api.response;
+package com.project.carrot.utlis.response;
 
 import lombok.Getter;
 
@@ -16,6 +16,8 @@ public enum CustomResponseStatus {
      */
     REQUEST_ERROR("비정상적인 요청입니다."),
     REQUEST_FAIL("요청이 실패하였습니다."),
+
+    REQUEST_FIND_MEMBER_IS_FAIL("회원 조회 요청이 실패하였습니다."),
     SIGNUP_REQUEST_IS_FAIL("회원 가입 요청이 실패하였습니다.");
 
     private String message;

@@ -1,6 +1,7 @@
 package com.project.carrot.domain.member.entity;
 
 import com.project.carrot.domain.address.entity.Address;
+import com.project.carrot.domain.addressdata.entity.AddressData;
 import com.project.carrot.domain.trade.entity.Trade;
 import com.project.carrot.exception.member_exception.NoAddressException;
 import com.project.carrot.exception.member_exception.ToManyAddressException;
@@ -16,6 +17,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -78,7 +80,7 @@ public class Member {
      * 주소 설정 -> 최초 회원 생성시에는 주소를 1개만 저장 addressSaveProcessing()
      */
     @Builder(builderMethodName = "CreateMember")
-    protected Member(String loginId, String password, String nickname, String email, String contact, String address) {
+    protected Member(String loginId, String password, String nickname, String email, String contact, List<AddressData> address) {
         this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
@@ -86,96 +88,47 @@ public class Member {
         this.storedImageName = ImagePath.DEFAULT_PROFILE_IMAGE.PATH;
         this.contact = contact;
         this.memberRoll = MemberRoll.R0LL_USER;
-        this.address = addressSaveProcessing(address);
+        this.address = setAddress(address);
         this.signUpDate = LocalDateTime.now();
     }
 
     /**
      * 첫번째 주소 변경
      */
-    protected void updateFirstAddress(String firstAddress) {
-        String[] update = new String[2];
-        update[0] = firstAddress;
-        update[1] = this.address.get(1).toString();
-        this.address = addressSaveProcessing(update);
+    protected void updateFirstAddress(Address address) {
+        this.address.set(0,address);
     }
+
     /**
      * 두번째 주소 변경
      */
-    protected void updateSecondAddress(String secondAddress) {
-        String[] update = new String[2];
-        update[0] = this.address.get(0).toString();
-        update[1] = secondAddress;
-        this.address = addressSaveProcessing(update);
+    protected void updateSecondAddress(Address address) {
+        this.address.set(1,address);
     }
+
     /**
      * 첫번째 두번째 주소 둘다 변경
      */
-    protected void updateBothAddress(String firstAddress,String secondAddress){
-        String[] update = new String[2];
-        update[0] = firstAddress;
-        update[1] = secondAddress;
-        this.address = addressSaveProcessing(update);
+    protected void updateBothAddress(List<Address> address) {
+        this.address.clear();
+        this.address.addAll(address);
     }
+
     /**
      * 첫번째 주소 삭제
      * 두번째 주소가 첫번째 주소로 저장
      */
-    protected void deleteFirstAddress(){
-        String[] update = new String[1];
-        update[0] = this.address.get(1).toString();
-        this.address = addressSaveProcessing(update);
+    protected void deleteFirstAddress() {
+        this.address.remove(0);
     }
+
     /**
      * 두번째 주소 변경
      * 두번째 주소가 기본 second address 로 변경
      */
-    protected void deleteSecondAddress(){
-        String[] update = new String[1];
-        update[0] = this.address.get(0).toString();
-        this.address = addressSaveProcessing(update);
+    protected void deleteSecondAddress() {
+        this.address.remove(1);
     }
-
-    /**
-     * 주소 설정 기능
-     * 전체 주소 문자열을 setAddress()을 호출하여 주소를 세팅후 반환
-     *
-     * @param fullAddress
-     * @return List<Address>
-     */
-    private List<Address> addressSaveProcessing(String... fullAddress) {
-
-        String firstAddress = "";
-        String secondAddress = "";
-
-        if (fullAddress == null) {
-            throw new NoAddressException("주소는 최소한 1개 이상 저장되어야 합니다");
-        }
-
-        if (fullAddress.length == 1) {
-            firstAddress = fullAddress[0];
-            List<Address> result = setAddress(firstAddress);
-            return result;
-        }
-
-        if (fullAddress.length == 2) {
-            firstAddress = fullAddress[0];
-            secondAddress = fullAddress[1];
-            List<Address> result = setAddress(firstAddress, secondAddress);
-            return result;
-        }
-
-        throw new IllegalArgumentException("어떠한 이유로 주소를 저장하는대 실패하였습니다.");
-    }
-
-    /**
-     * 주소 컨버팅 기능
-     * 전체 주소 문자열을 city, district, town 으로 spilt 하여 반환
-     */
-    private String[] splitAddress(String fullAddress) {
-        return fullAddress.split(" ", 3);
-    }
-
     /**
      * 주소 세팅 기능
      * Address 가 없으면 NoAddressException
@@ -183,55 +136,38 @@ public class Member {
      * 주소가 2개일때 -> 정상 저장
      * 주소가 3개 이거나 이상이면 ToManyAddressException
      *
-     * @param address
+     * @param addressData
      * @return
      */
-    private List<Address> setAddress(String... address) {
-        final String DEFAULT_ADDRESS_CITY = "NOT SETTING VALUE";
-        final String DEFAULT_ADDRESS_DISTRICT = "NOT SETTING VALUE";
+    private List<Address> setAddress(List<AddressData> addressData) {
+        final String DEFAULT_ADDRESS_CITY = "NOT SETTING CITY";
+        final String DEFAULT_ADDRESS_DISTRICT = "NOT SETTING DISTRICT";
         final String DEFAULT_ADDRESS_TOWN = "두번째 주소를 설정할수 있습니다.";
 
-        List<Address> result = new ArrayList<>();
-
-        if (address.length == 0 || address.length <= 0) {
+        if (addressData.isEmpty()) {
             throw new NoAddressException("주소는 최소한 1개 이상 저장되어야 합니다");
         }
 
-        if (address.length == 1) {
-            String[] first = splitAddress(address[0]);
-            result.add(0, Address.CreateAddress()
-                    .city(first[0])
-                    .district(first[1])
-                    .town(first[2])
-                    .build());
+        if (addressData.size() == 1) {
+            List<Address> result = addressData.stream().map(a -> new Address(a)).collect(Collectors.toList());
             result.add(1, Address.CreateAddress()
                     .city(DEFAULT_ADDRESS_CITY)
                     .district(DEFAULT_ADDRESS_DISTRICT)
                     .town(DEFAULT_ADDRESS_TOWN)
                     .build());
+            return result;
         }
 
-        if (address.length == 2) {
-            String[] first = splitAddress(address[0]);
-            String[] second = splitAddress(address[1]);
-
-            result.add(0, Address.CreateAddress()
-                    .city(first[0])
-                    .district(first[1])
-                    .town(first[2])
-                    .build());
-
-            result.add(1, Address.CreateAddress()
-                    .city(second[0])
-                    .district(second[1])
-                    .town(second[2])
-                    .build());
-
+        if (addressData.size() == 2) {
+            List<Address> result = addressData.stream().map(a -> new Address(a)).collect(Collectors.toList());
+            return result;
         }
-        if (address.length > 2) {
+
+        if (addressData.size() > 2) {
             throw new ToManyAddressException("주소는 2개 이상 저장할 수 없습니다.");
         }
-        return result;
+
+        return null;
     }
 
     /**
@@ -249,7 +185,6 @@ public class Member {
 
     /**
      * 프로필 수정 기능
-     *
      * @param nickname
      * @param upLoadImageName
      * @param storedImageName
@@ -271,7 +206,6 @@ public class Member {
 
     /**
      * 프로필 이미지 변경 기능
-     *
      * @param upLoadImageName
      * @param storedImageName
      */
@@ -283,7 +217,7 @@ public class Member {
     /**
      * 회원 인가 정보
      */
-    public List<String> getRoll(){
+    public List<String> getRoll() {
         return List.of(memberRoll.getRollValue());
     }
 

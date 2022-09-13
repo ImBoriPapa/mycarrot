@@ -1,5 +1,6 @@
 package com.project.carrot.domain.address.entity;
 
+import com.project.carrot.domain.addressdata.entity.AddressData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +30,14 @@ public class Address {
         this.district = district;
         this.town = town;
     }
+
+    public Address(AddressData addressData) {
+        this.city = addressData.getCity();
+        this.district = addressData.getDistrict();
+        this.town = addressData.getTown();
+        this.townNumber = addressData.getTownNumber();
+    }
+
     @Override
     public String toString() {
         return String.format("%s %s %s", city, district, town);

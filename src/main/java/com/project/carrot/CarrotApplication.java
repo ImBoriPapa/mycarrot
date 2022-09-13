@@ -40,20 +40,23 @@ public class CarrotApplication {
 								.town(split[2]).build();
 					}).collect(Collectors.toList());
 			repository.saveAll(list);
+			initTestMember();
 		}
 	}
 
-	@PostConstruct
-	public void initTestMember(){
-		String address = "서울시 강서구 화곡동";
-		CreateMemberDto createMemberDto = CreateMemberDto.builder()
-				.loginId("test")
-				.password("cszc7348!@")
-				.nickname("tester")
-				.email("tester@test.com")
-				.contact("010-0101-0101")
-				.address(address).build();
-		memberService.saveMember(createMemberDto);
+
+	private void initTestMember() {
+		for(int i=1; i<30; i++){
+			Long address = Long.valueOf(i);
+			CreateMemberDto createMemberDto = CreateMemberDto.builder()
+					.loginId("test"+i)
+					.password("cszc7348!@")
+					.nickname("tester"+i)
+					.email("tester"+i+"@test.com")
+					.contact("010-0101-010"+i)
+					.address(address).build();
+			memberService.saveMember(createMemberDto);
+		}
 	}
 
 }

@@ -12,6 +12,8 @@ public enum ErrorCode {
     //CreateMemberForm
     POST_EMPTY_CREATE_MEMBER_FORM("공백없이 입력해주세요",1001),
 
+    NO_EXIST_MEMBER("회원이 존재하지 않습니다.",1002),
+
     VALID_FAIL_ERROR("검증에 실패하였습니다.",1002),
     /**
      * password 오류

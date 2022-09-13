@@ -1,4 +1,4 @@
-package com.project.carrot.api.response;
+package com.project.carrot.utlis.response;
 
 import lombok.Builder;
 import lombok.Getter;
