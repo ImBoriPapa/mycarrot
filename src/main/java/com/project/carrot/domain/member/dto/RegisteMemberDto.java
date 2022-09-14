@@ -5,11 +5,11 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class CreateMemberDto {
+public class RegisteMemberDto {
     private String loginId;
     private String password;
     private String nickname;
     private String email;
-    private Long address;
+    private int addressCode;
     private String contact;
 }

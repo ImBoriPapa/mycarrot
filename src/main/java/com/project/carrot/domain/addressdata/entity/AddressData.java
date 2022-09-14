@@ -22,8 +22,8 @@ public class AddressData {
     private String district;
     private String town;
 
-    @Column(name = "TOWN_NUMBER")
-    private Long townNumber;
+    @Column(name = "ADDRESS_CODE")
+    private int addressCode;
 
     public AddressData(String city, String district, String town) {
         this.city = city;

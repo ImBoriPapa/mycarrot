@@ -3,11 +3,12 @@ package com.project.carrot.domain.member.service;
 
 import com.project.carrot.domain.addressdata.entity.AddressData;
 import com.project.carrot.domain.addressdata.repository.AddressDataRepository;
-import com.project.carrot.domain.member.dto.CreateMemberDto;
+import com.project.carrot.domain.member.dto.RegisteMemberDto;
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
-import com.project.carrot.exception.errorCode.ErrorCode;
+import com.project.carrot.exception.customEx.IncorrectAddressCodeException;
 import com.project.carrot.exception.customEx.NotExistMemberException;
+import com.project.carrot.exception.errorCode.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,9 +36,12 @@ public class MemberService {
      * @param dto
      * @return
      */
-    public Long saveMember(CreateMemberDto dto) {
+    public Member createMember(RegisteMemberDto dto) {
+        if(dto.getAddressCode() <= 1000){
+            throw new IncorrectAddressCodeException(ErrorCode.INCORRECT_ADDRESS_CODE);
+        }
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
-        Optional<AddressData> data = addressDataRepository.findById(dto.getAddress());
+        Optional<AddressData> data = addressDataRepository.findByAddressCode(dto.getAddressCode());
         List<AddressData> addressData = data.stream().collect(Collectors.toList());
 
         Member createdMember = Member.CreateMember()
@@ -49,7 +53,7 @@ public class MemberService {
                 .address(addressData)
                 .build();
 
-        return memberRepository.save(createdMember).getMemberId();
+        return memberRepository.save(createdMember);
     }
 
     public void updateMember(Long id,Member updateParam) {

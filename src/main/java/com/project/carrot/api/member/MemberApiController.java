@@ -1,21 +1,22 @@
 package com.project.carrot.api.member;
 
-import com.project.carrot.api.member.form.ApiCreateMemberForm;
 import com.project.carrot.api.member.form.ApiMemberDetailForm;
 import com.project.carrot.api.member.form.ApiMemberListForm;
-import com.project.carrot.utlis.response.CustomResponseStatus;
-import com.project.carrot.utlis.response.ResponseForm;
-import com.project.carrot.domain.member.dto.CreateMemberDto;
+import com.project.carrot.api.member.form.request.RequestRegisterForm;
+import com.project.carrot.api.member.form.response.ResponseRegisterForm;
+import com.project.carrot.domain.member.dto.RegisteMemberDto;
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.service.LoginService;
 import com.project.carrot.domain.member.service.MemberService;
-import com.project.carrot.exception.BasicException;
+import com.project.carrot.exception.customEx.RequestValidationException;
 import com.project.carrot.exception.errorCode.ErrorCode;
 import com.project.carrot.utlis.header.ResponseHeader;
+import com.project.carrot.utlis.response.CustomResponseStatus;
+import com.project.carrot.utlis.response.ResponseForm;
+import com.project.carrot.utlis.validator.RequestRegisterFormValidator;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +26,12 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @Slf4j
@@ -37,14 +39,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/member")
 public class MemberApiController {
 
-    private final ApiCreateMemberFormValidator createMemberFormValidator;
+    private final RequestRegisterFormValidator requestRegisterFormValidator;
     private final MemberService memberService;
 
     private final LoginService loginService;
 
-    //    @InitBinder
+    @InitBinder
     public void init(WebDataBinder dataBinder) {
-        dataBinder.addValidators(createMemberFormValidator);
+        dataBinder.addValidators(requestRegisterFormValidator);
     }
 
     @GetMapping("/login-page")
@@ -61,51 +63,56 @@ public class MemberApiController {
 
     /**
      * POST:/MEMBER - 회원 가입
+     * Request - RequestRegisterForm
+     * Response- ResponseEntity(ResponseForm)
      */
     @PostMapping
-    public ResponseEntity<Object> signUp(@RequestBody @Validated ApiCreateMemberForm form, BindingResult bindingResult) throws URISyntaxException {
+    public ResponseEntity<Object> signUp(@RequestBody @Validated RequestRegisterForm form, BindingResult bindingResult){
         log.info("POST : Member");
+
         if (bindingResult.hasErrors()) {
-            throw new BasicException(ErrorCode.VALID_FAIL_ERROR, bindingResult);
+            throw new RequestValidationException(ErrorCode.VALID_FAIL_ERROR, bindingResult);
         }
 
-        CreateMemberDto memberDto = CreateMemberDto.builder()
+        RegisteMemberDto registeMemberDto = RegisteMemberDto.builder()
                 .loginId(form.getLoginId())
                 .password(form.getPassword())
                 .nickname(form.getNickname())
                 .email(form.getEmail())
                 .contact(form.getContact())
-                .address(form.getAddress()).build();
+                .addressCode(form.getAddressCode()).build();
 
+        Member member = memberService.createMember(registeMemberDto);
+        ResponseRegisterForm responseRegisterForm = new ResponseRegisterForm(member);
 
-        Long getId = memberService.saveMember(memberDto);
-        Long memberId = getId;
+        WebMvcLinkBuilder linkTo = linkTo(MemberApiController.class);
 
-        WebMvcLinkBuilder webMvcLinkBuilder = WebMvcLinkBuilder.linkTo(MemberApiController.class);
-        Link withSelfRel = webMvcLinkBuilder.withSelfRel();
+        responseRegisterForm.add(linkTo.withRel("Find All Member"));
+        responseRegisterForm.add(linkTo.slash(member.getMemberId()).withRel("To Detail of Member"));
+        responseRegisterForm.add(linkTo.slash(member.getMemberId()).slash("update").withRel("To Update of Member"));
+        responseRegisterForm.add(linkTo.slash(member.getMemberId()).slash("delete").withRel("To delete of Member"));
 
-        ResponseForm<Object> responseForm = new ResponseForm<>(CustomResponseStatus.SUCCESS, memberId);
-        responseForm.add(withSelfRel);
+        ResponseForm<Object> responseForm = new ResponseForm<>(CustomResponseStatus.SUCCESS, responseRegisterForm);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCEPT,ResponseHeader.APPLICATION_JSON);
-        headers.add(HttpHeaders.CONTENT_TYPE,ResponseHeader.APPLICATION_JSON_UTF8);
-        headers.add(HttpHeaders.LOCATION, withSelfRel.getHref());
+        headers.add(HttpHeaders.ACCEPT, ResponseHeader.APPLICATION_JSON);
+        headers.add(HttpHeaders.CONTENT_TYPE, ResponseHeader.APPLICATION_JSON_UTF8);
+        headers.add(HttpHeaders.LOCATION, linkTo.withSelfRel().toString());
 
-        return ResponseEntity.created(withSelfRel.toUri())
+        return ResponseEntity.created(linkTo.withSelfRel().toUri())
                 .headers(headers)
                 .body(responseForm);
-
     }
+
     /**
-     *GET:/MEMBER 회원 전체 조회
+     * GET:/MEMBER 회원 전체 조회
      */
     @GetMapping
     public ResponseEntity findMembers() {
         log.info("GET : MEMBER");
         List<Member> memberList = memberService.findMemberList();
         List<ApiMemberListForm> collect = memberList.stream().map(ApiMemberListForm::new).collect(Collectors.toList());
-        ResponseForm<Object> responseForm = new ResponseForm<>(CustomResponseStatus.SUCCESS,collect);
+        ResponseForm<Object> responseForm = new ResponseForm<>(CustomResponseStatus.SUCCESS, collect);
         return ResponseEntity.ok().body(responseForm);
     }
 
@@ -114,7 +121,7 @@ public class MemberApiController {
      * 회원 상세 조회
      */
     @GetMapping("/{memberId}")
-    public ResponseEntity findMember(@PathVariable Long memberId){
+    public ResponseEntity findMember(@PathVariable Long memberId) {
         Member member = memberService.findMember(memberId);
 
         ApiMemberDetailForm apiMemberDetailForm = ApiMemberDetailForm.builder()

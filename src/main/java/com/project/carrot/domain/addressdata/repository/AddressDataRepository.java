@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AddressDataRepository extends JpaRepository<AddressData,Long> {
 
@@ -13,4 +14,5 @@ public interface AddressDataRepository extends JpaRepository<AddressData,Long> {
     List<AddressData> findByTown(@Param("town") String town);
 
 
+    Optional<AddressData> findByAddressCode(int addressCode);
 }

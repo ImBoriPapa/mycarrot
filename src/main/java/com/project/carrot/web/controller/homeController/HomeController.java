@@ -1,4 +1,4 @@
-package com.project.carrot.homeController;
+package com.project.carrot.web.controller.homeController;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

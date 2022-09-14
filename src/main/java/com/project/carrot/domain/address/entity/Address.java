@@ -22,7 +22,7 @@ public class Address {
     private String city;
     private String district;
     private String town;
-    private Long townNumber;
+    private int addressCode;
 
     @Builder(builderMethodName = "CreateAddress")
     public Address(String city, String district, String town) {
@@ -35,7 +35,7 @@ public class Address {
         this.city = addressData.getCity();
         this.district = addressData.getDistrict();
         this.town = addressData.getTown();
-        this.townNumber = addressData.getTownNumber();
+        this.addressCode = addressData.getAddressCode();
     }
 
     @Override

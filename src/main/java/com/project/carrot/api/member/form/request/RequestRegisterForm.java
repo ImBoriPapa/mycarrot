@@ -1,17 +1,17 @@
-package com.project.carrot.api.member.form;
+package com.project.carrot.api.member.form.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
-@Data
-@NoArgsConstructor
+@Getter  @Setter
 @AllArgsConstructor
-public class ApiCreateMemberForm {
+@NoArgsConstructor
+public class RequestRegisterForm {
     @NotBlank(message = "로그인 아이디는 공백을 허용하지 않습니다.")
     @Size(min=5,max = 10,message = "5~10사이")
     private String loginId;
@@ -24,5 +24,5 @@ public class ApiCreateMemberForm {
     @Email(message = "형식에 맞지 않는 이메일입니다.")
     private String email;
     private String contact;
-    private Long address;
+    private int addressCode;
 }

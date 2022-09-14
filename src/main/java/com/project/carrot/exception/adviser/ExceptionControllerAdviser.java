@@ -1,5 +1,6 @@
 package com.project.carrot.exception.adviser;
 
+import com.project.carrot.exception.customEx.RequestValidationException;
 import com.project.carrot.utlis.response.CustomResponseStatus;
 import com.project.carrot.utlis.response.ErrorResponse;
 import com.project.carrot.utlis.response.ResponseForm;
@@ -30,7 +31,6 @@ public class ExceptionControllerAdviser {
     @ExceptionHandler(BasicException.class)
     public ResponseEntity basicEx(BasicException e) {
         log.info("BasicException call");
-        log.info("Exception Message = {}",e.getMessage());
 
         ResponseForm responseForm = new ResponseForm(CustomResponseStatus.SIGNUP_REQUEST_IS_FAIL, new ErrorResponse(e));
         HttpHeaders headers = new HttpHeaders();
@@ -39,10 +39,19 @@ public class ExceptionControllerAdviser {
     }
 
     @ExceptionHandler(NotExistMemberException.class)
-    public ResponseEntity NoExistMember(NotExistMemberException e) {
+    public ResponseEntity noExistMember(NotExistMemberException e) {
         log.info("NotExistMemberException call");
 
         ResponseForm responseForm = new ResponseForm(CustomResponseStatus.REQUEST_FIND_MEMBER_IS_FAIL, new ErrorResponse(e));
+        HttpHeaders headers = new HttpHeaders();
+        return ResponseEntity.badRequest().headers(headers).body(responseForm);
+    }
+
+    @ExceptionHandler(RequestValidationException.class)
+    public ResponseEntity validationError(RequestValidationException e) {
+        log.info("RequestValidationException call");
+
+        ResponseForm responseForm = new ResponseForm(CustomResponseStatus.SIGNUP_REQUEST_IS_FAIL, new ErrorResponse(e));
         HttpHeaders headers = new HttpHeaders();
         return ResponseEntity.badRequest().headers(headers).body(responseForm);
     }
