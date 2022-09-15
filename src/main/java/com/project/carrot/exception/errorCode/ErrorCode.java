@@ -11,6 +11,7 @@ public enum ErrorCode {
     NO_RESULT_FIND_MEMBER("요청하신 정보로 로그인 정보를 조회하는대 실패하였습니다.",1000),
     //CreateMemberForm
     POST_EMPTY_CREATE_MEMBER_FORM("공백없이 입력해주세요",1001),
+    INCORRECT_REQUEST_PAGE_PARAMETER_RANGE("페이지 요청시 0이상 정수만 허용합니다.",1002),
 
     /**
      * 회원 가입시
@@ -19,10 +20,12 @@ public enum ErrorCode {
     DUPLICATE_NICK_NAME("이미 사용중인 닉네임 입니다.",2002),
     DUPLICATE_EMAIL("이미 사용중인 이메일 입니다.",2003),
 
-
+    /**
+     * 회원 조회시
+     */
     NO_EXIST_MEMBER("회원이 존재하지 않습니다.",1002),
 
-    VALID_FAIL_ERROR("검증에 실패하였습니다.",1002),
+    VALID_FAIL_ERROR("검증에 실패하였습니다.",1003),
     /**
      * password 오류
      */

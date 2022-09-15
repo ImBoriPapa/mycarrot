@@ -1,12 +1,13 @@
 package com.project.carrot.domain.member.reposiotory;
 
 import com.project.carrot.domain.member.entity.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -15,7 +16,7 @@ public interface MemberRepository extends JpaRepository<Member,Long>,CustomMembe
     Optional<Member> findByLoginId(String loginId); //회원 아이디로 검색하기
     Optional<Member> findByMemberId(Long memberId);// 단건 조회
 
-    List<Member> findAll();//전체 회원 조회
+    Page<Member> findAll(Pageable pageable);//전체 회원 조회
     boolean existsByLoginId(String loginId);
 
     boolean existsByNickname(String loginId);

@@ -36,9 +36,9 @@ public class SecurityConfig {
         http.cors().disable();
         http.headers().frameOptions().disable();
         http.authorizeRequests()
-                .mvcMatchers("/", "/member/login", "/member/sign-up", "/member/success", "/image/*", "/trade/*", "/profile/*", "/profileImages/*")
+                .mvcMatchers("/", "/members/login", "/members/sign-up", "/members/success", "/image/*", "/trade/*", "/profile/*", "/profileImages/*")
                 .permitAll()
-                .antMatchers("/api/address_data/*","/api/member" ,"/api/member/*","/test")
+                .antMatchers("/api/address_data/*","/api/members" ,"/api/members/*","/test")
                 .permitAll()
                 .antMatchers("/h2-console","/h2-console/*")
                 .permitAll()

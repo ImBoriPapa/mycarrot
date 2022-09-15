@@ -8,7 +8,7 @@ import org.springframework.validation.BindingResult;
 import java.util.List;
 
 @Getter
-public class NotExistMemberException extends BasicException {
+public class NoExistMemberException extends BasicException {
     @Override
     public String getErrorType() {
         return super.getErrorType();
@@ -24,11 +24,11 @@ public class NotExistMemberException extends BasicException {
         return super.getErrorMessage();
     }
 
-    public NotExistMemberException(ErrorCode code) {
+    public NoExistMemberException(ErrorCode code) {
         super(code);
     }
 
-    public NotExistMemberException(ErrorCode code, BindingResult bindingResult) {
+    public NoExistMemberException(ErrorCode code, BindingResult bindingResult) {
         super(code, bindingResult);
     }
 }

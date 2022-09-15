@@ -1,14 +1,16 @@
 package com.project.carrot.exception.adviser;
 
+import com.project.carrot.exception.BasicException;
+import com.project.carrot.exception.customEx.IncorrectRequestPageParameterRange;
+import com.project.carrot.exception.customEx.NoExistMemberException;
 import com.project.carrot.exception.customEx.RequestValidationException;
+import com.project.carrot.exception.member_exception.NoAddressException;
 import com.project.carrot.utlis.response.CustomResponseStatus;
 import com.project.carrot.utlis.response.ErrorResponse;
 import com.project.carrot.utlis.response.ResponseForm;
-import com.project.carrot.exception.BasicException;
-import com.project.carrot.exception.member_exception.NoAddressException;
-import com.project.carrot.exception.customEx.NotExistMemberException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,13 +40,13 @@ public class ExceptionControllerAdviser {
         return ResponseEntity.badRequest().headers(headers).body(responseForm);
     }
 
-    @ExceptionHandler(NotExistMemberException.class)
-    public ResponseEntity noExistMember(NotExistMemberException e) {
+    @ExceptionHandler(NoExistMemberException.class)
+    public ResponseEntity noExistMember(NoExistMemberException e) {
         log.info("NotExistMemberException call");
 
         ResponseForm responseForm = new ResponseForm(CustomResponseStatus.REQUEST_FIND_MEMBER_IS_FAIL, new ErrorResponse(e));
         HttpHeaders headers = new HttpHeaders();
-        return ResponseEntity.badRequest().headers(headers).body(responseForm);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers).body(responseForm);
     }
 
     @ExceptionHandler(RequestValidationException.class)
@@ -52,6 +54,15 @@ public class ExceptionControllerAdviser {
         log.info("RequestValidationException call");
 
         ResponseForm responseForm = new ResponseForm(CustomResponseStatus.SIGNUP_REQUEST_IS_FAIL, new ErrorResponse(e));
+        HttpHeaders headers = new HttpHeaders();
+        return ResponseEntity.badRequest().headers(headers).body(responseForm);
+    }
+
+    @ExceptionHandler(IncorrectRequestPageParameterRange.class)
+    public ResponseEntity validationError(IncorrectRequestPageParameterRange e) {
+        log.info("IncorrectRequestPageParameterRange call");
+
+        ResponseForm responseForm = new ResponseForm(CustomResponseStatus.REQUEST_ERROR, new ErrorResponse(e));
         HttpHeaders headers = new HttpHeaders();
         return ResponseEntity.badRequest().headers(headers).body(responseForm);
     }

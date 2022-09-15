@@ -8,6 +8,8 @@ import com.project.carrot.web.controller.member.dto.MemberList;
 import com.project.carrot.web.controller.member.validation.CreateMemberFormValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.List;
 
 
 @Slf4j
@@ -71,8 +72,8 @@ public class MemberController {
     }
 
     @GetMapping("/members")
-    public String members(Model model) {
-        List<Member> members = memberService.findMemberList();
+    public String members(Model model, Pageable pageable) {
+        Page<Member> members = memberService.findMemberList(pageable);
         ArrayList<MemberList> memberList = new ArrayList<>();
 
         for (Member member : members) {

@@ -1,7 +1,7 @@
 package com.project.carrot.api.member;
 
 import com.project.carrot.api.member.form.ApiMemberDetailForm;
-import com.project.carrot.api.member.form.ApiMemberListForm;
+import com.project.carrot.api.member.form.RequestMemberListForm;
 import com.project.carrot.api.member.form.request.RequestRegisterForm;
 import com.project.carrot.api.member.form.response.ResponseRegisterForm;
 import com.project.carrot.domain.member.dto.RegisteMemberDto;
@@ -9,7 +9,6 @@ import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.service.LoginService;
 import com.project.carrot.domain.member.service.MemberService;
 import com.project.carrot.exception.customEx.RequestValidationException;
-import com.project.carrot.exception.errorCode.ErrorCode;
 import com.project.carrot.utlis.header.ResponseHeader;
 import com.project.carrot.utlis.response.CustomResponseStatus;
 import com.project.carrot.utlis.response.ResponseForm;
@@ -17,6 +16,9 @@ import com.project.carrot.utlis.validator.RequestRegisterFormValidator;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -26,23 +28,40 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+import static com.project.carrot.exception.errorCode.ErrorCode.VALID_FAIL_ERROR;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/member")
+@RequestMapping("/api/members")
 public class MemberApiController {
 
     private final RequestRegisterFormValidator requestRegisterFormValidator;
     private final MemberService memberService;
 
     private final LoginService loginService;
+
+    @PostConstruct
+    public void initMember() {
+        for (int i = 1; i < 50; i++) {
+            int address = 1000;
+            RegisteMemberDto dto = RegisteMemberDto.builder()
+                    .loginId("NewMem" + i)
+                    .password("newMember123")
+                    .nickname("newNew" + i)
+                    .email("newMember@new.com" + i)
+                    .contact("010-2232-23" + i)
+                    .addressCode(address + i)
+                    .build();
+            memberService.createMember(dto);
+        }
+    }
 
     @InitBinder
     public void init(WebDataBinder dataBinder) {
@@ -67,11 +86,11 @@ public class MemberApiController {
      * Response- ResponseEntity(ResponseForm)
      */
     @PostMapping
-    public ResponseEntity<Object> signUp(@RequestBody @Validated RequestRegisterForm form, BindingResult bindingResult){
+    public ResponseEntity<Object> signUp(@RequestBody @Validated RequestRegisterForm form, BindingResult bindingResult) {
         log.info("POST : Member");
 
         if (bindingResult.hasErrors()) {
-            throw new RequestValidationException(ErrorCode.VALID_FAIL_ERROR, bindingResult);
+            throw new RequestValidationException(VALID_FAIL_ERROR, bindingResult);
         }
 
         RegisteMemberDto registeMemberDto = RegisteMemberDto.builder()
@@ -87,10 +106,10 @@ public class MemberApiController {
 
         WebMvcLinkBuilder linkTo = linkTo(MemberApiController.class);
 
-        responseRegisterForm.add(linkTo.withRel("Find All Member"));
-        responseRegisterForm.add(linkTo.slash(member.getMemberId()).withRel("To Detail of Member"));
-        responseRegisterForm.add(linkTo.slash(member.getMemberId()).slash("update").withRel("To Update of Member"));
-        responseRegisterForm.add(linkTo.slash(member.getMemberId()).slash("delete").withRel("To delete of Member"));
+        responseRegisterForm.add(linkTo.withRel("GET: Find All Member"));
+        responseRegisterForm.add(linkTo.slash(member.getMemberId()).withRel("GET: Find One Member"));
+        responseRegisterForm.add(linkTo.slash(member.getMemberId()).withRel("PUT: Update of Member"));
+        responseRegisterForm.add(linkTo.slash(member.getMemberId()).withRel("DELETE: delete of Member"));
 
         ResponseForm<Object> responseForm = new ResponseForm<>(CustomResponseStatus.SUCCESS, responseRegisterForm);
 
@@ -108,12 +127,46 @@ public class MemberApiController {
      * GET:/MEMBER 회원 전체 조회
      */
     @GetMapping
-    public ResponseEntity findMembers() {
+    public ResponseEntity findMembers(Pageable pageable) {
         log.info("GET : MEMBER");
-        List<Member> memberList = memberService.findMemberList();
-        List<ApiMemberListForm> collect = memberList.stream().map(ApiMemberListForm::new).collect(Collectors.toList());
-        ResponseForm<Object> responseForm = new ResponseForm<>(CustomResponseStatus.SUCCESS, collect);
-        return ResponseEntity.ok().body(responseForm);
+
+        Page<Member> memberList = memberService.findMemberList(pageable);
+
+        RequestMemberListForm requestMemberListForm = new RequestMemberListForm(memberList);
+
+        List<Link> links = generateQueryStringLinks(requestMemberListForm);
+
+        requestMemberListForm.getMemberList().stream().forEach(link -> link.add(links));
+
+        ResponseForm<Object> responseForm = new ResponseForm<>(CustomResponseStatus.SUCCESS, requestMemberListForm);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.ACCEPT, ResponseHeader.APPLICATION_JSON);
+        headers.add(HttpHeaders.CONTENT_TYPE, ResponseHeader.APPLICATION_JSON_UTF8);
+
+
+        return ResponseEntity.ok().headers(headers).body(responseForm);
+    }
+
+    private List<Link> generateQueryStringLinks(RequestMemberListForm form) {
+        int currentPageNumber = form.getCurrentPageNumber();
+        int previousPageNumber = form.getPreviousPageNumber();
+        int nextPageNumber = form.getNextPageNumber();
+
+        Link current = linkTo(MemberApiController.class).slash("?page=" + currentPageNumber).withRel("Now Page");
+        Link previous = linkTo(MemberApiController.class).slash("?page=" + previousPageNumber).withRel("Previous Page");
+        Link next = linkTo(MemberApiController.class).slash("?page=" + nextPageNumber).withRel("Next Page");
+        List<Link> links = List.of();
+        if (form.isHasPrevious() == false && form.isHasNext()) {
+            links = List.of(current, next);
+            return links;
+        }
+        if (form.isHasPrevious() && form.isHasNext() == false) {
+            links = List.of(current, previous);
+            return links;
+        }
+        links = List.of(current, previous, next);
+        return links;
     }
 
     /**
