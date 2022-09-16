@@ -2,6 +2,7 @@ package com.project.carrot;
 
 import com.project.carrot.domain.addressdata.entity.AddressData;
 import com.project.carrot.domain.addressdata.repository.AddressDataRepository;
+import com.project.carrot.domain.member.dto.RegisteMemberDto;
 import com.project.carrot.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,9 +46,24 @@ public class CarrotApplication {
 								.build();
 					}).collect(Collectors.toList());
 			repository.saveAll(list);
+			initMember();
 		}
 	}
 
+	public void initMember() {
+		for (int i = 1; i < 50; i++) {
+			int address = 1000;
+			RegisteMemberDto dto = RegisteMemberDto.builder()
+					.loginId("NewMem" + i)
+					.password("newMember123")
+					.nickname("newNew" + i)
+					.email("newMember@new.com" + i)
+					.contact("010-2232-23" + i)
+					.addressCode(address + i)
+					.build();
+			memberService.createMember(dto);
+		}
+	}
 
 
 

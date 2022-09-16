@@ -1,4 +1,4 @@
-package com.project.carrot.domain.member.service;
+package com.project.carrot.domain.Login.service;
 
 import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
@@ -16,12 +16,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.project.carrot.exception.errorCode.ErrorCode.NO_RESULT_FIND_MEMBER;
-
 @Service
-@Transactional
-@RequiredArgsConstructor
 @Slf4j
-public class UserDetailsServiceImpl implements UserDetailsService {
+@RequiredArgsConstructor
+@Transactional
+public class UserDetailServiceImpl implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
@@ -33,14 +32,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
         Member findMember = memberRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new UsernameNotFoundException(loginId+NO_RESULT_FIND_MEMBER.getMessage()));
+                .orElseThrow(() -> new UsernameNotFoundException(loginId + NO_RESULT_FIND_MEMBER.getMessage()));
         return createUserDetails(findMember);
     }
 
     /**
-     *
-     * @param member
-     * required: loginId,password,memberRoll
+     * @param member required: loginId,password,memberRoll
      * @return UserDetails
      */
     private UserDetails createUserDetails(Member member) {
@@ -48,6 +45,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toList());
         return new User(String.valueOf(member.getMemberId()), member.getPassword(), grantedAuthority);
     }
-
-
 }
