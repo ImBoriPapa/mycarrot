@@ -1,18 +1,18 @@
 package com.project.carrot.domain.trade.entity;
 
 import com.project.carrot.domain.member.entity.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Trade {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TRADE_ID")
     private Long id;
 
@@ -30,25 +30,20 @@ public class Trade {
     private boolean share;
     private String location;
     private String context;
-    private String itemImage;
+    @OneToMany(mappedBy = "trade")
+    private List<TradeImage> itemImages;
 
-    public Trade() {
+    @Builder(builderMethodName = "createTrade")
+    protected Trade(Member member, String title, Category category, int price, boolean offer, boolean share, String location, String context, List<TradeImage> itemImage) {
+
+        this.member = member;
+        this.title = title;
+        this.category = category;
+        this.price = price;
+        this.offer = offer;
+        this.share = share;
+        this.location = location;
+        this.context = context;
+        this.itemImages = itemImage;
     }
-
-    public Trade(Trade trade) {
-    }
-
-    public static Trade createBoard(Member member,String title,Category category,int price,boolean offer,boolean share,String context) {
-        Trade newTrade = Trade.builder()
-                .member(member)
-                .title(title)
-                .category(category)
-                .price(price)
-                .offer(offer)
-                .share(share)
-                .context(context)
-                .build();
-        return newTrade;
-    }
-
 }

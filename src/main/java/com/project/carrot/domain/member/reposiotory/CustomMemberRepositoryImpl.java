@@ -1,6 +1,6 @@
 package com.project.carrot.domain.member.reposiotory;
 
-import com.project.carrot.domain.member.entity.Member;
+import com.project.carrot.domain.member.dto.MemberForm;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -8,17 +8,25 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class CustomMemberRepositoryImpl implements CustomMemberRepository{
+public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 
     @PersistenceContext
     EntityManager em;
 
     @Override
-    public Optional<Member>  findIdAndPwForLoginByLoginId(String LoginId) {
+    public Optional<MemberForm> findAuthorizationInfoByLoginId(String LoginId) {
 
-        List<Member> member = em.createQuery("SELECT m.memberId,m.password FROM Member m where m.loginId = :loginId")
-                .setParameter("loginId",LoginId)
+        List<MemberForm> forms = em.createQuery("SELECT new com.project.carrot.domain.member.dto.MemberForm(m.memberId,m.loginId,m.password,m.memberRoll)  FROM Member m where m.loginId = :loginId")
+                .setParameter("loginId", LoginId)
                 .getResultList();
-        return member.stream().findAny();
+        return forms.stream().findAny();
+    }
+
+    @Override
+    public Optional<MemberForm> findAuthorizationInfoByMemberId(Long memberId) {
+        List<MemberForm> forms = em.createQuery("SELECT new com.project.carrot.domain.member.dto.MemberForm(m.memberId,m.loginId,m.password,m.memberRoll)  FROM Member m where m.memberId = :memberId")
+                .setParameter("memberId", memberId)
+                .getResultList();
+        return forms.stream().findAny();
     }
 }

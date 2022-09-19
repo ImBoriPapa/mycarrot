@@ -12,6 +12,7 @@ public enum ErrorCode {
     //CreateMemberForm
     POST_EMPTY_CREATE_MEMBER_FORM("공백없이 입력해주세요",1001),
     INCORRECT_REQUEST_PAGE_PARAMETER_RANGE("페이지 요청시 0이상 정수만 허용합니다.",1002),
+    FAIL_TO_LOGIN("로그인에 실패했습니다 로그인 아이디 혹은 비밀번호를 확인해주세요.",1004),
 
     /**
      * 회원 가입시

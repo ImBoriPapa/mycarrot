@@ -54,10 +54,10 @@ public class CarrotApplication {
 		for (int i = 1; i < 50; i++) {
 			int address = 1000;
 			RegisteMemberDto dto = RegisteMemberDto.builder()
-					.loginId("NewMem" + i)
-					.password("newMember123")
-					.nickname("newNew" + i)
-					.email("newMember@new.com" + i)
+					.loginId("test" + i)
+					.password("test123123")
+					.nickname("tester" + i)
+					.email("test"+i+"@new.com")
 					.contact("010-2232-23" + i)
 					.addressCode(address + i)
 					.build();

@@ -4,6 +4,8 @@ import com.project.carrot.domain.member.entity.Member;
 import com.project.carrot.domain.member.reposiotory.MemberRepository;
 import com.project.carrot.domain.trade.entity.Trade;
 import com.project.carrot.domain.trade.repository.TradeRepository;
+import com.project.carrot.exception.customEx.NoExistMemberException;
+import com.project.carrot.exception.errorCode.ErrorCode;
 import com.project.carrot.web.controller.trade.dto.TradeFormList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,8 +44,18 @@ public class TradeService {
     }
 
     public Trade createBoard(Trade trade,Long memberId) {
-        Optional<Member> findMember = memberRepository.findByMemberId(memberId);
-        Trade newBoard = Trade.createBoard(findMember.get(), trade.getTitle(), trade.getCategory(), trade.getPrice(), trade.isOffer(), trade.isShare(), trade.getContext());
+        Member findMember = memberRepository.findByMemberId(memberId).orElseThrow(
+                ()-> new NoExistMemberException(ErrorCode.NO_EXIST_MEMBER));
+        Trade newBoard = Trade.createTrade()
+                .member(findMember)
+                .title(trade.getTitle())
+                .category(trade.getCategory())
+                .price(trade.getPrice())
+                .offer(trade.isOffer())
+                .share(trade.isShare())
+                .location(trade.getLocation())
+
+                .build();
         return newBoard;
     }
 }

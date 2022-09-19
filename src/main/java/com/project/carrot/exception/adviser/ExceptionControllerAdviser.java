@@ -1,6 +1,7 @@
 package com.project.carrot.exception.adviser;
 
 import com.project.carrot.exception.BasicException;
+import com.project.carrot.exception.customEx.FailToLoginException;
 import com.project.carrot.exception.customEx.IncorrectRequestPageParameterRange;
 import com.project.carrot.exception.customEx.NoExistMemberException;
 import com.project.carrot.exception.customEx.RequestValidationException;
@@ -63,6 +64,15 @@ public class ExceptionControllerAdviser {
         log.info("IncorrectRequestPageParameterRange call");
 
         ResponseForm responseForm = new ResponseForm(CustomResponseStatus.REQUEST_ERROR, new ErrorResponse(e));
+        HttpHeaders headers = new HttpHeaders();
+        return ResponseEntity.badRequest().headers(headers).body(responseForm);
+    }
+
+    @ExceptionHandler(FailToLoginException.class)
+    public ResponseEntity loginError(FailToLoginException e){
+        log.info("FailToLoginException call");
+
+        ResponseForm responseForm = new ResponseForm(CustomResponseStatus.REQUEST_FAIL, new ErrorResponse(e));
         HttpHeaders headers = new HttpHeaders();
         return ResponseEntity.badRequest().headers(headers).body(responseForm);
     }

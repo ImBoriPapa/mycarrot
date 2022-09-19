@@ -96,14 +96,14 @@ public class Member {
      * 첫번째 주소 변경
      */
     protected void updateFirstAddress(Address address) {
-        this.address.set(0,address);
+        this.address.set(0, address);
     }
 
     /**
      * 두번째 주소 변경
      */
     protected void updateSecondAddress(Address address) {
-        this.address.set(1,address);
+        this.address.set(1, address);
     }
 
     /**
@@ -129,6 +129,7 @@ public class Member {
     protected void deleteSecondAddress() {
         this.address.remove(1);
     }
+
     /**
      * 주소 세팅 기능
      * Address 가 없으면 NoAddressException
@@ -185,6 +186,7 @@ public class Member {
 
     /**
      * 프로필 수정 기능
+     *
      * @param nickname
      * @param upLoadImageName
      * @param storedImageName
@@ -206,6 +208,7 @@ public class Member {
 
     /**
      * 프로필 이미지 변경 기능
+     *
      * @param upLoadImageName
      * @param storedImageName
      */
@@ -220,8 +223,6 @@ public class Member {
     public List<String> getRoll() {
         return List.of(memberRoll.getRollValue());
     }
-
-
 }
 
 

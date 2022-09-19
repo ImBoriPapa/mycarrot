@@ -1,22 +1,21 @@
 package com.project.carrot.domain.member.reposiotory;
 
+import com.project.carrot.domain.member.dto.MemberForm;
 import com.project.carrot.domain.member.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Transactional
-public interface MemberRepository extends JpaRepository<Member,Long>,CustomMemberRepository {
+public interface MemberRepository extends JpaRepository<Member, Long>, CustomMemberRepository {
 
-    Optional<Member> findByLoginId(String loginId); //회원 아이디로 검색하기
     Optional<Member> findByMemberId(Long memberId);// 단건 조회
 
     Page<Member> findAll(Pageable pageable);//전체 회원 조회
+
     boolean existsByLoginId(String loginId);
 
     boolean existsByNickname(String loginId);
@@ -25,18 +24,19 @@ public interface MemberRepository extends JpaRepository<Member,Long>,CustomMembe
 
     /**
      * 로그인에 필요한 정보만 조회하기 위한 기능
-     * 현재는 클래스로더 이슈 때문에 사용 x mvc 개발이 끝난 후 Devtools 를 삭제 후 사용 예정
+     *
      * @param LoginId
-     * @return loginId,password
+     * @return memberId, loginId, password, memberRoll
      */
     @Override
-    Optional<Member> findIdAndPwForLoginByLoginId(String LoginId);
+    Optional<MemberForm> findAuthorizationInfoByLoginId(String LoginId);
 
     /**
      * 로그인에 필요한 정보만 조회하기 위한 기능
-     * @param loginId
-     * @return loginId,password
+     *
+     * @param memberId
+     * @return memberId, loginId, password, memberRoll
      */
-    @Query("select m from Member m where m.loginId = :loginId")
-    Optional<Member> findIdAndPw(@Param("loginId") String loginId);
+    @Override
+    Optional<MemberForm> findAuthorizationInfoByMemberId(Long memberId);
 }

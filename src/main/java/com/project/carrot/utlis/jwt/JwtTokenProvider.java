@@ -51,6 +51,7 @@ public class JwtTokenProvider implements InitializingBean {
         String encodedKey = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
         key = Keys.hmacShaKeyFor(encodedKey.getBytes());
     }
+
     /**
      * Token 생성
      */
@@ -123,15 +124,15 @@ public class JwtTokenProvider implements InitializingBean {
     public JwtCode validateToken(String jwtToken) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken);
+
             return JwtCode.ACCESS;
         } catch (ExpiredJwtException e) {
             return JwtCode.EXPIRED;
         } catch (JwtException | IllegalArgumentException e) {
-            log.info("refresh 토큰이 일치하지 않습니다. ");
+            return JwtCode.DENIED;
         }
-        return JwtCode.DENIED;
-    }
 
+    }
 
 
     public static enum JwtCode {
