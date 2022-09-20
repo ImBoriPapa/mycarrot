@@ -42,7 +42,7 @@ public class TradeApiController {
                 .tradeImages(images)
                 .build();
 
-        tradeService.createBoard(dto);
+        tradeService.createTradeProcessing(dto);
 
     }
 

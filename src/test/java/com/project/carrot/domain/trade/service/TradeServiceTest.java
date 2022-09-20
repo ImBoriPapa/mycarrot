@@ -66,7 +66,7 @@ class TradeServiceTest {
                 .tradeImages(images)
                 .build();
         //when
-        Trade board = tradeService.createBoard(dto);
+        Trade board = tradeService.createTradeProcessing(dto);
         Trade trade = repository.findById(board.getId()).get();
         Member member = memberRepository.findByMemberId(trade.getMember().getMemberId()).get();
         //then

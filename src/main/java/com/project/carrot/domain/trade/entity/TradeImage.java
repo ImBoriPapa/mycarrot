@@ -1,14 +1,13 @@
 package com.project.carrot.domain.trade.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class TradeImage {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +21,7 @@ public class TradeImage {
     @Column(name="STORED_IMAGE_NAME")
     private String storedImageName;
 
-    @Builder
+    @Builder(builderMethodName = "createTradeImage")
     public TradeImage(Trade trade, String upLoadImageName, String storedImageName) {
         this.trade = trade;
         this.upLoadImageName = upLoadImageName;

@@ -9,6 +9,7 @@ import com.project.carrot.domain.trade.repository.TradeImageRepository;
 import com.project.carrot.domain.trade.repository.TradeRepository;
 import com.project.carrot.exception.customEx.NoExistMemberException;
 import com.project.carrot.exception.errorCode.ErrorCode;
+import com.project.carrot.utlis.image.ImageProvider;
 import com.project.carrot.web.controller.trade.dto.TradeFormList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +20,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +39,8 @@ public class TradeService {
     private final MemberRepository memberRepository;
 
     private final TradeImageRepository tradeImageRepository;
+
+    private final ImageProvider imageProvider;
 
     public TradeFormList findTradeBoards(Pageable pageable) {
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), 20, Sort.Direction.DESC, "id");
@@ -60,12 +60,12 @@ public class TradeService {
         return tradeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("게시물이 존재하지 않습니다."));
     }
 
-    public Trade createBoard(TradeCreateDto dto) throws IOException {
+    public Trade createTradeProcessing(TradeCreateDto dto) throws IOException {
 
         Member findMember = memberRepository.findByMemberId(dto.getMemberId()).orElseThrow(
                 () -> new NoExistMemberException(ErrorCode.NO_EXIST_MEMBER));
 
-        Trade newBoard = Trade.createTrade()
+        Trade trade = Trade.createTrade()
                 .member(findMember)
                 .title(dto.getTitle())
                 .category(dto.getCategory())
@@ -76,38 +76,18 @@ public class TradeService {
                 .context(dto.getContext())
                 .build();
 
-        List<TradeImage> images = new ArrayList<>();
-        List<MultipartFile> tradeImages = dto.getTradeImages();
-        for (MultipartFile t : tradeImages) {
-            String originalFilename = t.getOriginalFilename();
-            log.info("original name={}", originalFilename);
+        List<TradeImage> images = imageProvider.saveImageProcessingV2(dto.getTradeImages(), uploadDir).stream().map(form -> TradeImage.createTradeImage()
+                .trade(trade)
+                .upLoadImageName(form.getUpLoadImage())
+                .storedImageName(form.getStoredImage())
+                .build()).collect(Collectors.toList());
 
-            //get ext
-            int pos = originalFilename.lastIndexOf(".");
-            String ext = originalFilename.substring(pos + 1);
+        trade.addImage(images);
 
-            //generateStoreName(ext)
-            String uuid = UUID.randomUUID().toString();
-            String storedFileName = uuid + "." + ext;
-            //getFullPath(storeFileName)
-            String fullPath = uploadDir + storedFileName;
-
-            t.transferTo(new File(fullPath));
-            TradeImage image = TradeImage.builder()
-                    .upLoadImageName(originalFilename)
-                    .storedImageName(storedFileName)
-                    .trade(newBoard)
-                    .build();
-            images.add(image);
-        }
-
-
-        newBoard.addImage(images);
-
-
-        Trade savedTrade = tradeRepository.save(newBoard);
+        Trade savedTrade = tradeRepository.save(trade);
         tradeImageRepository.saveAll(images);
 
         return savedTrade;
     }
+
 }

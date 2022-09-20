@@ -4,6 +4,7 @@ import com.project.carrot.domain.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,7 +32,7 @@ public class Trade {
     private String location;
     private String context;
     @OneToMany(mappedBy = "trade")
-    private List<TradeImage> itemImages;
+    private List<TradeImage> itemImages = new ArrayList<>();
 
     @Builder(builderMethodName = "createTrade")
     protected Trade(Member member, String title, ItemCategory category, int price, boolean offer, boolean share, String location, String context, List<TradeImage> itemImage) {
