@@ -53,7 +53,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .mvcMatchers("/", "/members/login", "/members/sign-up", "/members/success", "/image/*", "/trade/*", "/profile/*", "/profileImages/*")
                 .permitAll()
-                .antMatchers("/api/address_data/*", "/api/members", "/api/members/*", "/test", "/login")
+                .antMatchers("/api/address_data/*", "/api/members", "/api/members/*", "/test", "/login","/trade")
                 .permitAll()
                 .antMatchers("/h2-console", "/h2-console/*")
                 .permitAll()

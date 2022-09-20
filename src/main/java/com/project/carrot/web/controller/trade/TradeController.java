@@ -43,7 +43,7 @@ public class TradeController {
         Trade tradeBoard = tradeService.findTradeBoard(memberId);
 
         TradeBoardForm tradeBoardForm = TradeBoardForm.builder()
-                .itemImage(tradeBoard.getItemImage())
+                
                 .profileImage(tradeBoard.getMember().getStoredImageName())
                 .nickname(tradeBoard.getMember().getNickname())
                 .build();

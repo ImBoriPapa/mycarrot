@@ -92,6 +92,8 @@ public class Member {
         this.signUpDate = LocalDateTime.now();
     }
 
+
+
     /**
      * 첫번째 주소 변경
      */

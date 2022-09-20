@@ -24,7 +24,7 @@ public class Trade {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "CATEGORY")
-    private Category category;
+    private ItemCategory category;
     private int price;
     private boolean offer;
     private boolean share;
@@ -34,7 +34,7 @@ public class Trade {
     private List<TradeImage> itemImages;
 
     @Builder(builderMethodName = "createTrade")
-    protected Trade(Member member, String title, Category category, int price, boolean offer, boolean share, String location, String context, List<TradeImage> itemImage) {
+    protected Trade(Member member, String title, ItemCategory category, int price, boolean offer, boolean share, String location, String context, List<TradeImage> itemImage) {
 
         this.member = member;
         this.title = title;
@@ -45,5 +45,9 @@ public class Trade {
         this.location = location;
         this.context = context;
         this.itemImages = itemImage;
+    }
+
+    public void addImage(List<TradeImage> itemImages){
+        this.itemImages = itemImages;
     }
 }
